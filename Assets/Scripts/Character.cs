@@ -4,10 +4,8 @@ using UnityEngine;
 namespace Scripts
 {
     [RequireComponent(typeof(CharacterController))]
-    public class Player : MonoBehaviour
+    public class Character : MonoBehaviour, IContollable
     {
-        [SerializeField]
-        private Joystick _joystick;
         [SerializeField]
         private Transform _bodyTransform;
         [SerializeField]
@@ -19,22 +17,26 @@ namespace Scripts
 
         private bool _isRun;
         private CharacterController _characterController;
+        private Vector3 _moveDirection;
 
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            Move();
+            MoveInternal();
         }
 
-        private void Move()
+        public void Move(Vector3 direction)
         {
-            Vector3 direction = Vector3.forward * _joystick.Vertical + Vector3.right * _joystick.Horizontal;
+            _moveDirection = direction;
+        }
 
-            if (direction != Vector3.zero)
+        private void MoveInternal()
+        {
+            if (_moveDirection != Vector3.zero)
             {
                 if (!_isRun)
                 {
@@ -43,8 +45,8 @@ namespace Scripts
                         _playerAnimator.SetTrigger("Run");
                 }
 
-                _characterController.Move(direction * (_runSpeed / 10f));
-                _bodyTransform.rotation = Quaternion.LookRotation(direction);
+                _characterController.Move(_moveDirection * _runSpeed * Time.fixedDeltaTime);
+                _bodyTransform.rotation = Quaternion.LookRotation(_moveDirection);
             }
             else if (_isRun)
             {

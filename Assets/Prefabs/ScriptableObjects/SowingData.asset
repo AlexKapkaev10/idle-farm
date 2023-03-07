@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26549a155a906a40a81b04c792e6ea7, type: 3}
+  m_Name: SowingData
+  m_EditorClassIdentifier: 
+  wheatRipeningTime: 11
+  _sowingCell: {fileID: 8244927159272321833, guid: 38e7b2339bb8eca47bd32e96fc0c69ce, type: 3}
