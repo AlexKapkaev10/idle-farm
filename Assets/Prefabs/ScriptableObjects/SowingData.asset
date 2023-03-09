@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wheatRipeningTime: 11
   _sowingCell: {fileID: 8244927159272321833, guid: 38e7b2339bb8eca47bd32e96fc0c69ce, type: 3}
+  _wheatSowingMaterial: {fileID: 2100000, guid: 748487d582b00d847bd57517f78d8e8f, type: 2}
+  _wheatRipeMaterial: {fileID: 2100000, guid: 49c3c02661a83fd42b33859cfbf9a17d, type: 2}

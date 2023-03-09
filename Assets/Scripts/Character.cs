@@ -14,10 +14,21 @@ namespace Scripts
         private Animator _playerAnimator;
         [SerializeField]
         private string _interactableLayer;
+        [SerializeField]
+        private Transform _rayPoint;
+        [SerializeField]
+        private LayerMask _layerMaskInteractable;
+        [SerializeField]
+        private float _sphereCastRadius = 1f;
 
         private bool _isRun;
         private CharacterController _characterController;
         private Vector3 _moveDirection;
+
+        public void Move(Vector3 direction)
+        {
+            _moveDirection = direction;
+        }
 
         private void Awake()
         {
@@ -27,11 +38,7 @@ namespace Scripts
         private void FixedUpdate()
         {
             MoveInternal();
-        }
-
-        public void Move(Vector3 direction)
-        {
-            _moveDirection = direction;
+            FindInteractables();
         }
 
         private void MoveInternal()
@@ -56,26 +63,27 @@ namespace Scripts
             }
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void FindInteractables()
         {
-            if (other.gameObject.layer == 6)
+            RaycastHit[] _interactableHits = Physics.SphereCastAll(_rayPoint.position, _sphereCastRadius, _rayPoint.TransformDirection(Vector3.down), _sphereCastRadius, _layerMaskInteractable);
+
+            if (_interactableHits.Length > 0)
             {
-                if (other.TryGetComponent<IInteractable>(out IInteractable interactable))
+                _playerAnimator.SetBool("Sowing", _interactableHits.Length > 0);
+
+                for (int i = 0; i < _interactableHits.Length; i++)
                 {
-                    interactable.Interact();
+                    if (_interactableHits[i].collider.TryGetComponent<IInteractable>(out IInteractable interactable))
+                    {
+                        interactable.Interact();
+                    }
                 }
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnDrawGizmos()
         {
-            if (collision.gameObject.layer == LayerMask.NameToLayer(_interactableLayer))
-            {
-                if (collision.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
-                {
-                    interactable.Interact();
-                }
-            }
+            Gizmos.DrawWireSphere(_rayPoint.position + _rayPoint.TransformDirection(Vector3.down), _sphereCastRadius);
         }
     }
 }

@@ -10,6 +10,32 @@ namespace Scripts.ScriptableObjects
         private float wheatRipeningTime = 11f;
         [SerializeField]
         private SowingCell _sowingCell;
+        [SerializeField]
+        private Material _wheatSowingMaterial;
+        [SerializeField]
+        private Material _wheatRipeMaterial;
+
+        public Material GetSowingMaterialBySowingType(SowingType type)
+        {
+            switch (type)
+            {
+                case SowingType.Wheat:
+                    return _wheatSowingMaterial;
+                default:
+                    return null;
+            }
+        }
+
+        public Material GetRipeMaterialBySowingType(SowingType type)
+        {
+            switch (type)
+            {
+                case SowingType.Wheat:
+                    return _wheatRipeMaterial;
+                default:
+                    return null;
+            }
+        }
 
         public float GetRepeningTimeBySowingType(SowingType type)
         {
@@ -24,14 +50,15 @@ namespace Scripts.ScriptableObjects
             return value;
         }
 
-        public SowingCell GetSowingCell()
+        public SowingCell GetSowingCellBySwowimgType(SowingType type)
         {
-            if (_sowingCell)
+            switch (type)
             {
-                return _sowingCell;
+                case SowingType.Wheat:
+                    return _sowingCell;
+                default:
+                    return null;
             }
-
-            return null;
         }
     }
 }

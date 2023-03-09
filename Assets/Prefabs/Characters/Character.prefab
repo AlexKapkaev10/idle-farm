@@ -81,6 +81,11 @@ MonoBehaviour:
   _runSpeed: 3.5
   _playerAnimator: {fileID: 2439322610979513592}
   _interactableLayer: Interactable
+  _rayPoint: {fileID: 2439322611104096243}
+  _layerMaskInteractable:
+    serializedVersion: 2
+    m_Bits: 64
+  _rayDistance: 1
 --- !u!143 &2439322611680783753
 CharacterController:
   m_ObjectHideFlags: 0
