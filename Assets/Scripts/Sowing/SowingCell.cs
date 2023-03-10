@@ -1,70 +1,69 @@
 using Scripts.Enums;
-using Scripts.Interfaces;
+using Scripts.ScriptableObjects;
 using System;
 using System.Collections;
 using UnityEngine;
 
 namespace Scripts
 {
-    public class SowingCell : MonoBehaviour, IInteractable
+    public class SowingCell : MonoBehaviour
     {
-        public event Action OnSowing;
-
-        [SerializeField]
-        private Collider _collider;
+        public event Action OnRipe;
         [SerializeField]
         private MeshRenderer _meshRenderer;
         [SerializeField]
         private Transform _plantPoint;
-        [SerializeField]
+
         private float _ripeinigTime;
-
+        private SowingData _sowingData;
+        private PlantType _plantType;
+        private GameObject _plant;
+        private bool _hasInteract = true;
         private bool _isRipe;
-        private SowingType _sowingType;
-
-        private Material _defaultMaterial;
-        private Material _sowingMaterial;
-        private Material _ripeMaterial;
-
-        public bool IsRipe
-        {
-            get => _isRipe;
-            set
-            {
-                _isRipe = value;
-                _collider.enabled = true;
-            }
-        }
-
-        public void Init(SowingType type, Material sowingMaterial, Material ripeMaterial)
-        {
-            _defaultMaterial = _meshRenderer.material;
-            _sowingMaterial = sowingMaterial;
-            _ripeMaterial = ripeMaterial;
-            _sowingType = type;
-        }
 
         public void Interact()
         {
-            _collider.enabled = false;
-
             if (!_isRipe)
             {
                 _plantPoint.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                _meshRenderer.material = _sowingMaterial;
+                _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
             }
             else
             {
-                _meshRenderer.material = _defaultMaterial;
-                Debug.Log("Add");
+                _plantPoint.localScale = Vector3.zero;
+                _meshRenderer.material = _sowingData.GetDefaultMaterialByPlantType(_plantType);
             }
+        }
 
-            OnSowing?.Invoke();
+        public bool HasInteract
+        {
+            get => _hasInteract;
+            set
+            {
+                _hasInteract = value;
+                Interact();
+            }
+        }
+
+        public void Init(SowingData sowingData, PlantType type)
+        {
+            _sowingData = sowingData;
+            _plantType = type;
+            _ripeinigTime = sowingData.GetRepeningTimeByPlantType(type);
+            _plant = Instantiate(sowingData.GetPlantByPlantType(type), _plantPoint);
         }
 
         public void StartRipening()
         {
-            StartCoroutine(Ripening());
+            if (!_isRipe)
+            {
+                StartCoroutine(Ripening());
+            }
+            else
+            {
+                _isRipe = false;
+                _hasInteract = true;
+            }
         }
 
         private IEnumerator Ripening()
@@ -78,7 +77,12 @@ namespace Scripts
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
-            _meshRenderer.material = _ripeMaterial;
+
+            OnRipe?.Invoke();
+
+            _isRipe = true;
+            _hasInteract = true;
+            _meshRenderer.material = _sowingData.GetRipeMaterialByPlantType(_plantType);
         }
     }
 }

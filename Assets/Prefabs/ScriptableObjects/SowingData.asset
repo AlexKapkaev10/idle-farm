@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26549a155a906a40a81b04c792e6ea7, type: 3}
   m_Name: SowingData
   m_EditorClassIdentifier: 
-  wheatRipeningTime: 11
-  _sowingCell: {fileID: 8244927159272321833, guid: 38e7b2339bb8eca47bd32e96fc0c69ce, type: 3}
-  _wheatSowingMaterial: {fileID: 2100000, guid: 748487d582b00d847bd57517f78d8e8f, type: 2}
+  _cellSowingDistance: 1.5
+  _wheatRipeningTime: 11
+  _wheatPlant: {fileID: 8489662677334713698, guid: 3e787ca3a29cf244dbf2fe158e3885f1, type: 3}
+  _wehathCell: {fileID: 8244927159272321833, guid: 38e7b2339bb8eca47bd32e96fc0c69ce, type: 3}
+  _defaultWheatMaterial: {fileID: 2100000, guid: 36508c771463abf43b7135d9539897e7, type: 2}
+  _wheatSowMaterial: {fileID: 2100000, guid: 748487d582b00d847bd57517f78d8e8f, type: 2}
   _wheatRipeMaterial: {fileID: 2100000, guid: 49c3c02661a83fd42b33859cfbf9a17d, type: 2}
