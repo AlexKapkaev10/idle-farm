@@ -21,6 +21,19 @@ namespace Scripts.ScriptableObjects
         private Material _wheatSowMaterial;
         [SerializeField]
         private Material _wheatRipeMaterial;
+        [SerializeField]
+        private PlantBlock _wheatBlock;
+
+        public PlantBlock GetBlockByPlantType(PlantType type)
+        {
+            switch (type)
+            {
+                case PlantType.Wheat:
+                    return _wheatBlock;
+                default:
+                    return null;
+            }
+        }
 
         public GameObject GetPlantByPlantType(PlantType type)
         {

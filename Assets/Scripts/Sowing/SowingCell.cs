@@ -9,40 +9,41 @@ namespace Scripts
     public class SowingCell : MonoBehaviour
     {
         public event Action OnRipe;
+        public event Action OnMow;
+
         [SerializeField]
         private MeshRenderer _meshRenderer;
         [SerializeField]
         private Transform _plantPoint;
+        [SerializeField]
+        private Transform _blockPoint;
 
         private float _ripeinigTime;
         private SowingData _sowingData;
         private PlantType _plantType;
         private GameObject _plant;
-        private bool _hasInteract = true;
-        private bool _isRipe;
+        private bool _isMow;
 
-        public void Interact()
+        public bool IsMow
         {
-            if (!_isRipe)
+            get => _isMow;
+            set
             {
-                _plantPoint.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
-            }
-            else
-            {
-                _plantPoint.localScale = Vector3.zero;
-                _meshRenderer.material = _sowingData.GetDefaultMaterialByPlantType(_plantType);
+                _isMow = value;
+                Interact();
             }
         }
 
-        public bool HasInteract
+        public Transform GetBlockPoint()
         {
-            get => _hasInteract;
-            set
-            {
-                _hasInteract = value;
-                Interact();
-            }
+            return _blockPoint;
+        }
+
+        public void Interact()
+        {
+            OnMow?.Invoke();
+            _plantPoint.localScale = Vector3.zero;
+            _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
         }
 
         public void Init(SowingData sowingData, PlantType type)
@@ -51,19 +52,19 @@ namespace Scripts
             _plantType = type;
             _ripeinigTime = sowingData.GetRepeningTimeByPlantType(type);
             _plant = Instantiate(sowingData.GetPlantByPlantType(type), _plantPoint);
+            _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
+            StartRipening();
         }
 
         public void StartRipening()
         {
-            if (!_isRipe)
-            {
-                StartCoroutine(Ripening());
-            }
-            else
-            {
-                _isRipe = false;
-                _hasInteract = true;
-            }
+            StartCoroutine(Ripening());
+        }
+
+        private void OnDestroy()
+        {
+            OnMow = null;
+            OnRipe = null;
         }
 
         private IEnumerator Ripening()
@@ -79,9 +80,7 @@ namespace Scripts
             }
 
             OnRipe?.Invoke();
-
-            _isRipe = true;
-            _hasInteract = true;
+            _isMow = false;
             _meshRenderer.material = _sowingData.GetRipeMaterialByPlantType(_plantType);
         }
     }

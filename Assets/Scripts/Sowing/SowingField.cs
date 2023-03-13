@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Scripts.ObjectsPool;
 
 namespace Scripts
 {
@@ -24,7 +25,9 @@ namespace Scripts
         [SerializeField]
         private Collider _collider;
 
-        private FieldStateType _fieldStateType = FieldStateType.Sow;
+        private ObjectsPool<PlantBlock> _blocksPool;
+        private List<PlantBlock> _blocks;
+        private FieldStateType _fieldStateType = FieldStateType.Default;
         private ICharacterController _iCharacterController;
         private Transform _characterTransform;
         private int _interactCount = 0;
@@ -75,63 +78,58 @@ namespace Scripts
         {
             if (_cells.Count > 0)
             {
+                _blocksPool = new ObjectsPool<PlantBlock>(_sowingData.GetBlockByPlantType(_plantType), _sowingCellCount, transform);
+                _blocksPool.OnCreate += CreateNewBlock;
+                _blocks = _blocksPool.GetAll();
+                foreach (var block in _blocks)
+                {
+                    block.OnBlockReturn += OnBlockReturn; 
+                }
                 _cellInteractDistance = _sowingData.GetCellInteractDistance();
 
                 for (int i = 0; i < _cells.Count; i++)
                 {
                     SowingCell cell = _cells[i];
                     cell.Init(_sowingData, _plantType);
-                    cell.OnRipe += RipeCount;
+                    cell.OnRipe += CellInteract;
+                    cell.OnMow += CellInteract;
                 }
             }
         }
 
-        private void Update()
+        private void OnDestroy()
         {
-            if (!_characterTransform || _fieldStateType == FieldStateType.Ripe)
-                return;
-
-            for (int i = 0; i < _cells.Count; i++)
+            foreach (var block in _blocks)
             {
-                SowingCell cell = _cells[i];
-                if (!cell.HasInteract)
-                    continue;
-
-                float distance = Vector3.Distance(_characterTransform.position, cell.transform.position);
-                if (distance < _cellInteractDistance)
-                {
-                    cell.HasInteract = false;
-                    InteractCount();
-                }
+                block.OnBlockReturn -= OnBlockReturn;
             }
         }
 
-        private void InteractCount()
+        private void CellInteract()
         {
             _interactCount++;
 
             if (_interactCount == _cells.Count)
             {
-                _fieldStateType = FieldStateType.Default;
-                _iCharacterController.SetAnimationState(_fieldStateType);
+                _interactCount = 0;
 
-                for (int i = 0; i < _cells.Count; i++)
+                switch (_fieldStateType)
                 {
-                    _interactCount = 0;
-                    _cells[i].StartRipening();
+                    case FieldStateType.Default:
+                        _fieldStateType = FieldStateType.Mow;
+                        if (_iCharacterController != null)
+                            _iCharacterController.SetAnimationState(_fieldStateType);
+                        break;
+                    case FieldStateType.Mow:
+                        _fieldStateType = FieldStateType.Default;
+                        if (_iCharacterController != null)
+                            _iCharacterController.SetAnimationState(_fieldStateType);
+                        for (int i = 0; i < _cells.Count; i++)
+                        {
+                            _cells[i].StartRipening();
+                        }
+                        break;
                 }
-            }
-        }
-
-        private void RipeCount()
-        {
-            _interactCount++;
-
-            if (_interactCount == _cells.Count)
-            {
-                _fieldStateType = FieldStateType.Ripe;
-                if (_iCharacterController != null)
-                    _iCharacterController.SetAnimationState(_fieldStateType);
             }
         }
 
@@ -140,7 +138,7 @@ namespace Scripts
             for (int i = 0; i < _cells.Count; i++)
             {
                 SowingCell cell = _cells[i];
-                if (!cell.HasInteract)
+                if (cell.IsMow)
                     continue;
 
                 float distance = Vector3.Distance(_characterTransform.position, cell.transform.position);
@@ -150,10 +148,23 @@ namespace Scripts
 
                 if (distance < _cellInteractDistance)
                 {
-                    cell.HasInteract = false;
-                    InteractCount();
+                    cell.IsMow = true;
+                    PlantBlock block = _blocksPool.Get();
+                    block.gameObject.transform.position = cell.GetBlockPoint().position;
+                    _iCharacterController.SetPlant(_plantType, block);
                 }
             }
+        }
+
+        private void OnBlockReturn(PlantBlock block)
+        {
+            _blocksPool.Return(block);
+        }
+
+        private void CreateNewBlock(PlantBlock newBlock)
+        {
+            _blocks.Add(newBlock);
+            newBlock.OnBlockReturn += OnBlockReturn;
         }
 
         private IEnumerator DestroyOldCells()

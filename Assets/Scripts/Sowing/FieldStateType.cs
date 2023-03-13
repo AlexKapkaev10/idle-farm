@@ -3,9 +3,6 @@
     public enum FieldStateType
     {
         Default,
-        Sow,
-        EndSow,
-        Ripe,
-        EndRipe
+        Mow,
     }
 }
