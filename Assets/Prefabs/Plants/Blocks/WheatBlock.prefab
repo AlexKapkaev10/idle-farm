@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3772813591009894659, guid: e05410ecfb7552d49b2d3af3532dbaca, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b617dadf37fa87342b8ed30a535326f1, type: 2}
+      objectReference: {fileID: 2100000, guid: 49c3c02661a83fd42b33859cfbf9a17d, type: 2}
     - target: {fileID: 3899009317693069265, guid: e05410ecfb7552d49b2d3af3532dbaca, type: 3}
       propertyPath: curveFlyY.m_Curve.Array.size
       value: 3

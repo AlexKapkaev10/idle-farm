@@ -1,7 +1,10 @@
 using Scripts.Enums;
 using Scripts.Interfaces;
+using Scripts.UI;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Scripts
 {
@@ -22,11 +25,20 @@ namespace Scripts
         private Transform _blocksPoint;
 
         private bool _isBlocksFull;
-        private ResourceController _resourceController = new ResourceController();
+        private ResourceController _resourceController;
         private CharacterAnimationEvents _animationEvents;
         private bool _isRun;
         private CharacterController _characterController;
         private Vector3 _moveDirection;
+
+        private Dictionary<Type, ICharacterBehavior> _behaviorsMap;
+        private ICharacterBehavior _behaviorCurrent;
+
+        [Inject]
+        private void Construct(UIController uIController)
+        {
+            _resourceController = new ResourceController(uIController);
+        }
 
         public void SetAnimationState(FieldStateType type)
         {
@@ -80,6 +92,8 @@ namespace Scripts
             _animationEvents = GetComponentInChildren<CharacterAnimationEvents>();
             _resourceController.OnFull += SetFull;
             _animationEvents.OnMow += InvokeMowAnimation;
+            InitBehaviors();
+            SetBehaviorByDefault();
             _tool.SetActive(false);
         }
 
@@ -91,6 +105,37 @@ namespace Scripts
         private void OnDestroy()
         {
             _animationEvents.OnMow -= InvokeMowAnimation;
+        }
+
+        private void InitBehaviors()
+        {
+            _behaviorsMap = new Dictionary<Type, ICharacterBehavior>();
+
+            _behaviorsMap[typeof(CharacterBehaviorIdle)] = new CharacterBehaviorIdle();
+            _behaviorsMap[typeof(CharacterBehaviorRun)] = new CharacterBehaviorRun();
+        }
+
+        private void SetBehavior(ICharacterBehavior newBehavior)
+        {
+            if (_behaviorCurrent != null)
+            {
+                _behaviorCurrent.Exit();
+            }
+
+            _behaviorCurrent = newBehavior;
+            _behaviorCurrent.Enter();
+        }
+
+        private void SetBehaviorByDefault()
+        {
+            var behaviorByDefault = GetBehavior<CharacterBehaviorIdle>();
+            SetBehavior(behaviorByDefault);
+        }
+
+        private ICharacterBehavior GetBehavior<T>() where T : ICharacterBehavior
+        {
+            var type = typeof(T);
+            return _behaviorsMap[type];
         }
 
         private void SetFull(bool value)
