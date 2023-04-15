@@ -6,9 +6,16 @@ namespace Scripts
 {
     public class CharacterBehaviorIdle : ICharacterBehavior
     {
+        public Character _character;
+
+        public CharacterBehaviorIdle(Character character)
+        {
+            _character = character;
+        }
+
         public void Enter()
         {
-            Debug.Log("Enter Idle State");
+            _character.SetAnimationForMove("Idle");
         }
 
         public void Exit()

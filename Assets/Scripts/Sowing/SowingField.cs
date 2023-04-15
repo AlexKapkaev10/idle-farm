@@ -118,12 +118,12 @@ namespace Scripts
                     case FieldStateType.Default:
                         _fieldStateType = FieldStateType.Mow;
                         if (_iCharacterController != null)
-                            _iCharacterController.SetAnimationState(_fieldStateType);
+                            _iCharacterController.SetAnimationForField(_fieldStateType);
                         break;
                     case FieldStateType.Mow:
                         _fieldStateType = FieldStateType.Default;
                         if (_iCharacterController != null)
-                            _iCharacterController.SetAnimationState(_fieldStateType);
+                            _iCharacterController.SetAnimationForField(_fieldStateType);
                         for (int i = 0; i < _cells.Count; i++)
                         {
                             _cells[i].StartRipening();
@@ -186,7 +186,7 @@ namespace Scripts
                 if (other.gameObject.TryGetComponent<ICharacterController>(out _iCharacterController))
                 {
                     _characterTransform = _iCharacterController.GetTransform();
-                    _iCharacterController.SetAnimationState(_fieldStateType);
+                    _iCharacterController.SetAnimationForField(_fieldStateType);
                     _iCharacterController.OnMow += MowPlants;
                 }
             }
@@ -197,7 +197,7 @@ namespace Scripts
             if (_iCharacterController != null)
             {
                 _characterTransform = null;
-                _iCharacterController.SetAnimationState(FieldStateType.Default);
+                _iCharacterController.SetAnimationForField(FieldStateType.Default);
                 _iCharacterController.OnMow -= MowPlants;
                 _iCharacterController = null;
             }

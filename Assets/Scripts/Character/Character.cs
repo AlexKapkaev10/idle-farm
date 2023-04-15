@@ -27,7 +27,6 @@ namespace Scripts
         private bool _isBlocksFull;
         private ResourceController _resourceController;
         private CharacterAnimationEvents _animationEvents;
-        private bool _isRun;
         private CharacterController _characterController;
         private Vector3 _moveDirection;
 
@@ -40,7 +39,7 @@ namespace Scripts
             _resourceController = new ResourceController(uIController);
         }
 
-        public void SetAnimationState(FieldStateType type)
+        public void SetAnimationForField(FieldStateType type)
         {
             _tool.SetActive(type == FieldStateType.Mow);
             switch (type)
@@ -52,6 +51,12 @@ namespace Scripts
                     _playerAnimator.SetTrigger("Mow");
                     break;
             }
+        }
+
+        public void SetAnimationForMove(string key)
+        {
+            if (_playerAnimator)
+                _playerAnimator.SetTrigger(key);
         }
 
         public Transform GetTransform()
@@ -81,22 +86,32 @@ namespace Scripts
             }
         }
 
-        public void Move(Vector3 direction)
+        public void UpdateMove(Vector3 direction)
         {
             _moveDirection = direction;
+        }
+
+        public void StartMove()
+        {
+            SetBehavior(GetBehavior<CharacterBehaviorRun>());
+        }
+
+        public void StopMove()
+        {
+            SetBehavior(GetBehavior<CharacterBehaviorIdle>());
         }
 
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
             _animationEvents = GetComponentInChildren<CharacterAnimationEvents>();
+
             if (_resourceController == null)
                 Construct(null);
 
             _resourceController.OnFull += SetFull;
             _animationEvents.OnMow += InvokeMowAnimation;
             InitBehaviors();
-            SetBehaviorByDefault();
             _tool.SetActive(false);
         }
 
@@ -114,8 +129,8 @@ namespace Scripts
         {
             _behaviorsMap = new Dictionary<Type, ICharacterBehavior>();
 
-            _behaviorsMap[typeof(CharacterBehaviorIdle)] = new CharacterBehaviorIdle();
-            _behaviorsMap[typeof(CharacterBehaviorRun)] = new CharacterBehaviorRun();
+            _behaviorsMap[typeof(CharacterBehaviorIdle)] = new CharacterBehaviorIdle(this);
+            _behaviorsMap[typeof(CharacterBehaviorRun)] = new CharacterBehaviorRun(this);
         }
 
         private void SetBehavior(ICharacterBehavior newBehavior)
@@ -127,12 +142,6 @@ namespace Scripts
 
             _behaviorCurrent = newBehavior;
             _behaviorCurrent.Enter();
-        }
-
-        private void SetBehaviorByDefault()
-        {
-            var behaviorByDefault = GetBehavior<CharacterBehaviorIdle>();
-            SetBehavior(behaviorByDefault);
         }
 
         private ICharacterBehavior GetBehavior<T>() where T : ICharacterBehavior
@@ -150,21 +159,8 @@ namespace Scripts
         {
             if (_moveDirection != Vector3.zero)
             {
-                if (!_isRun)
-                {
-                    _isRun = true;
-                    if (_playerAnimator)
-                        _playerAnimator.SetTrigger("Run");
-                }
-
                 _characterController.Move(_moveDirection * _runSpeed * Time.fixedDeltaTime);
                 _bodyTransform.rotation = Quaternion.LookRotation(_moveDirection);
-            }
-            else if (_isRun)
-            {
-                _isRun = false;
-                if (_playerAnimator)
-                    _playerAnimator.SetTrigger("Idle");
             }
         }
 

@@ -1,24 +1,30 @@
-﻿using System.Collections;
+﻿using Scripts.Interfaces;
 using UnityEngine;
-using Scripts.Interfaces;
 
 namespace Scripts
 {
     public class CharacterBehaviorRun : ICharacterBehavior
     {
+        public Character _character;
+
+        public CharacterBehaviorRun(Character character)
+        {
+            _character = character;
+        }
+
         public void Enter()
         {
-            throw new System.NotImplementedException();
+            _character.SetAnimationForMove("Run");
         }
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Exit to Run");
         }
 
         public void Update()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Update Run");
         }
     }
 }

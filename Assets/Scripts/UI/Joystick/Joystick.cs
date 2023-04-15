@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Scripts.UI
 {
     public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
+        public event Action OnDown;
+        public event Action OnUp;
+
         [SerializeField]
         private float handleRange = 1;
         [SerializeField]
@@ -32,6 +36,7 @@ namespace Scripts.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            OnDown?.Invoke();
             background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
             background.gameObject.SetActive(true);
             OnDrag(eventData);
@@ -63,6 +68,7 @@ namespace Scripts.UI
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
+            OnUp?.Invoke();
             background.gameObject.SetActive(false);
             input = Vector2.zero;
             handle.anchoredPosition = Vector2.zero;

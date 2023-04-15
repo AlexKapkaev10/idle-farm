@@ -25,11 +25,30 @@ namespace Scripts
             {
                 _joystick = FindObjectOfType<UIController>().GetJoystick();
             }
+
+            _joystick.OnDown += StartMove;
+            _joystick.OnUp += StopMove;
+        }
+
+        private void OnDestroy()
+        {
+            _joystick.OnDown -= StartMove;
+            _joystick.OnUp -= StopMove;
+        }
+
+        private void StartMove()
+        {
+            _iContollable.StartMove();
+        }
+
+        private void StopMove()
+        {
+            _iContollable.StopMove();
         }
 
         private void Update()
         {
-            _iContollable.Move(Vector3.forward * _joystick.Vertical + Vector3.right * _joystick.Horizontal);
+            _iContollable.UpdateMove(Vector3.forward * _joystick.Vertical + Vector3.right * _joystick.Horizontal);
         }
     }
 }
