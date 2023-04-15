@@ -7,6 +7,8 @@ namespace Scripts
 {
     public class JoystickInputController : MonoBehaviour
     {
+        [SerializeField] bool _isLocal;
+
         private Joystick _joystick;
         private IContollable _iContollable;
 
@@ -19,6 +21,10 @@ namespace Scripts
         private void Awake()
         {
             _iContollable = GetComponent<IContollable>();
+            if (_isLocal)
+            {
+                _joystick = FindObjectOfType<UIController>().GetJoystick();
+            }
         }
 
         private void Update()

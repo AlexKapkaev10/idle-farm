@@ -90,6 +90,9 @@ namespace Scripts
         {
             _characterController = GetComponent<CharacterController>();
             _animationEvents = GetComponentInChildren<CharacterAnimationEvents>();
+            if (_resourceController == null)
+                Construct(null);
+
             _resourceController.OnFull += SetFull;
             _animationEvents.OnMow += InvokeMowAnimation;
             InitBehaviors();

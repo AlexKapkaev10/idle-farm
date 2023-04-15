@@ -27,8 +27,12 @@ namespace Scripts
             {
                 case PlantType.Wheat:
                     _wheatBlock.Add(block);
-                    _uIController.DisplayWheatCount(type, _wheatBlock.Count);
+
+                    if (_uIController)
+                        _uIController.DisplayWheatCount(type, _wheatBlock.Count);
+
                     block.MoveToTarget(target, BlockPosition(type), 0.5f, true);
+
                     if (_wheatBlock.Count >= _maxBlocks)
                     {
                         OnFull?.Invoke(true);
@@ -48,7 +52,9 @@ namespace Scripts
                         _wheatBlock[i].MoveToTarget(target, Vector2.zero, 1f, false);
                     }
                     OnFull?.Invoke(false);
-                    _uIController.DisplayByuPlants(_wheatBlock.Count, 0);
+                    if (_uIController)
+                        _uIController.DisplayByuPlants(_wheatBlock.Count, 0);
+
                     _wheatBlock.Clear();
                     _positionYOffset = 0f;
                     break;
