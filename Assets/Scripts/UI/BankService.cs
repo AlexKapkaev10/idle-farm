@@ -1,16 +1,27 @@
 ﻿using Scripts.Enums;
+using Scripts.Game;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 namespace Scripts.UI
 {
-    public class UIController : MonoBehaviour
+    public class BankService : MonoBehaviour
     {
         [SerializeField]
         private Joystick _joystick;
         [SerializeField]
         private TMP_Text _textWheatCount;
+
+        private Character _character;
+
+        [Inject]
+        private void Construct(Character character)
+        {
+            _character = character;
+            _character.Init(this);
+        }
 
         public Joystick GetJoystick()
         {

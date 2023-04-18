@@ -13,7 +13,7 @@ namespace Scripts
         private IContollable _iContollable;
 
         [Inject]
-        private void Construct(UIController uIController)
+        private void Construct(BankService uIController)
         {
             _joystick = uIController.GetJoystick();
         }
@@ -23,7 +23,7 @@ namespace Scripts
             _iContollable = GetComponent<IContollable>();
             if (_isLocal)
             {
-                _joystick = FindObjectOfType<UIController>().GetJoystick();
+                _joystick = FindObjectOfType<BankService>().GetJoystick();
             }
 
             _joystick.OnDown += StartMove;

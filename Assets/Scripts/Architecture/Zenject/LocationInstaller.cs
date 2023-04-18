@@ -1,3 +1,4 @@
+using Scripts.Game;
 using Scripts.UI;
 using UnityEngine;
 using Zenject;
@@ -6,16 +7,16 @@ namespace Scripts.Architecture
 {
     public class LocationInstaller : MonoInstaller
     {
-        public UIController UIControllerPrefab;
+        public BankService UIControllerPrefab;
         public Transform StartPoint;
         public GameObject PlayerPrefab;
 
         public override void InstallBindings()
         {
-            UIController uiController = Container.InstantiatePrefabForComponent<UIController>(UIControllerPrefab);
+            BankService uiController = Container.InstantiatePrefabForComponent<BankService>(UIControllerPrefab);
 
             Container
-                .Bind<UIController>()
+                .Bind<BankService>()
                 .FromInstance(uiController)
                 .AsSingle();
 

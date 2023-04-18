@@ -4,9 +4,9 @@ using Scripts.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
-namespace Scripts
+namespace Scripts.Game
 {
     [RequireComponent(typeof(CharacterController))]
     public class Character : MonoBehaviour, ICharacterController, IContollable
@@ -33,8 +33,7 @@ namespace Scripts
         private Dictionary<Type, ICharacterBehavior> _behaviorsMap;
         private ICharacterBehavior _behaviorCurrent;
 
-        [Inject]
-        private void Construct(UIController uIController)
+        public void Init(BankService uIController)
         {
             _resourceController = new ResourceController(uIController);
         }
@@ -105,14 +104,11 @@ namespace Scripts
         {
             _characterController = GetComponent<CharacterController>();
             _animationEvents = GetComponentInChildren<CharacterAnimationEvents>();
-
-            if (_resourceController == null)
-                Construct(null);
-
             _resourceController.OnFull += SetFull;
             _animationEvents.OnMow += InvokeMowAnimation;
-            InitBehaviors();
             _tool.SetActive(false);
+
+            InitBehaviors();
         }
 
         private void FixedUpdate()

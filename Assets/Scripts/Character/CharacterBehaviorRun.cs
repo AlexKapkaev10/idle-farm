@@ -1,7 +1,7 @@
 ﻿using Scripts.Interfaces;
 using UnityEngine;
 
-namespace Scripts
+namespace Scripts.Game
 {
     public class CharacterBehaviorRun : ICharacterBehavior
     {

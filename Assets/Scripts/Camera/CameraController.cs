@@ -1,8 +1,9 @@
 using Cinemachine;
 using UnityEngine;
 using Zenject;
+using Scripts.Game;
 
-namespace Scripts
+namespace Scripts.CameraGame
 {
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class CameraController : MonoBehaviour

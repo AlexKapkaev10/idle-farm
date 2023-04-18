@@ -2,7 +2,7 @@
 using UnityEngine;
 using Scripts.Interfaces;
 
-namespace Scripts
+namespace Scripts.Game
 {
     public class CharacterBehaviorIdle : ICharacterBehavior
     {

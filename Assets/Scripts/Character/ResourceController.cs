@@ -4,21 +4,22 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts
+namespace Scripts.Game
 {
     public class ResourceController
     {
         public event Action<bool> OnFull;
 
-        private UIController _uIController;
+        private BankService _uIController;
         private int _maxBlocks = 40;
         private float _positionYOffset = 0f;
         private int _positionZCount = 0;
         private List<PlantBlock> _wheatBlock = new List<PlantBlock>();
 
-        public ResourceController(UIController uIController)
+        public ResourceController(BankService uIController)
         {
             _uIController = uIController;
+            Debug.Log(_uIController != null ? "UIController initialized" : "UIController is null");
         }
 
         public void Add(PlantType type, PlantBlock block, Transform target)
