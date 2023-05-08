@@ -4,32 +4,27 @@ using UnityEngine.EventSystems;
 
 namespace Scripts.UI
 {
-    public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+    public sealed class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
         public event Action OnDown;
         public event Action OnUp;
 
-        [SerializeField]
-        private float handleRange = 1;
-        [SerializeField]
-        private float deadZone = 0;
-
-        [SerializeField] protected RectTransform background = null;
+        [SerializeField] private float _handleRange = 1;
+        [SerializeField] private float _deadZone = 0;
+        [SerializeField] private RectTransform background = null;
         [SerializeField] private RectTransform handle = null;
-        private RectTransform baseRect = null;
+        
+        private RectTransform _baseRect = null;
+        private Canvas _canvas;
+        private Camera _cam;
+        private Vector2 _input = Vector2.zero;
 
-        private Canvas canvas;
-        private Camera cam;
-        private Vector2 input = Vector2.zero;
-
-        public float Horizontal { get => input.x; }
-        public float Vertical { get => input.y; }
-        public Vector2 Direction { get => new Vector2(Horizontal, Vertical); }
+        public Vector2 Direction => _input;
 
         private void Start()
         {
-            baseRect = GetComponent<RectTransform>();
-            canvas = GetComponentInParent<Canvas>();
+            _baseRect = GetComponent<RectTransform>();
+            _canvas = GetComponentInParent<Canvas>();
             background.gameObject.SetActive(false);
             handle.anchoredPosition = Vector2.zero;
         }
@@ -44,42 +39,42 @@ namespace Scripts.UI
 
         public void OnDrag(PointerEventData eventData)
         {
-            cam = null;
-            if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
-                cam = canvas.worldCamera;
+            _cam = null;
+            if (_canvas.renderMode == RenderMode.ScreenSpaceCamera)
+                _cam = _canvas.worldCamera;
 
-            Vector2 position = RectTransformUtility.WorldToScreenPoint(cam, background.position);
+            Vector2 position = RectTransformUtility.WorldToScreenPoint(_cam, background.position);
             Vector2 radius = background.sizeDelta / 2;
-            input = (eventData.position - position) / (radius * canvas.scaleFactor);
-            HandleInput(input.magnitude, input.normalized, radius, cam);
-            handle.anchoredPosition = input * radius * handleRange;
+            _input = (eventData.position - position) / (radius * _canvas.scaleFactor);
+            HandleInput(_input.magnitude, _input.normalized, radius, _cam);
+            handle.anchoredPosition = _input * radius * _handleRange;
         }
 
         private void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
         {
-            if (magnitude > deadZone)
+            if (magnitude > _deadZone)
             {
                 if (magnitude > 1)
-                    input = normalised;
+                    _input = normalised;
             }
             else
-                input = Vector2.zero;
+                _input = Vector2.zero;
         }
 
-        public virtual void OnPointerUp(PointerEventData eventData)
+        public void OnPointerUp(PointerEventData eventData)
         {
             OnUp?.Invoke();
             background.gameObject.SetActive(false);
-            input = Vector2.zero;
+            _input = Vector2.zero;
             handle.anchoredPosition = Vector2.zero;
         }
 
         private Vector2 ScreenPointToAnchoredPosition(Vector2 screenPosition)
         {
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(baseRect, screenPosition, cam, out Vector2 localPoint))
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_baseRect, screenPosition, _cam, out Vector2 localPoint))
             {
-                Vector2 pivotOffset = baseRect.pivot * baseRect.sizeDelta;
-                return localPoint - (background.anchorMax * baseRect.sizeDelta) + pivotOffset;
+                Vector2 pivotOffset = _baseRect.pivot * _baseRect.sizeDelta;
+                return localPoint - (background.anchorMax * _baseRect.sizeDelta) + pivotOffset;
             }
             return Vector2.zero;
         }

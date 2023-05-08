@@ -65,12 +65,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1082072152, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
+      propertyPath: _isLocal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1082072152, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _joystick
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2439322611680783748, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: m_Name
-      value: Network_Character
+      value: Character_Network
       objectReference: {fileID: 0}
     - target: {fileID: 2439322611680783754, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: m_RootOrder

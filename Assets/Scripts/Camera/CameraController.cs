@@ -1,7 +1,7 @@
 using Cinemachine;
 using UnityEngine;
-using Zenject;
 using Scripts.Game;
+using VContainer;
 
 namespace Scripts.CameraGame
 {

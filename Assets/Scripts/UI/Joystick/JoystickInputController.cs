@@ -1,35 +1,23 @@
 using Scripts.Interfaces;
 using Scripts.UI;
 using UnityEngine;
-using Zenject;
 
-namespace Scripts
+namespace Scripts.Game
 {
     public class JoystickInputController : MonoBehaviour
     {
-        [SerializeField] bool _isLocal;
-
         private Joystick _joystick;
-        private IContollable _iContollable;
+        private IControllable _iControllable;
 
-        [Inject]
-        private void Construct(BankService uIController)
+        public void Init(Joystick joystick)
         {
-            _joystick = uIController.GetJoystick();
-        }
-
-        private void Awake()
-        {
-            _iContollable = GetComponent<IContollable>();
-            if (_isLocal)
-            {
-                _joystick = FindObjectOfType<BankService>().GetJoystick();
-            }
-
+            _joystick = joystick;
             _joystick.OnDown += StartMove;
             _joystick.OnUp += StopMove;
+            
+            _iControllable = GetComponent<IControllable>();
         }
-
+        
         private void OnDestroy()
         {
             _joystick.OnDown -= StartMove;
@@ -38,17 +26,12 @@ namespace Scripts
 
         private void StartMove()
         {
-            _iContollable.StartMove();
+            _iControllable.StartMove();
         }
 
         private void StopMove()
         {
-            _iContollable.StopMove();
-        }
-
-        private void Update()
-        {
-            _iContollable.UpdateMove(Vector3.forward * _joystick.Vertical + Vector3.right * _joystick.Horizontal);
+            _iControllable.StopMove();
         }
     }
 }

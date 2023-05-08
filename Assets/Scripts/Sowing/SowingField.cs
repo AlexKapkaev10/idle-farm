@@ -22,8 +22,6 @@ namespace Scripts
         private PlantType _plantType;
         [SerializeField]
         private List<SowingCell> _cells = new List<SowingCell>();
-        [SerializeField]
-        private Collider _collider;
 
         private ObjectsPool<PlantBlock> _blocksPool;
         private List<PlantBlock> _blocks;
@@ -41,7 +39,7 @@ namespace Scripts
             }
 
             SowingCell cellPrefab = _sowingData.GetSowCellByPlantType(_plantType);
-            Debug.Log(cellPrefab);
+            
             if (cellPrefab == null)
                 return;
 
@@ -151,7 +149,7 @@ namespace Scripts
                     cell.IsMow = true;
                     PlantBlock block = _blocksPool.Get();
                     block.gameObject.transform.position = cell.GetBlockPoint().position;
-                    _iCharacterController.SetPlant(_plantType, block);
+                    _iCharacterController.AddPlant(_plantType, block);
                 }
             }
         }

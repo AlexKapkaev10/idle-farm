@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using UnityEngine;
-using Scripts.Interfaces;
+﻿using Scripts.Interfaces;
 
 namespace Scripts.Game
 {
     public class CharacterBehaviorIdle : ICharacterBehavior
     {
-        public Character _character;
+        private readonly Character _character;
+        
+        public string AnimationKey { get; } = "Idle";
 
         public CharacterBehaviorIdle(Character character)
         {
@@ -15,17 +15,19 @@ namespace Scripts.Game
 
         public void Enter()
         {
-            _character.SetAnimationForMove("Idle");
+            _character.SetAnimationForMove(AnimationKey);
         }
 
         public void Exit()
         {
-            Debug.Log("Exit Idle State");
         }
 
         public void Update()
+        {;
+        }
+
+        public void FixedUpdate()
         {
-            Debug.Log("Update Idle State");
         }
     }
 }

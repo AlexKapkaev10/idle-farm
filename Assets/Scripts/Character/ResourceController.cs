@@ -10,16 +10,16 @@ namespace Scripts.Game
     {
         public event Action<bool> OnFull;
 
-        private BankService _uIController;
+        private readonly GameUI _gameUI;
         private int _maxBlocks = 40;
         private float _positionYOffset = 0f;
         private int _positionZCount = 0;
-        private List<PlantBlock> _wheatBlock = new List<PlantBlock>();
+        private readonly List<PlantBlock> _wheatBlock = new List<PlantBlock>();
 
-        public ResourceController(BankService uIController)
+        public ResourceController(GameUI _gameUI)
         {
-            _uIController = uIController;
-            Debug.Log(_uIController != null ? "UIController initialized" : "UIController is null");
+            this._gameUI = _gameUI;
+            Debug.Log(this._gameUI != null ? "UIController initialized" : "UIController is null");
         }
 
         public void Add(PlantType type, PlantBlock block, Transform target)
@@ -29,8 +29,8 @@ namespace Scripts.Game
                 case PlantType.Wheat:
                     _wheatBlock.Add(block);
 
-                    if (_uIController)
-                        _uIController.DisplayWheatCount(type, _wheatBlock.Count);
+                    if (_gameUI)
+                        _gameUI.DisplayWheatCount(type, _wheatBlock.Count);
 
                     block.MoveToTarget(target, BlockPosition(type), 0.5f, true);
 
@@ -53,8 +53,8 @@ namespace Scripts.Game
                         _wheatBlock[i].MoveToTarget(target, Vector2.zero, 1f, false);
                     }
                     OnFull?.Invoke(false);
-                    if (_uIController)
-                        _uIController.DisplayByuPlants(_wheatBlock.Count, 0);
+                    if (_gameUI)
+                        _gameUI.DisplayByuPlants(_wheatBlock.Count, 0);
 
                     _wheatBlock.Clear();
                     _positionYOffset = 0f;
