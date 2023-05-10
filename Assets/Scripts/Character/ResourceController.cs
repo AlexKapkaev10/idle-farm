@@ -10,19 +10,19 @@ namespace Scripts.Game
     {
         public event Action<bool> OnFull;
 
+        private readonly List<PlantBlock> _wheatBlock = new List<PlantBlock>();
         private readonly GameUI _gameUI;
-        private int _maxBlocks = 40;
+        private readonly int _maxBlocks = 40;
+        
         private float _positionYOffset = 0f;
         private int _positionZCount = 0;
-        private readonly List<PlantBlock> _wheatBlock = new List<PlantBlock>();
 
-        public ResourceController(GameUI _gameUI)
+        public ResourceController(GameUI gameUI)
         {
-            this._gameUI = _gameUI;
-            Debug.Log(this._gameUI != null ? "UIController initialized" : "UIController is null");
+            _gameUI = gameUI;
         }
 
-        public void Add(PlantType type, PlantBlock block, Transform target)
+        public void Add(PlantType type, PlantBlock block, Transform target, PlantCollectType collectType)
         {
             switch (type)
             {
@@ -32,7 +32,12 @@ namespace Scripts.Game
                     if (_gameUI)
                         _gameUI.DisplayWheatCount(type, _wheatBlock.Count);
 
-                    block.MoveToTarget(target, BlockPosition(type), 0.5f, true);
+                    block.MoveToTarget(
+                        target, 
+                        collectType == PlantCollectType.InBag ? CalculateBlockPosition(type) : Vector3.zero, 
+                        0.5f,
+                        true,
+                        collectType == PlantCollectType.InCharacter);
 
                     if (_wheatBlock.Count >= _maxBlocks)
                     {
@@ -48,9 +53,9 @@ namespace Scripts.Game
             {
                 case PlantType.Wheat:
                     _wheatBlock.Reverse();
-                    for (int i = 0; i < _wheatBlock.Count; i++)
+                    foreach (var block in _wheatBlock)
                     {
-                        _wheatBlock[i].MoveToTarget(target, Vector2.zero, 1f, false);
+                        block.MoveToTarget(target, Vector2.zero, 1f, false);
                     }
                     OnFull?.Invoke(false);
                     if (_gameUI)
@@ -59,12 +64,10 @@ namespace Scripts.Game
                     _wheatBlock.Clear();
                     _positionYOffset = 0f;
                     break;
-                default:
-                    break;
             }
         }
 
-        private Vector3 BlockPosition(PlantType type)
+        private Vector3 CalculateBlockPosition(PlantType type)
         {
             switch (type)
             {
@@ -81,8 +84,8 @@ namespace Scripts.Game
                             zPosition = -0.15f;
                             break;
                     }
-                    bool checkEven = (_wheatBlock.Count % 2) == 0;
-                    Vector3 value = new Vector3(checkEven ? 0.2f : -0.2f, _positionYOffset, zPosition);
+                    var checkEven = (_wheatBlock.Count % 2) == 0;
+                    var value = new Vector3(checkEven ? 0.2f : -0.2f, _positionYOffset, zPosition);
                     _positionZCount++;
                     if (_positionZCount == 4)
                     {

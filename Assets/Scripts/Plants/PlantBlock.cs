@@ -15,7 +15,7 @@ namespace Scripts
             return _block;
         }
 
-        public void MoveToTarget(Transform parent, Vector3 targetPosition, float duration, bool isCharacterTarget)
+        public void MoveToTarget(Transform parent, Vector3 targetPosition, float duration, bool isCharacterTarget, bool isScale = false)
         {
             if (isCharacterTarget)
             {
@@ -25,16 +25,17 @@ namespace Scripts
                     Sequence seq = DOTween.Sequence();
                     seq.Append(transform.DOLocalMove(targetPosition, duration / 2).SetEase(Ease.Linear))
                     .Join(transform.DOLocalRotateQuaternion(Quaternion.identity, duration / 2))
-                    .Join(transform.DOScale(0.8f, duration).SetEase(Ease.Linear));
+                    .Join(transform.DOScale(isScale ? 0f : 0.8f, duration).SetEase(Ease.Linear));
                 });
             }
             else
             {
                 transform.SetParent(parent);
-                Sequence seq = DOTween.Sequence();
+                var seq = DOTween.Sequence();
+                
                 seq.Join(transform.DOLocalMoveX(0f, duration).SetEase(Ease.Linear))
                     .Join(transform.DOLocalMoveZ(0f, duration).SetEase(Ease.Linear))
-                    .Join(transform.DOScale(0f, duration).SetEase(Ease.Linear));
+                    .Join(transform.DOScale(1f, duration).SetEase(Ease.Linear));
                 seq.OnComplete(() => OnBlockReturn?.Invoke(this));
             }
         }

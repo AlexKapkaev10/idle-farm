@@ -7,10 +7,9 @@ namespace Scripts.UI
 {
     public class GameUI : MonoBehaviour
     {
-        [SerializeField]
-        private Joystick _joystick;
-        [SerializeField]
-        private TMP_Text _textWheatCount;
+        [SerializeField] private Joystick _joystick;
+        [SerializeField] private TMP_Text _textWheatCount;
+        [SerializeField] private TMP_Text _moneyCount;
 
         public Joystick GetJoystick()
         {
@@ -29,7 +28,7 @@ namespace Scripts.UI
 
         public void DisplayByuPlants(int from, int to)
         {
-            StartCoroutine(TextCounterCoroutine(_textWheatCount, from, to));
+            StartCoroutine(TextCounterCoroutine(_textWheatCount, from, to, 2f));
         }
 
         private IEnumerator TextCounterCoroutine(TMP_Text text, int from, int to , float time = 1f, string additionalText = null)

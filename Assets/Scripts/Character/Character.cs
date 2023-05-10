@@ -14,12 +14,15 @@ namespace Scripts.Game
     {
         public event Action OnMow;
 
+        [SerializeField] private PlantCollectType _plantCollectType;
         [SerializeField] private JoystickInputController _joystickInputController;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private float _runSpeed = 2f;
         [SerializeField] private Animator _playerAnimator;
         [SerializeField] private Transform _toolPoint;
-        [SerializeField] private Transform _blocksPoint;
+        [SerializeField] private GameObject _bagObj;
+        [SerializeField] private Transform _transformCollectPoint;
+        [SerializeField] private Transform _bagCollectPoint;
 
         private GameUI _gameUI;
         private ResourceController _resourceController;
@@ -73,7 +76,11 @@ namespace Scripts.Game
 
         public void AddPlant(PlantType type, PlantBlock block)
         {
-            _resourceController.Add(type, block, _blocksPoint);
+            _resourceController.Add(
+                type, 
+                block, 
+                _plantCollectType == PlantCollectType.InBag ? _bagCollectPoint : _transformCollectPoint, 
+                _plantCollectType);
         }
 
         public void BuyPlants(PlantType type, Transform blocksTarget)
@@ -95,6 +102,7 @@ namespace Scripts.Game
         {
             SetTool();
 
+            _bagObj.SetActive(_plantCollectType == PlantCollectType.InBag);
             _characterController = GetComponent<CharacterController>();
             _resourceController.OnFull += SetFull;
             
