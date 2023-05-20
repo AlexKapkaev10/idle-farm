@@ -33,6 +33,7 @@ namespace Scripts
 
         public void BuildField()
         {
+#if UNITY_EDITOR
             if (_cells.Count > 0)
             {
                 StartCoroutine(DestroyOldCells());
@@ -45,7 +46,7 @@ namespace Scripts
 
             for (int i = 0; i < _sowingCellCount; i++)
             {
-               SowingCell cell = (SowingCell)PrefabUtility.InstantiatePrefab(cellPrefab, _cellsPoint);
+                SowingCell cell = (SowingCell)PrefabUtility.InstantiatePrefab(cellPrefab, _cellsPoint);
                 _cells.Add(cell);
             }
 
@@ -70,6 +71,7 @@ namespace Scripts
                 _cells[i].gameObject.transform.localPosition = new Vector3(positionX, currentCell.transform.position.y, positionZ);
                 lineCounter++;
             }
+#endif
         }
 
         private void Awake()
