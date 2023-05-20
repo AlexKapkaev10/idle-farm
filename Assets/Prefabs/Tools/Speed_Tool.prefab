@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5209827103765513683}
   - component: {fileID: 2842599591617678329}
   m_Layer: 9
-  m_Name: Tool
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5af1f2a2e4bb92e4bbcd1c0fe9fada19, type: 2}
+  - {fileID: 2100000, guid: cfd4fdc66ce1cc247880b47e2c35413b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2557447305223885640}
   - component: {fileID: 2942992626305565269}
   m_Layer: 9
-  m_Name: Default_Tool
+  m_Name: Speed_Tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d63d4f8e484ed7b64ba538bb767f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mowSpeed: 2
-  _toolType: 0
+  _mowSpeed: 4
+  _toolType: 1
 --- !u!1 &8866029338525979135
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 2102447652197724078}
   - component: {fileID: 3439683429461874495}
   m_Layer: 9
-  m_Name: Tool (1)
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -192,7 +192,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4977d8d907a75704c82f061f7a6f0811, type: 2}
+  - {fileID: 2100000, guid: aa4aac31a9b526447b9556122629e9df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

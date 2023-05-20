@@ -2,6 +2,7 @@
 {
     public enum ToolType
     {
-        Default = 1
+        Default = 0,
+        SpeedTool = 1
     }
 }

@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c09c58f3be40f9a9f1a5b47efa6ac3, type: 3}
   m_Name: ToolsSettings
   m_EditorClassIdentifier: 
-  _defaultTool: {fileID: 7504633851944856937, guid: 37a2b1876e4807e4fb29f0c4500a5316, type: 3}
+  _defaultTool:
+  - {fileID: 7504633851944856937, guid: 37a2b1876e4807e4fb29f0c4500a5316, type: 3}
+  - {fileID: 7504633851944856937, guid: 114260a175c41bf4da721e9e5e6a4be0, type: 3}
+  _characterTools:
+  - {fileID: 2942992626305565269, guid: 37a2b1876e4807e4fb29f0c4500a5316, type: 3}
+  - {fileID: 2942992626305565269, guid: 114260a175c41bf4da721e9e5e6a4be0, type: 3}

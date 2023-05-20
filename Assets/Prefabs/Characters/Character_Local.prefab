@@ -60,12 +60,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6338084354871780036}
     - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
+      propertyPath: _toolType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _bagCollectPoint
       value: 
       objectReference: {fileID: 8222355565785729527}
     - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _plantCollectType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _transformCollectPoint

@@ -15,17 +15,18 @@ namespace Scripts.UI
         [SerializeField] private RectTransform handle = null;
         
         private RectTransform _baseRect = null;
+        private Vector3 _defaultPosition;
         private Canvas _canvas;
         private Camera _cam;
         private Vector2 _input = Vector2.zero;
 
         public Vector2 Direction => _input;
 
-        private void Start()
+        private void Awake()
         {
             _baseRect = GetComponent<RectTransform>();
             _canvas = GetComponentInParent<Canvas>();
-            background.gameObject.SetActive(false);
+            _defaultPosition = background.anchoredPosition;
             handle.anchoredPosition = Vector2.zero;
         }
 
@@ -33,7 +34,6 @@ namespace Scripts.UI
         {
             OnDown?.Invoke();
             background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
-            background.gameObject.SetActive(true);
             OnDrag(eventData);
         }
 
@@ -64,8 +64,8 @@ namespace Scripts.UI
         public void OnPointerUp(PointerEventData eventData)
         {
             OnUp?.Invoke();
-            background.gameObject.SetActive(false);
             _input = Vector2.zero;
+            background.anchoredPosition = _defaultPosition;
             handle.anchoredPosition = Vector2.zero;
         }
 

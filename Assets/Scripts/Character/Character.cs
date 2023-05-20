@@ -14,6 +14,7 @@ namespace Scripts.Game
     {
         public event Action OnMow;
 
+        [SerializeField] private ToolType _toolType;
         [SerializeField] private PlantCollectType _plantCollectType;
         [SerializeField] private JoystickInputController _joystickInputController;
         [SerializeField] private Transform _bodyTransform;
@@ -24,16 +25,19 @@ namespace Scripts.Game
         [SerializeField] private Transform _transformCollectPoint;
         [SerializeField] private Transform _bagCollectPoint;
 
-        private GameUI _gameUI;
-        private ResourceController _resourceController;
-        private CharacterAnimationEvents _animationEvents;
-        private CharacterController _characterController;
-        private ToolsSettings _toolsSettings;
-        private GameObject _currentTool;
-        private bool _isBlocksFull;
-        
         private Dictionary<Type, ICharacterBehavior> _behaviorsMap;
         private ICharacterBehavior _behaviorCurrent;
+
+        private GameUI _gameUI;
+        private ResourceController _resourceController;
+        private CharacterAnimationEvents _eventFromAnimation;
+        private CharacterController _characterController;
+        private ToolsSettings _toolsSettings;
+        private ITool _currentTool;
+
+        private bool _isBlocksFull;
+        
+        private readonly int _mowSpeed = Animator.StringToHash("mowSpeed");
 
         public CharacterController CharacterController => _characterController;
         public Transform BodyTransform => _bodyTransform;
@@ -106,8 +110,8 @@ namespace Scripts.Game
             _characterController = GetComponent<CharacterController>();
             _resourceController.OnFull += SetFull;
             
-            _animationEvents = GetComponentInChildren<CharacterAnimationEvents>();
-            _animationEvents.OnMow += InvokeMowAnimation;
+            _eventFromAnimation = GetComponentInChildren<CharacterAnimationEvents>();
+            _eventFromAnimation.OnMow += InvokeMowEventFromAnimation;
             
             _joystickInputController.Init(_gameUI.GetJoystick());
             InitBehaviors();
@@ -126,13 +130,19 @@ namespace Scripts.Game
 
         private void OnDestroy()
         {
-            _animationEvents.OnMow -= InvokeMowAnimation;
+            _eventFromAnimation.OnMow -= InvokeMowEventFromAnimation;
         }
 
         private void SetTool()
         {
-            _currentTool = Instantiate(_toolsSettings.GetTool(ToolType.Default), _toolPoint);
-            _currentTool.SetActive(false);
+            var tool = Instantiate(_toolsSettings.GetTool(_toolType), _toolPoint);
+            _currentTool = tool.GetComponent<ITool>();
+            
+            if (_currentTool != null)
+            {
+                _playerAnimator.SetFloat(_mowSpeed, _currentTool.MowSpeed);
+                _currentTool.SetActive(false);
+            }
         }
 
         private void InitBehaviors()
@@ -162,7 +172,7 @@ namespace Scripts.Game
             _isBlocksFull = value;
         }
 
-        private void InvokeMowAnimation()
+        private void InvokeMowEventFromAnimation()
         {
             if (_isBlocksFull)
                 return;
