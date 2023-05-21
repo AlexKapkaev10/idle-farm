@@ -423,8 +423,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handleRange: 1
   _deadZone: 0
-  background: {fileID: 5494605512527848950}
-  handle: {fileID: 5494605513891192812}
+  _background: {fileID: 5494605512527848950}
+  _handle: {fileID: 5494605513891192812}
 --- !u!225 &5998789662223568803
 CanvasGroup:
   m_ObjectHideFlags: 0
