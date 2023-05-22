@@ -3,6 +3,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Scripts.Game;
+using Scripts.Interfaces;
 using Scripts.ScriptableObjects;
 
 namespace Scripts.Architecture
@@ -19,6 +20,7 @@ namespace Scripts.Architecture
             RegisterResourceController(builder);
             RegisterGameUI(builder);
             RegisterCharacter(builder);
+            builder.RegisterComponentInHierarchy<BarnController>();
         }
 
         private void RegisterScriptableObjects(IContainerBuilder builder)
@@ -38,7 +40,7 @@ namespace Scripts.Architecture
 
         private void RegisterCharacter(IContainerBuilder builder)
         {
-            builder.RegisterComponentInNewPrefab<Character>(_character, Lifetime.Scoped);
+            builder.RegisterComponentInNewPrefab<Character>(_character, Lifetime.Scoped).As(typeof(ICharacterController));
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using Scripts.Enums;
+﻿using System;
+using Scripts.Enums;
 using System.Collections;
+using Scripts.Game;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 namespace Scripts.UI
 {
@@ -9,8 +12,20 @@ namespace Scripts.UI
     {
         [SerializeField] private Joystick _joystick;
         [SerializeField] private TMP_Text _textWheatCount;
-        [SerializeField] private TMP_Text _moneyCount;
+        [SerializeField] private TMP_Text _textMoneyCount;
 
+        private ResourceController _resourceController;
+        
+        public void SetResourceController(ResourceController resourceController)
+        {
+            _resourceController = resourceController;
+        }
+
+        public void TryGetMoney()
+        {
+            _resourceController.TryGetMoney(10, () =>  Debug.Log("Money is not enouth"));
+        }
+        
         public Joystick GetJoystick()
         {
             return _joystick;
@@ -26,9 +41,14 @@ namespace Scripts.UI
             }
         }
 
+        public void DisplayMoneyCount(int value)
+        {
+            _textMoneyCount.SetText(value.ToString());
+        }
+
         public void DisplayByuPlants(int from, int to)
         {
-            StartCoroutine(TextCounterCoroutine(_textWheatCount, from, to, 2f));
+            StartCoroutine(TextCounterCoroutine(_textWheatCount, from, to));
         }
 
         private IEnumerator TextCounterCoroutine(TMP_Text text, int from, int to , float time = 1f, string additionalText = null)

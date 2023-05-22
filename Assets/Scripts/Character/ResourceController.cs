@@ -12,59 +12,93 @@ namespace Scripts.Game
 
         private readonly List<PlantBlock> _wheatBlock = new List<PlantBlock>();
         private readonly GameUI _gameUI;
+        
+        private int _money = 0;
         private readonly int _maxBlocks = 40;
+        private readonly int _wheatFactor = 10; 
         
         private float _positionYOffset = 0f;
         private int _positionZCount = 0;
 
+        private const string SaveMoneyKey = "money";
+
         public ResourceController(GameUI gameUI)
         {
             _gameUI = gameUI;
+            _gameUI.SetResourceController(this);
+            _money = PlayerPrefs.GetInt(SaveMoneyKey, 0);
+            SetMoneyValueChange(0);
         }
 
-        public void Add(PlantType type, PlantBlock block, Transform target, PlantCollectType collectType)
+        public List<PlantBlock> GetBlocksByType(PlantType plantType)
+        {
+            switch (plantType)
+            {
+                case PlantType.Wheat:
+                    return _wheatBlock;
+            }
+
+            return null;
+        }
+
+        public int TryGetMoney(int value, Action callBackFalse)
+        {
+            if (value > _money)
+            {
+                callBackFalse?.Invoke();
+            }
+            else
+            {
+                SetMoneyValueChange(-value);
+                return value;
+            }
+            
+            return 0;
+        }
+
+        public void Add(PlantType type, PlantBlock block)
         {
             switch (type)
             {
                 case PlantType.Wheat:
-                    _wheatBlock.Add(block);
-
-                    if (_gameUI)
-                        _gameUI.DisplayWheatCount(type, _wheatBlock.Count);
-
-                    block.MoveToTarget(
-                        target, 
-                        collectType == PlantCollectType.InBag ? CalculateBlockPosition(type) : Vector3.zero, 
-                        0.5f,
-                        true,
-                        collectType == PlantCollectType.InCharacter);
-
                     if (_wheatBlock.Count >= _maxBlocks)
                     {
                         OnFull?.Invoke(true);
+                        break;
                     }
+                    
+                    _wheatBlock.Add(block);
+                    if (_gameUI)
+                        _gameUI.DisplayWheatCount(type, _wheatBlock.Count);
                     break;
             }
         }
 
-        public void Buy(PlantType type, Transform target)
+        public void Buy(PlantType type)
         {
             switch (type)
             {
                 case PlantType.Wheat:
-                    _wheatBlock.Reverse();
-                    foreach (var block in _wheatBlock)
-                    {
-                        block.MoveToTarget(target, Vector2.zero, 1f, false);
-                    }
+                    SetMoneyValueChange(_wheatBlock.Count * _wheatFactor);
+
                     OnFull?.Invoke(false);
                     if (_gameUI)
+                    {
                         _gameUI.DisplayByuPlants(_wheatBlock.Count, 0);
+                    }
 
                     _wheatBlock.Clear();
                     _positionYOffset = 0f;
                     break;
             }
+        }
+
+        private void SetMoneyValueChange(int value)
+        {
+            Debug.Log($"Change money value {value}");
+            PlayerPrefs.SetInt(SaveMoneyKey, _money);
+            _money += value;
+            _gameUI.DisplayMoneyCount(_money);
         }
 
         private Vector3 CalculateBlockPosition(PlantType type)

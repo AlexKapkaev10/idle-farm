@@ -8,7 +8,8 @@ namespace Scripts.Interfaces
     {
         public event Action OnMow;
         public void SetAnimationForField(FieldStateType fieldState);
-        public Transform GetTransform();
+        public Transform GetBodyTransform();
+        public GameObject GetGameObject();
         public void AddPlant(PlantType type, PlantBlock block);
         public void BuyPlants(PlantType type, Transform blocksTarget);
     }

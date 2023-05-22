@@ -285,7 +285,7 @@ Transform:
   m_Children:
   - {fileID: 1117188333}
   m_Father: {fileID: 765072177}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &31243170
 MonoBehaviour:
@@ -634,7 +634,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 765072177}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &134213454
 GameObject:
@@ -1967,6 +1967,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1975510881}
+  - {fileID: 1232250762}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2559,7 +2560,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 765072177}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &705507996
 MonoBehaviour:
@@ -2757,7 +2758,6 @@ Transform:
   m_Children:
   - {fileID: 316112041}
   - {fileID: 1279671681}
-  - {fileID: 1232250762}
   - {fileID: 31243169}
   - {fileID: 705507995}
   - {fileID: 82627933}
@@ -6283,15 +6283,15 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 765072177}
+    m_TransformParent: {fileID: 561563914}
     m_Modifications:
     - target: {fileID: 1663651465941373197, guid: 37eddb8c08ccd804d837790f0a765c51, type: 3}
       propertyPath: m_Name
-      value: Ambar
+      value: Barn
       objectReference: {fileID: 0}
     - target: {fileID: 1663651465941373198, guid: 37eddb8c08ccd804d837790f0a765c51, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1663651465941373198, guid: 37eddb8c08ccd804d837790f0a765c51, type: 3}
       propertyPath: m_LocalPosition.x

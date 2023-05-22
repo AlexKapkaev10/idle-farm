@@ -73,23 +73,30 @@ namespace Scripts.Game
                 _playerAnimator.SetTrigger(Animator.StringToHash(key));
         }
 
-        public Transform GetTransform()
+        public Transform GetBodyTransform()
         {
             return _bodyTransform;
         }
 
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
+
         public void AddPlant(PlantType type, PlantBlock block)
         {
-            _resourceController.Add(
-                type, 
-                block, 
-                _plantCollectType == PlantCollectType.InBag ? _bagCollectPoint : _transformCollectPoint, 
-                _plantCollectType);
+            _resourceController.Add(type, block);
+            
+            block.MoveToTarget(_transformCollectPoint, 0.5f, true);
         }
 
         public void BuyPlants(PlantType type, Transform blocksTarget)
         {
-            _resourceController.Buy(type, blocksTarget);
+            _resourceController.Buy(type);
+            foreach (var block in _resourceController.GetBlocksByType(type))
+            {
+                block.MoveToTarget(blocksTarget, 1f, false);
+            }
         }
 
         public void StartMove()

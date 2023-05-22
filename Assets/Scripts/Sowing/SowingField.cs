@@ -185,7 +185,7 @@ namespace Scripts
             {
                 if (other.gameObject.TryGetComponent<ICharacterController>(out _iCharacterController))
                 {
-                    _characterTransform = _iCharacterController.GetTransform();
+                    _characterTransform = _iCharacterController.GetBodyTransform();
                     _iCharacterController.SetAnimationForField(_fieldStateType);
                     _iCharacterController.OnMow += MowPlants;
                 }

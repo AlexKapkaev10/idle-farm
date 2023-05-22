@@ -1,22 +1,28 @@
+using System;
 using Cinemachine;
 using UnityEngine;
-using Scripts.Game;
+using Scripts.Interfaces;
 using VContainer;
 
 namespace Scripts.CameraGame
 {
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class CameraController : MonoBehaviour
-    {
+    { 
         private CinemachineVirtualCamera _virtualCamera;
+        private ICharacterController _characterController;
 
         [Inject]
-        private void Construct(Character character)
+        private void Construct(ICharacterController characterController)
+        {
+            _characterController = characterController;
+        }
+
+        private void Start()
         {
             _virtualCamera = GetComponent<CinemachineVirtualCamera>();
-
-            _virtualCamera.Follow = character.transform;
-            _virtualCamera.LookAt = character.transform;
+            _virtualCamera.Follow = _characterController.GetGameObject().transform;
+            _virtualCamera.LookAt = _characterController.GetGameObject().transform;
         }
     }
 }
