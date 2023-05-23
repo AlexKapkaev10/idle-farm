@@ -15,8 +15,8 @@ MonoBehaviour:
   _cellInteractDistance: 1.5
   _wheatRipeningTime: 2
   _wheatPlant: {fileID: 8489662677334713698, guid: 3e787ca3a29cf244dbf2fe158e3885f1, type: 3}
-  _wehathCell: {fileID: 8244927159272321833, guid: 38e7b2339bb8eca47bd32e96fc0c69ce, type: 3}
+  _wehathCell: {fileID: 7715492603718170934, guid: 0a24112bf39df0b43bfb3a884a8d7379, type: 3}
   _defaultWheatMaterial: {fileID: 2100000, guid: 36508c771463abf43b7135d9539897e7, type: 2}
   _wheatSowMaterial: {fileID: 2100000, guid: 748487d582b00d847bd57517f78d8e8f, type: 2}
   _wheatRipeMaterial: {fileID: 2100000, guid: 49c3c02661a83fd42b33859cfbf9a17d, type: 2}
-  _wheatBlock: {fileID: 8001078360631096545, guid: 83a529eb6482d60449e855707ce11837, type: 3}
+  _wheat: {fileID: 5668879537615774199, guid: 83a529eb6482d60449e855707ce11837, type: 3}

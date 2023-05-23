@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Scripts.ObjectsPool;
+using Scripts.Plants;
 
 namespace Scripts
 {
@@ -23,8 +24,8 @@ namespace Scripts
         [SerializeField]
         private List<SowingCell> _cells = new List<SowingCell>();
 
-        private ObjectsPool<PlantBlock> _blocksPool;
-        private List<PlantBlock> _blocks;
+        private ObjectsPool<Plant> _blocksPool;
+        private List<Plant> _blocks;
         private FieldStateType _fieldStateType = FieldStateType.Default;
         private ICharacterController _iCharacterController;
         private Transform _characterTransform;
@@ -78,12 +79,13 @@ namespace Scripts
         {
             if (_cells.Count > 0)
             {
-                _blocksPool = new ObjectsPool<PlantBlock>(_sowingData.GetBlockByPlantType(_plantType), _sowingCellCount, transform);
+                _blocksPool = new ObjectsPool<Plant>(_sowingData.GetBlockByPlantType(_plantType), _sowingCellCount, transform);
                 _blocksPool.OnCreate += CreateNewBlock;
                 _blocks = _blocksPool.GetAll();
                 foreach (var block in _blocks)
                 {
-                    block.OnBlockReturn += OnBlockReturn; 
+                    block.OnBlockReturn += OnBlockReturn;
+                    block.PlantType = _plantType;
                 }
                 _cellInteractDistance = _sowingData.GetCellInteractDistance();
 
@@ -149,22 +151,22 @@ namespace Scripts
                 if (distance < _cellInteractDistance)
                 {
                     cell.IsMow = true;
-                    PlantBlock block = _blocksPool.Get();
+                    Plant block = _blocksPool.Get();
                     block.gameObject.transform.position = cell.GetBlockPoint().position;
-                    _iCharacterController.AddPlant(_plantType, block);
+                    _iCharacterController.AddPlant(block);
                 }
             }
         }
 
-        private void OnBlockReturn(PlantBlock block)
+        private void OnBlockReturn(Plant block)
         {
             _blocksPool.Return(block);
         }
 
-        private void CreateNewBlock(PlantBlock newBlock)
+        private void CreateNewBlock(Plant @new)
         {
-            _blocks.Add(newBlock);
-            newBlock.OnBlockReturn += OnBlockReturn;
+            _blocks.Add(@new);
+            @new.OnBlockReturn += OnBlockReturn;
         }
 
         private IEnumerator DestroyOldCells()

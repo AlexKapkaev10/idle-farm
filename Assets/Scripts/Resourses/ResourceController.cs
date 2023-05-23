@@ -2,15 +2,16 @@
 using Scripts.UI;
 using System;
 using System.Collections.Generic;
+using Scripts.Plants;
+using Scripts.Resources;
 using UnityEngine;
 
 namespace Scripts.Game
 {
     public class ResourceController
     {
-        public event Action<bool> OnFull;
-
-        private readonly List<PlantBlock> _wheatBlock = new List<PlantBlock>();
+        private readonly Bank _bank = new Bank();
+        private readonly List<Plant> _plants = new List<Plant>();
         private readonly GameUI _gameUI;
         
         private int _money = 0;
@@ -27,15 +28,15 @@ namespace Scripts.Game
             _gameUI = gameUI;
             _gameUI.SetResourceController(this);
             _money = PlayerPrefs.GetInt(SaveMoneyKey, 0);
-            SetMoneyValueChange(0);
+            MoneyValueChange(0);
         }
 
-        public List<PlantBlock> GetBlocksByType(PlantType plantType)
+        public List<Plant> GetBlocksByType(PlantType plantType)
         {
             switch (plantType)
             {
                 case PlantType.Wheat:
-                    return _wheatBlock;
+                    return _plants;
             }
 
             return null;
@@ -49,51 +50,39 @@ namespace Scripts.Game
             }
             else
             {
-                SetMoneyValueChange(-value);
+                MoneyValueChange(-value);
                 return value;
             }
             
             return 0;
         }
 
-        public void Add(PlantType type, PlantBlock block)
+        public void Add(Plant plant)
         {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    if (_wheatBlock.Count >= _maxBlocks)
-                    {
-                        OnFull?.Invoke(true);
-                        break;
-                    }
-                    
-                    _wheatBlock.Add(block);
-                    if (_gameUI)
-                        _gameUI.DisplayWheatCount(type, _wheatBlock.Count);
-                    break;
-            }
+            _plants.Add(plant);
+            _gameUI.DisplayWheatCount(plant.PlantType, _plants.Count);
         }
 
         public void Buy(PlantType type)
         {
+            MoneyValueChange(_plants.Count);
+            
             switch (type)
             {
                 case PlantType.Wheat:
-                    SetMoneyValueChange(_wheatBlock.Count * _wheatFactor);
 
-                    OnFull?.Invoke(false);
                     if (_gameUI)
                     {
-                        _gameUI.DisplayByuPlants(_wheatBlock.Count, 0);
+                        _gameUI.DisplayByuPlants(_plants.Count, 0);
                     }
 
-                    _wheatBlock.Clear();
+                    _plants.Clear();
                     _positionYOffset = 0f;
                     break;
             }
         }
 
-        private void SetMoneyValueChange(int value)
+        private void MoneyValueChange(int value)
         {
             Debug.Log($"Change money value {value}");
             PlayerPrefs.SetInt(SaveMoneyKey, _money);
@@ -118,7 +107,7 @@ namespace Scripts.Game
                             zPosition = -0.15f;
                             break;
                     }
-                    var checkEven = (_wheatBlock.Count % 2) == 0;
+                    var checkEven = (_plants.Count % 2) == 0;
                     var value = new Vector3(checkEven ? 0.2f : -0.2f, _positionYOffset, zPosition);
                     _positionZCount++;
                     if (_positionZCount == 4)

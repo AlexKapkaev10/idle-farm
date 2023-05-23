@@ -135,5 +135,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: WheatBlock
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3899009317693069265, guid: e05410ecfb7552d49b2d3af3532dbaca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e05410ecfb7552d49b2d3af3532dbaca, type: 3}
+--- !u!1 &4431116175926451484 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7236130796688834092, guid: e05410ecfb7552d49b2d3af3532dbaca, type: 3}
+  m_PrefabInstance: {fileID: 6419206382023844656}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5668879537615774199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4431116175926451484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da617dc1de194faf9f369ae202a57d0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _plantType: 0
+  _blockTransform: {fileID: 7358564032699896847}
+--- !u!4 &7358564032699896847 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4542800728950355775, guid: e05410ecfb7552d49b2d3af3532dbaca, type: 3}
+  m_PrefabInstance: {fileID: 6419206382023844656}
+  m_PrefabAsset: {fileID: 0}

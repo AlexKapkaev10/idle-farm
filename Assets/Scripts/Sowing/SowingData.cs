@@ -1,4 +1,5 @@
 using Scripts.Enums;
+using Scripts.Plants;
 using UnityEngine;
 
 namespace Scripts.ScriptableObjects
@@ -22,14 +23,14 @@ namespace Scripts.ScriptableObjects
         [SerializeField]
         private Material _wheatRipeMaterial;
         [SerializeField]
-        private PlantBlock _wheatBlock;
+        private Plant _wheat;
 
-        public PlantBlock GetBlockByPlantType(PlantType type)
+        public Plant GetBlockByPlantType(PlantType type)
         {
             switch (type)
             {
                 case PlantType.Wheat:
-                    return _wheatBlock;
+                    return _wheat;
                 default:
                     return null;
             }

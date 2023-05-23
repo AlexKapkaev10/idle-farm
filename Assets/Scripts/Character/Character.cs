@@ -2,6 +2,7 @@ using Scripts.Enums;
 using Scripts.Interfaces;
 using System;
 using System.Collections.Generic;
+using Scripts.Plants;
 using Scripts.ScriptableObjects;
 using Scripts.UI;
 using UnityEngine;
@@ -83,11 +84,10 @@ namespace Scripts.Game
             return gameObject;
         }
 
-        public void AddPlant(PlantType type, PlantBlock block)
+        public void AddPlant(Plant plant)
         {
-            _resourceController.Add(type, block);
-            
-            block.MoveToTarget(_transformCollectPoint, 0.5f, true);
+            _resourceController.Add(plant);
+            plant.MoveToTarget(_transformCollectPoint, 0.5f, true);
         }
 
         public void BuyPlants(PlantType type, Transform blocksTarget)
@@ -115,8 +115,7 @@ namespace Scripts.Game
 
             _bagObj.SetActive(_plantCollectType == PlantCollectType.InBag);
             _characterController = GetComponent<CharacterController>();
-            _resourceController.OnFull += SetFull;
-            
+
             _eventFromAnimation = GetComponentInChildren<CharacterAnimationEvents>();
             _eventFromAnimation.OnMow += InvokeMowEventFromAnimation;
             
@@ -174,16 +173,8 @@ namespace Scripts.Game
             return _behaviorsMap[type];
         }
 
-        private void SetFull(bool value)
-        {
-            _isBlocksFull = value;
-        }
-
         private void InvokeMowEventFromAnimation()
         {
-            if (_isBlocksFull)
-                return;
-
             OnMow?.Invoke();
         }
     }
