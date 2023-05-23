@@ -4,6 +4,7 @@ using VContainer;
 using VContainer.Unity;
 using Scripts.Game;
 using Scripts.Interfaces;
+using Scripts.Resources;
 using Scripts.ScriptableObjects;
 
 namespace Scripts.Architecture
@@ -13,6 +14,7 @@ namespace Scripts.Architecture
         [SerializeField] private Character _character;
         [SerializeField] private GameUI _gameUI;
         [SerializeField] private ToolsSettings _toolsSettings;
+        [SerializeField] private BankSettings _bankSettings;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -26,10 +28,12 @@ namespace Scripts.Architecture
         private void RegisterScriptableObjects(IContainerBuilder builder)
         {
             builder.RegisterInstance(_toolsSettings);
+            builder.RegisterInstance(_bankSettings);
         }
 
         private void RegisterResourceController(IContainerBuilder builder)
         {
+            builder.Register<Bank>(Lifetime.Singleton);
             builder.Register<ResourceController>(Lifetime.Singleton);
         }
         

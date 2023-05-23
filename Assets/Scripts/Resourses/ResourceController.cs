@@ -10,25 +10,22 @@ namespace Scripts.Game
 {
     public class ResourceController
     {
-        private readonly Bank _bank = new Bank();
+        private readonly Bank _bank;
         private readonly List<Plant> _plants = new List<Plant>();
         private readonly GameUI _gameUI;
-        
-        private int _money = 0;
-        private readonly int _maxBlocks = 40;
-        private readonly int _wheatFactor = 10; 
-        
+        private readonly BankSettings _bankSettings;
+
         private float _positionYOffset = 0f;
         private int _positionZCount = 0;
+        
 
-        private const string SaveMoneyKey = "money";
-
-        public ResourceController(GameUI gameUI)
+        public ResourceController(GameUI gameUI, Bank bank, BankSettings bankSettings)
         {
             _gameUI = gameUI;
             _gameUI.SetResourceController(this);
-            _money = PlayerPrefs.GetInt(SaveMoneyKey, 0);
-            MoneyValueChange(0);
+            _bank = bank;
+            _bankSettings = bankSettings;
+            _bank.Init(gameUI);
         }
 
         public List<Plant> GetBlocksByType(PlantType plantType)
@@ -42,19 +39,16 @@ namespace Scripts.Game
             return null;
         }
 
-        public int TryGetMoney(int value, Action callBackFalse)
+        public void TryGetMoney(int value, Action<bool> callBack)
         {
-            if (value > _money)
+            var isEnough = _bank.IsEnough(value);
+            
+            if (isEnough)
             {
-                callBackFalse?.Invoke();
-            }
-            else
-            {
-                MoneyValueChange(-value);
-                return value;
+                _bank.MoneyValueChange(-value);
             }
             
-            return 0;
+            callBack?.Invoke(isEnough);
         }
 
         public void Add(Plant plant)
@@ -65,29 +59,25 @@ namespace Scripts.Game
 
         public void Buy(PlantType type)
         {
-            MoneyValueChange(_plants.Count);
-            
-            switch (type)
+            var plantsByTypeCount = 0;
+
+            for (int i = 0; i < _plants.Count; i++)
             {
-                case PlantType.Wheat:
+                var plant = _plants[i];
 
-                    if (_gameUI)
-                    {
-                        _gameUI.DisplayByuPlants(_plants.Count, 0);
-                    }
-
-                    _plants.Clear();
-                    _positionYOffset = 0f;
-                    break;
+                if (plant.PlantType == type)
+                {
+                    plantsByTypeCount++;
+                    _plants[i] = null;
+                }
             }
-        }
 
-        private void MoneyValueChange(int value)
-        {
-            Debug.Log($"Change money value {value}");
-            PlayerPrefs.SetInt(SaveMoneyKey, _money);
-            _money += value;
-            _gameUI.DisplayMoneyCount(_money);
+            if (plantsByTypeCount > 0)
+            {
+                _plants.RemoveAll(item => item == null);
+                _bank.MoneyValueChange(plantsByTypeCount * _bankSettings.GetResourcePriceByPlantType(type));
+                _gameUI?.DisplayByuPlants(plantsByTypeCount, 0);
+            }
         }
 
         private Vector3 CalculateBlockPosition(PlantType type)

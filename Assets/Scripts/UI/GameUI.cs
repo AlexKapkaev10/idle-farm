@@ -13,7 +13,6 @@ namespace Scripts.UI
         [SerializeField] private Joystick _joystick;
         [SerializeField] private TMP_Text _textWheatCount;
         [SerializeField] private TMP_Text _textMoneyCount;
-
         private ResourceController _resourceController;
         
         public void SetResourceController(ResourceController resourceController)
@@ -23,7 +22,12 @@ namespace Scripts.UI
 
         public void TryGetMoney()
         {
-            _resourceController.TryGetMoney(10, () =>  Debug.Log("Money is not enouth"));
+            _resourceController.TryGetMoney(10, OnBuy);
+        }
+
+        private void OnBuy(bool isBuy)
+        {
+            Debug.Log($"Money is enough: {isBuy}");
         }
         
         public Joystick GetJoystick()
@@ -41,9 +45,9 @@ namespace Scripts.UI
             }
         }
 
-        public void DisplayMoneyCount(int value)
+        public void DisplayMoneyCount(int from, int to)
         {
-            _textMoneyCount.SetText(value.ToString());
+            StartCoroutine(TextCounterCoroutineMoney(_textMoneyCount, from, to));
         }
 
         public void DisplayByuPlants(int from, int to)
@@ -57,7 +61,18 @@ namespace Scripts.UI
             while (t < 1)
             {
                 t += Time.unscaledDeltaTime / time;
-                text.text = Mathf.Lerp(from, to, t).ToString("0");
+                text.SetText(Mathf.Lerp(from, to, t).ToString("0"));
+                yield return null;
+            }
+        }
+        
+        private IEnumerator TextCounterCoroutineMoney(TMP_Text text, int from, int to , float time = 1f, string additionalText = null)
+        {
+            float t = 0f;
+            while (t < 1)
+            {
+                t += Time.unscaledDeltaTime / time;
+                text.SetText(Mathf.Lerp(from, to, t).ToString("0"));
                 yield return null;
             }
         }
