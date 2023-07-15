@@ -26,6 +26,8 @@ namespace Scripts.Game
         [SerializeField] private Transform _transformCollectPoint;
         [SerializeField] private Transform _bagCollectPoint;
 
+        private AnimatorParameters _animatorParameters = new AnimatorParameters();
+
         private Dictionary<Type, ICharacterBehavior> _behaviorsMap;
         private ICharacterBehavior _behaviorCurrent;
 
@@ -37,8 +39,6 @@ namespace Scripts.Game
         private ITool _currentTool;
 
         private bool _isBlocksFull;
-        
-        private readonly int _mowSpeed = Animator.StringToHash("mowSpeed");
 
         public CharacterController CharacterController => _characterController;
         public Transform BodyTransform => _bodyTransform;
@@ -60,10 +60,10 @@ namespace Scripts.Game
             switch (fieldState)
             {
                 case FieldStateType.Default:
-                    _playerAnimator.SetTrigger(Animator.StringToHash("Base"));
+                    _playerAnimator.SetTrigger(_animatorParameters.Base);
                     break;
                 case FieldStateType.Mow:
-                    _playerAnimator.SetTrigger(Animator.StringToHash("Mow"));
+                    _playerAnimator.SetTrigger(_animatorParameters.Mow);
                     break;
             }
         }
@@ -146,7 +146,7 @@ namespace Scripts.Game
             
             if (_currentTool != null)
             {
-                _playerAnimator.SetFloat(_mowSpeed, _currentTool.MowSpeed);
+                _playerAnimator.SetFloat(_animatorParameters.MowSpeed, _currentTool.MowSpeed);
                 _currentTool.SetActive(false);
             }
         }
@@ -177,5 +177,12 @@ namespace Scripts.Game
         {
             OnMow?.Invoke();
         }
+    }
+    
+    public partial class AnimatorParameters
+    {
+        public readonly int Base = Animator.StringToHash("Base");
+        public readonly int Mow = Animator.StringToHash("Mow");
+        public readonly int MowSpeed = Animator.StringToHash("mowSpeed");
     }
 }

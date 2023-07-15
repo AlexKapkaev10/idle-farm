@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Scripts.Game
 {
-    public class ResourceController
+    public sealed class ResourceController
     {
         private readonly Bank _bank;
         private readonly List<Plant> _plants = new List<Plant>();
