@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Scripts.Enums;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Scripts.Buildings
         {
             if (other.gameObject == _characterController.GetGameObject())
             {
-                _characterController.BuyPlants(_plantTypeBarn, transform);
+                _characterController.BuyPlants(PlantTypes);
             }
         }
     }

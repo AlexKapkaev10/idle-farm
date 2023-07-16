@@ -11,7 +11,7 @@ using VContainer;
 namespace Scripts.Game
 {
     [RequireComponent(typeof(CharacterController))]
-    public class Character : MonoBehaviour, ICharacterController, IControllable
+    public sealed class Character : MonoBehaviour, ICharacterController, IControllable
     {
         public event Action OnMow;
 
@@ -19,14 +19,13 @@ namespace Scripts.Game
         [SerializeField] private PlantCollectType _plantCollectType;
         [SerializeField] private JoystickInputController _joystickInputController;
         [SerializeField] private Transform _bodyTransform;
-        [SerializeField] private float _runSpeed = 2f;
         [SerializeField] private Animator _playerAnimator;
         [SerializeField] private Transform _toolPoint;
         [SerializeField] private GameObject _bagObj;
         [SerializeField] private Transform _transformCollectPoint;
-        [SerializeField] private Transform _bagCollectPoint;
+        [SerializeField] private float _runSpeed = 2f;
 
-        private AnimatorParameters _animatorParameters = new AnimatorParameters();
+        private readonly AnimatorParameters _animatorParameters = new AnimatorParameters();
 
         private Dictionary<Type, ICharacterBehavior> _behaviorsMap;
         private ICharacterBehavior _behaviorCurrent;
@@ -34,11 +33,10 @@ namespace Scripts.Game
         private GameUI _gameUI;
         private ResourceController _resourceController;
         private CharacterAnimationEvents _eventFromAnimation;
-        private CharacterController _characterController;
         private ToolsSettings _toolsSettings;
         private ITool _currentTool;
-
-        private bool _isBlocksFull;
+        
+        private CharacterController _characterController;
 
         public CharacterController CharacterController => _characterController;
         public Transform BodyTransform => _bodyTransform;
@@ -84,19 +82,15 @@ namespace Scripts.Game
             return gameObject;
         }
 
-        public void AddPlant(Plant plant)
+        public void AddPlant(in Plant plant)
         {
             _resourceController.Add(plant);
-            plant.MoveToTarget(_transformCollectPoint, 0.5f, true);
+            plant.MoveToTarget(_transformCollectPoint, 0.5f);
         }
-
-        public void BuyPlants(PlantType type, Transform blocksTarget)
+        
+        public void BuyPlants(in List<PlantType> plants)
         {
-            _resourceController.Buy(type);
-            foreach (var block in _resourceController.GetBlocksByType(type))
-            {
-                block.MoveToTarget(blocksTarget, 1f, false);
-            }
+            _resourceController.Buy(plants);
         }
 
         public void StartMove()
@@ -141,14 +135,16 @@ namespace Scripts.Game
 
         private void SetTool()
         {
+            _currentTool?.Clear();
+
             var tool = Instantiate(_toolsSettings.GetTool(_toolType), _toolPoint);
-            _currentTool = tool.GetComponent<ITool>();
+            _currentTool = tool;
+
+            if (_currentTool == null) 
+                return;
             
-            if (_currentTool != null)
-            {
-                _playerAnimator.SetFloat(_animatorParameters.MowSpeed, _currentTool.MowSpeed);
-                _currentTool.SetActive(false);
-            }
+            _playerAnimator.SetFloat(_animatorParameters.MowSpeed, _currentTool.MowSpeed);
+            _currentTool.SetActive(false);
         }
 
         private void InitBehaviors()

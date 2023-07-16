@@ -20,18 +20,8 @@ namespace Scripts.Architecture
 
         protected override void Configure(IContainerBuilder builder)
         {
-            RegisterDependency(builder);
-            RegisterPrefabs(builder);
-        }
-        
-        private void RegisterDependency(IContainerBuilder builder)
-        {
             builder.Register<Bank>(Lifetime.Singleton);
             builder.Register<ResourceController>(Lifetime.Singleton).WithParameter(_bankSettings);
-        }
-        
-        private void RegisterPrefabs(IContainerBuilder builder)
-        {
             builder.RegisterComponentInNewPrefab<GameUI>(_gameUI, Lifetime.Scoped);
             builder.RegisterComponentInNewPrefab<Character>(_character, Lifetime.Scoped).As(typeof(ICharacterController)).WithParameter(_toolsSettings);
             builder.RegisterComponentInHierarchy<BuildingsController>().As(typeof(IBuildingsController));

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: BuildingsSettings
   m_EditorClassIdentifier: 
   _buildingsData:
-  - Prefab: {fileID: 641712711119922530, guid: 37eddb8c08ccd804d837790f0a765c51, type: 3}
+  - PlantTypes: 00000000
+    Prefab: {fileID: 641712711119922530, guid: 37eddb8c08ccd804d837790f0a765c51, type: 3}
     Position: {x: 10, y: 0.58, z: 10}
     Rotation: {x: 0, y: 0, z: 0}
-  - Prefab: {fileID: 3410466251084054026, guid: 4b1e73c9900db514e9b5569be75e78e0, type: 3}
+  - PlantTypes: 
+    Prefab: {fileID: 3410466251084054026, guid: 4b1e73c9900db514e9b5569be75e78e0, type: 3}
     Position: {x: -9, y: 1.3, z: 13.5}
     Rotation: {x: 0, y: 180, z: 0}

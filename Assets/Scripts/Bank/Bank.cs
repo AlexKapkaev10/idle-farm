@@ -1,21 +1,21 @@
-﻿using Scripts.UI;
+﻿using System;
 using UnityEngine;
 
 namespace Scripts.Resources
 {
     public class Bank
     {
+        public event Action<int, int> OnMoneyChange;
+        
         private const string SaveMoneyKey = "money";
-        private GameUI _gameUI;
         private int _money = 0;
 
         public int Money => _money;
 
-        public void Init(GameUI gameUI)
+        public void Init()
         {
-            _gameUI = gameUI;
             _money = PlayerPrefs.GetInt(SaveMoneyKey, 0);
-            _gameUI.DisplayMoneyCount(0, _money);
+            OnMoneyChange?.Invoke(0, _money);
         }
 
         public bool IsEnough(int value)
@@ -28,7 +28,7 @@ namespace Scripts.Resources
             _money += value;
             PlayerPrefs.SetInt(SaveMoneyKey, _money);
             var from = _money - value;
-            _gameUI.DisplayMoneyCount(from, _money);
+            OnMoneyChange?.Invoke(from, _money);
         }
     }
 }

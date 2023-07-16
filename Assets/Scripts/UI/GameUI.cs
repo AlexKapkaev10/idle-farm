@@ -1,7 +1,9 @@
 ﻿using System;
 using Scripts.Enums;
 using System.Collections;
+using System.Collections.Generic;
 using Scripts.Game;
+using Scripts.Plants;
 using TMPro;
 using UnityEngine;
 using VContainer;
@@ -35,9 +37,9 @@ namespace Scripts.UI
             return _joystick;
         }
 
-        public void DisplayWheatCount(PlantType plantType, int count)
+        public void DisplayPlantCount(in Plant plant, int count)
         {
-            switch (plantType)
+            switch (plant.PlantType)
             {
                 case PlantType.Wheat:
                     _textWheatCount.text = count.ToString();

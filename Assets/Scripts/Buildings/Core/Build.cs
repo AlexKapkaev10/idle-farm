@@ -1,13 +1,20 @@
-﻿using Scripts.Interfaces;
+﻿using System.Collections.Generic;
+using Scripts.Enums;
+using Scripts.Interfaces;
 using UnityEngine;
 
 namespace Scripts.Buildings
 {
     public class Build : MonoBehaviour
     {
-        public BuildingType BuildingType;
-        
+        private List<PlantType> _plantTypes;
         protected ICharacterController _characterController;
+
+        public List<PlantType> PlantTypes
+        {
+            get => _plantTypes;
+            set => _plantTypes = value;
+        }
 
         public void SetTransform(Vector3 position, Vector3 rotation)
         {

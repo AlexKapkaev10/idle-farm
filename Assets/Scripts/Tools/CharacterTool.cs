@@ -16,5 +16,10 @@ namespace Scripts.Game
         {
             gameObject.SetActive(value);
         }
+
+        public void Clear()
+        {
+            Destroy(gameObject);
+        }
     }
 }

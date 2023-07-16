@@ -140,14 +140,15 @@ namespace Scripts
             for (int i = 0; i < _cells.Count; i++)
             {
                 SowingCell cell = _cells[i];
+                
                 if (cell.IsMow)
                     continue;
 
-                float distance = Vector3.Distance(_characterTransform.position, cell.transform.position);
-                Vector3 diection = _characterTransform.InverseTransformPoint(cell.transform.position);
-                if (diection.z < 0)
+                var direction = _characterTransform.InverseTransformPoint(cell.transform.position);
+                if (direction.z < 0)
                     continue;
-
+                
+                var distance = Vector3.Distance(_characterTransform.position, cell.transform.position);
                 if (distance < _cellInteractDistance)
                 {
                     cell.IsMow = true;
@@ -163,10 +164,10 @@ namespace Scripts
             _blocksPool.Return(block);
         }
 
-        private void CreateNewBlock(Plant @new)
+        private void CreateNewBlock(Plant plant)
         {
-            _blocks.Add(@new);
-            @new.OnBlockReturn += OnBlockReturn;
+            _blocks.Add(plant);
+            plant.OnBlockReturn += OnBlockReturn;
         }
 
         private IEnumerator DestroyOldCells()
@@ -183,14 +184,11 @@ namespace Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Character"))
+            if (other.gameObject.TryGetComponent<ICharacterController>(out _iCharacterController))
             {
-                if (other.gameObject.TryGetComponent<ICharacterController>(out _iCharacterController))
-                {
-                    _characterTransform = _iCharacterController.GetBodyTransform();
-                    _iCharacterController.SetAnimationForField(_fieldStateType);
-                    _iCharacterController.OnMow += MowPlants;
-                }
+                _characterTransform = _iCharacterController.GetBodyTransform();
+                _iCharacterController.SetAnimationForField(_fieldStateType);
+                _iCharacterController.OnMow += MowPlants;
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using Scripts.Enums;
 using System;
+using System.Collections.Generic;
 using Scripts.Plants;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Scripts.Interfaces
         public void SetAnimationForField(FieldStateType fieldState);
         public Transform GetBodyTransform();
         public GameObject GetGameObject();
-        public void AddPlant(Plant block);
-        public void BuyPlants(PlantType type, Transform blocksTarget);
+        public void AddPlant(in Plant block);
+        public void BuyPlants(in List<PlantType> plants);
     }
 }

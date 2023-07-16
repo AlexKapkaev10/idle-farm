@@ -7,5 +7,6 @@ namespace Scripts.Interfaces
         public ToolType ToolType { get; }
         public float MowSpeed { get; }
         public void SetActive(bool value);
+        public void Clear();
     }
 }

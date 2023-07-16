@@ -39,13 +39,6 @@ namespace Scripts
             return _blockPoint;
         }
 
-        public void Interact()
-        {
-            OnMow?.Invoke();
-            _plantPoint.localScale = Vector3.zero;
-            _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
-        }
-
         public void Init(SowingData sowingData, PlantType type)
         {
             _sowingData = sowingData;
@@ -65,6 +58,13 @@ namespace Scripts
         {
             OnMow = null;
             OnRipe = null;
+        }
+
+        private void Interact()
+        {
+            OnMow?.Invoke();
+            _plantPoint.localScale = Vector3.zero;
+            _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
         }
 
         private IEnumerator Ripening()

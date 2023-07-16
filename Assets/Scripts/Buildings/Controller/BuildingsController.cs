@@ -1,5 +1,4 @@
-﻿using System;
-using Scripts.Interfaces;
+﻿using Scripts.Interfaces;
 using UnityEngine;
 using VContainer;
 
@@ -32,6 +31,7 @@ namespace Scripts.Buildings
                 var build = Instantiate(data.Prefab, transform);
                 build.SetTransform(data.Position, data.Rotation);
                 build.SetCharacterController(_characterController);
+                build.PlantTypes = data.PlantTypes;
             }
         }
     }
