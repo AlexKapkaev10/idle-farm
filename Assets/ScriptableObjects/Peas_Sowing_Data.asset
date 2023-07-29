@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26549a155a906a40a81b04c792e6ea7, type: 3}
+  m_Name: Peas_Sowing_Data
+  m_EditorClassIdentifier: 
+  _sowingCell: {fileID: 1376216418051723464, guid: 0017135edc47f654db9643f98883ada8, type: 3}
+  _plantBlock: {fileID: 7090754002978894791, guid: 942491af5ca7d2f46b0b79c604526e5b, type: 3}
+  _wheatPlant: {fileID: 1376216418051723471, guid: 0017135edc47f654db9643f98883ada8, type: 3}
+  _sowMaterial: {fileID: 2100000, guid: 748487d582b00d847bd57517f78d8e8f, type: 2}
+  _ripeMaterial: {fileID: 2100000, guid: 49c3c02661a83fd42b33859cfbf9a17d, type: 2}
+  _cellInteractDistance: 1.2
+  _wheatRipeningTime: 4

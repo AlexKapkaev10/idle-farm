@@ -5,7 +5,7 @@ namespace Scripts.UI
     [RequireComponent(typeof(CanvasGroup))]
     public class GameUI : MonoBehaviour
     {
-        private CanvasGroup _canvasGroup;
+        protected CanvasGroup _canvasGroup;
 
         public bool IsCheckVisible { get; private set; }
 
@@ -24,7 +24,7 @@ namespace Scripts.UI
             _canvasGroup.interactable = isVisible;
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
         }

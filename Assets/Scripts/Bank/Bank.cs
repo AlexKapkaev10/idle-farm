@@ -15,7 +15,6 @@ namespace Scripts.Resources
         public void Init()
         {
             _money = PlayerPrefs.GetInt(SaveMoneyKey, 0);
-            OnMoneyChange?.Invoke(0, _money);
         }
 
         public bool IsEnough(int value)

@@ -6,6 +6,7 @@ using Scripts.Game;
 using Scripts.Plants;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 namespace Scripts.UI
 {
@@ -16,16 +17,44 @@ namespace Scripts.UI
         [SerializeField] private GameUISettings _settings;
 
         [SerializeField] private Joystick _joystick;
+        
+        [SerializeField] private TMP_Text _textPeasCount;
         [SerializeField] private TMP_Text _textWheatCount;
         [SerializeField] private TMP_Text _textMoneyCount;
+
+        private Dictionary<PlantType, TMP_Text> _textsByPlantsType;
 
         private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
         
         private IResourceController _resourceController;
 
+        [Inject]
+        private void Construct(IResourceController resourceController)
+        {
+            _resourceController = resourceController;
+        }
+
         private void Awake()
         {
             CreateGameUI();
+
+            _textsByPlantsType = new Dictionary<PlantType, TMP_Text>
+            {
+                [PlantType.Peas] = _textPeasCount,
+                [PlantType.Wheat] = _textWheatCount
+            };
+            
+            _textMoneyCount.SetText(_resourceController.Money.ToString());
+            _resourceController.OnAddPlant += DisplayPlantCount;
+            _resourceController.OnChangeMoney += DisplayMoneyCount;
+            _resourceController.OnBuyPlants += DisplayByuPlants;
+        }
+
+        private void OnDestroy()
+        {
+            _resourceController.OnAddPlant -= DisplayPlantCount;
+            _resourceController.OnChangeMoney -= DisplayMoneyCount;
+            _resourceController.OnBuyPlants -= DisplayByuPlants;
         }
 
         private void CreateGameUI()
@@ -65,7 +94,7 @@ namespace Scripts.UI
                 }
             }
         }
-        
+
         public T GetGameUIByType<T>() where T : GameUI
         {
             foreach (var gameUI in _currentGameUIs)
@@ -74,11 +103,6 @@ namespace Scripts.UI
                     return t;
             }
             return null;
-        }
-        
-        public void SetResourceController(IResourceController resourceController)
-        {
-            _resourceController = resourceController;
         }
 
         private void OnBuy(bool isBuy)
@@ -91,27 +115,19 @@ namespace Scripts.UI
             return _joystick;
         }
 
-        public void DisplayPlantCount(in Plant plant, int count)
+        private void DisplayPlantCount(PlantBlock plantBlock, int count)
         {
-            return;
-            switch (plant.PlantType)
-            {
-                case PlantType.Wheat:
-                    _textWheatCount.text = count.ToString();
-                    break;
-            }
+            _textsByPlantsType[plantBlock.PlantType].SetText(count.ToString());
         }
 
-        public void DisplayMoneyCount(int from, int to)
+        private void DisplayMoneyCount(int from, int to)
         {
-            return;
             StartCoroutine(TextCounterCoroutineMoney(_textMoneyCount, from, to));
         }
 
-        public void DisplayByuPlants(int from, int to)
+        private void DisplayByuPlants(PlantType type, int from)
         {
-            return;
-            StartCoroutine(TextCounterCoroutine(_textWheatCount, from, to));
+            StartCoroutine(TextCounterCoroutine(_textsByPlantsType[type], from, 0));
         }
 
         private IEnumerator TextCounterCoroutine(TMP_Text text, int from, int to , float time = 1f, string additionalText = null)

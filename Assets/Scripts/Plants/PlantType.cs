@@ -2,6 +2,8 @@ namespace Scripts.Enums
 {
     public enum PlantType
     {
-        Wheat
+        Default = 0,
+        Wheat = 1,
+        Peas = 2
     }
 }

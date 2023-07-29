@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Scripts.Plants
 {
-    public class WheatPlant : Plant
+    public class WheatPlantBlock : PlantBlock
     {
         
     }

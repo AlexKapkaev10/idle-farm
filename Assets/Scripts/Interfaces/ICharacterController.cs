@@ -15,7 +15,7 @@ namespace Scripts.Interfaces
         public void SetAnimationForMove(string key);
         public Transform GetBodyTransform();
         public GameObject GetGameObject();
-        public void AddPlant(in Plant block);
+        public void AddPlant(in PlantBlock block);
         public void BuyPlants(in List<PlantType> plants);
     }
 }

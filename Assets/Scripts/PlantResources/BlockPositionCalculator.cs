@@ -10,7 +10,7 @@ namespace Scripts.Resources
         private float _positionYOffset = 0f;
         private int _positionZCount = 0;
 
-        private Vector3 CalculateBlockPosition(PlantType type, List<Plant> plants)
+        private Vector3 CalculateBlockPosition(PlantType type, List<PlantBlock> plants)
         {
             switch (type)
             {

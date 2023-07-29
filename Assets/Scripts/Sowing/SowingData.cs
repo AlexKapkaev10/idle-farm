@@ -1,83 +1,44 @@
-using Scripts.Enums;
 using Scripts.Plants;
 using UnityEngine;
 
 namespace Scripts.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "SowingData", menuName = "Sowing Data", order = 51)]
+    [CreateAssetMenu(fileName = "SowingData", menuName = "SO/Sowing Data")]
     public class SowingData : ScriptableObject
     {
-        [Header("Wheat Setting")]
-        [SerializeField]
-        private float _cellInteractDistance = 1.2f;
-        [SerializeField]
-        private float _wheatRipeningTime = 11f;
-        [SerializeField]
-        private GameObject _wheatPlant;
-        [SerializeField]
-        private SowingCell _wehathCell;
-        [SerializeField]
-        private Material _defaultWheatMaterial;
-        [SerializeField]
-        private Material _wheatSowMaterial;
-        [SerializeField]
-        private Material _wheatRipeMaterial;
-        [SerializeField]
-        private Plant _wheat;
+        [SerializeField] private SowingCell _sowingCell;
+        [SerializeField] private PlantBlock _plantBlock;
+        [SerializeField] private GameObject _wheatPlant;
+        
+        [SerializeField] private Material _sowMaterial;
+        [SerializeField] private Material _ripeMaterial;
+        
+        [SerializeField] private float _cellInteractDistance = 1.2f;
+        [SerializeField] private float _wheatRipeningTime = 11f;
 
-        public Plant GetBlockByPlantType(PlantType type)
+        public SowingCell GetSowCell()
         {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    return _wheat;
-                default:
-                    return null;
-            }
+            return _sowingCell;
         }
 
-        public GameObject GetPlantByPlantType(PlantType type)
+        public PlantBlock GetPlantBlock()
         {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    return _wheatPlant;
-                default:
-                    return null;
-            }
+            return _plantBlock;
         }
 
-        public Material GetDefaultMaterialByPlantType(PlantType type)
+        public GameObject GetPlant()
         {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    return _defaultWheatMaterial;
-                default:
-                    return null;
-            }
+            return _wheatPlant;
+        }
+        
+        public Material GetSowMaterial()
+        {
+            return _sowMaterial;
         }
 
-        public Material GetSowMaterialByPlantType(PlantType type)
+        public Material GetRipeMaterial()
         {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    return _wheatSowMaterial;
-                default:
-                    return null;
-            }
-        }
-
-        public Material GetRipeMaterialByPlantType(PlantType type)
-        {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    return _wheatRipeMaterial;
-                default:
-                    return null;
-            }
+            return _ripeMaterial;
         }
 
         public float GetCellInteractDistance()
@@ -85,26 +46,9 @@ namespace Scripts.ScriptableObjects
             return _cellInteractDistance;
         }
 
-        public float GetRepeningTimeByPlantType(PlantType type)
+        public float GetRipeningTime()
         {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    return _wheatRipeningTime;
-                default:
-                    return 0;
-            }
-        }
-
-        public SowingCell GetSowCellByPlantType(PlantType type)
-        {
-            switch (type)
-            {
-                case PlantType.Wheat:
-                    return _wehathCell;
-                default:
-                    return null;
-            }
+            return _wheatRipeningTime;
         }
     }
 }

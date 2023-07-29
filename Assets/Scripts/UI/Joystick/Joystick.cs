@@ -13,8 +13,7 @@ namespace Scripts.UI
         [SerializeField] private float _deadZone = 0;
         [SerializeField] private RectTransform _background = null;
         [SerializeField] private RectTransform _handle = null;
-
-        private CanvasGroup _canvasGroup;
+        
         private RectTransform _baseRect = null;
         private Vector3 _defaultPosition;
         private Canvas _canvas;
@@ -23,10 +22,10 @@ namespace Scripts.UI
 
         public Vector2 Direction => _input;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _baseRect = GetComponent<RectTransform>();
-            _canvasGroup = GetComponent<CanvasGroup>();
             _canvas = GetComponentInParent<Canvas>();
             _defaultPosition = _background.anchoredPosition;
             _handle.anchoredPosition = Vector2.zero;

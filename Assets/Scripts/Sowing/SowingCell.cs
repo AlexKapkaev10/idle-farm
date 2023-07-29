@@ -43,9 +43,9 @@ namespace Scripts
         {
             _sowingData = sowingData;
             _plantType = type;
-            _ripeinigTime = sowingData.GetRepeningTimeByPlantType(type);
-            _plant = Instantiate(sowingData.GetPlantByPlantType(type), _plantPoint);
-            _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
+            _ripeinigTime = sowingData.GetRipeningTime();
+            _plant = Instantiate(sowingData.GetPlant(), _plantPoint);
+            _meshRenderer.material = _sowingData.GetSowMaterial();
             StartRipening();
         }
 
@@ -64,7 +64,7 @@ namespace Scripts
         {
             OnMow?.Invoke();
             _plantPoint.localScale = Vector3.zero;
-            _meshRenderer.material = _sowingData.GetSowMaterialByPlantType(_plantType);
+            _meshRenderer.material = _sowingData.GetSowMaterial();
         }
 
         private IEnumerator Ripening()
@@ -81,7 +81,7 @@ namespace Scripts
 
             OnRipe?.Invoke();
             _isMow = false;
-            _meshRenderer.material = _sowingData.GetRipeMaterialByPlantType(_plantType);
+            _meshRenderer.material = _sowingData.GetRipeMaterial();
         }
     }
 }

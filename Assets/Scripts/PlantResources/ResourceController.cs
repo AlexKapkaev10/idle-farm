@@ -4,25 +4,30 @@ using System;
 using System.Collections.Generic;
 using Scripts.Plants;
 using Scripts.Resources;
+using UnityEngine;
+using UnityEngine.Assertions.Must;
 using VContainer;
 
 namespace Scripts.Game
 {
     public sealed class ResourceController : IResourceController
     {
+        public event Action<PlantBlock, int> OnAddPlant;
+        public event Action<int, int> OnChangeMoney;
+        public event Action<PlantType, int> OnBuyPlants;
+        
         private readonly IBank _bank;
-        private readonly List<Plant> _plants = new List<Plant>();
-        private readonly IGameUIController _gameUIController;
+        private readonly List<PlantBlock> _plants = new List<PlantBlock>();
         private readonly BankSettings _bankSettings;
 
+        public int Money => _bank.Money;
+
         [Inject]
-        public ResourceController(IGameUIController gameUIController, IBank bank, BankSettings bankSettings)
+        public ResourceController(IBank bank, BankSettings bankSettings)
         {
-            _gameUIController = gameUIController;
-            //_gameUIController.SetResourceController(this);
             _bank = bank;
             _bankSettings = bankSettings;
-            _bank.OnMoneyChange += DisplayMoney;
+            _bank.OnMoneyChange += ChangeMoney;
             _bank.Init();
         }
 
@@ -38,17 +43,21 @@ namespace Scripts.Game
             callBack?.Invoke(isEnough);
         }
 
-        public void Add(Plant plant)
+        public void Add(PlantBlock plantBlock)
         {
-            _plants.Add(plant);
-            //_gameUIController.DisplayPlantCount(plant, _plants.Count);
+            _plants.Add(plantBlock);
+            OnAddPlant?.Invoke(plantBlock, GetPlantsCountByType(plantBlock.PlantType));
         }
 
         public void Buy(in List<PlantType> plantTypes)
         {
+            if (_plants.Count <= 0)
+                return;
+            
+            var totalMoney = 0;
             foreach (var type in plantTypes)
             {
-                var availablePlants = new List<Plant>();
+                var availablePlants = new List<PlantBlock>();
                 
                 for (int i = 0; i < _plants.Count; i++)
                 {
@@ -59,18 +68,32 @@ namespace Scripts.Game
                         _plants[i] = null;
                     }
                 }
+                
                 if (availablePlants.Count <= 0)
-                    return;
+                    continue;
                 
                 _plants.RemoveAll(item => item == null);
-                _bank.MoneyValueChange(availablePlants.Count * _bankSettings.GetResourcePriceByPlantType(type));
-                //_gameUIController.DisplayByuPlants(availablePlants.Count, 0);
+                OnBuyPlants?.Invoke(type, availablePlants.Count);
+                totalMoney += availablePlants.Count * _bankSettings.GetResourcePriceByPlantType(type);
             }
+            _bank.MoneyValueChange(totalMoney);
         }
 
-        private void DisplayMoney(int from, int to)
+        private int GetPlantsCountByType(PlantType type)
         {
-            //_gameUIController.DisplayMoneyCount(from, to);
+            var count = 0;
+            foreach (var plant in _plants)
+            {
+                if (plant.PlantType == type)
+                    count++;
+            }
+
+            return count;
+        }
+
+        private void ChangeMoney(int from, int to)
+        {
+            OnChangeMoney?.Invoke(from, to);
         }
     }
 }

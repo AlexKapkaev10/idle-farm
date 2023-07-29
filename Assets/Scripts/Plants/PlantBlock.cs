@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Scripts.Plants
 {
-    public class Plant : MonoBehaviour
+    public class PlantBlock : MonoBehaviour
     {
-        public event Action<Plant> OnBlockReturn;
+        public event Action<PlantBlock> OnBlockReturn;
 
         [SerializeField] private PlantType _plantType;
 
@@ -19,7 +19,7 @@ namespace Scripts.Plants
 
         public void MoveToTarget(Transform parent, float duration)
         {
-            transform.DOLocalMoveY(1.5f, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
+            transform.DOScale(1, 0.2f).SetEase(Ease.OutBounce).OnComplete(() =>
             {
                 transform.SetParent(parent);
                 Sequence seq = DOTween.Sequence();

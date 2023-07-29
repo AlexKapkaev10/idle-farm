@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BuildingsSettings
   m_EditorClassIdentifier: 
   _buildingsData:
-  - PlantTypes: 00000000
+  - PlantTypes: 0200000001000000
     Prefab: {fileID: 641712711119922530, guid: 37eddb8c08ccd804d837790f0a765c51, type: 3}
     Position: {x: 10, y: 0.58, z: 10}
     Rotation: {x: 0, y: 0, z: 0}

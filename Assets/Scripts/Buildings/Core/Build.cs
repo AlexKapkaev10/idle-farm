@@ -7,14 +7,9 @@ namespace Scripts.Buildings
 {
     public class Build : MonoBehaviour
     {
-        private List<PlantType> _plantTypes;
         protected ICharacterController _characterController;
 
-        public List<PlantType> PlantTypes
-        {
-            get => _plantTypes;
-            set => _plantTypes = value;
-        }
+        public List<PlantType> PlantTypes { get; set; }
 
         public void SetTransform(Vector3 position, Vector3 rotation)
         {

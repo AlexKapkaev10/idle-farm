@@ -87,10 +87,10 @@ namespace Scripts.Game
             return gameObject;
         }
 
-        public void AddPlant(in Plant plant)
+        public void AddPlant(in PlantBlock plantBlock)
         {
-            _resourceController.Add(plant);
-            plant.MoveToTarget(_transformCollectPoint, 0.5f);
+            _resourceController.Add(plantBlock);
+            plantBlock.MoveToTarget(_transformCollectPoint, 0.5f);
         }
         
         public void BuyPlants(in List<PlantType> plants)

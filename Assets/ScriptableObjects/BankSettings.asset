@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: BankSettings
   m_EditorClassIdentifier: 
   _resourcePrices:
-  - Price: 10
-    PlantType: 0
+  - Price: 1
+    PlantType: 1
+  - Price: 2
+    PlantType: 2
