@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Scripts.Resources
 {
-    public class Bank
+    public class Bank : IBank
     {
         public event Action<int, int> OnMoneyChange;
         

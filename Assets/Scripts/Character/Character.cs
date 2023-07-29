@@ -4,52 +4,57 @@ using System;
 using System.Collections.Generic;
 using Scripts.Plants;
 using Scripts.ScriptableObjects;
-using Scripts.UI;
+using Scripts.StateMachine;
 using UnityEngine;
 using VContainer;
 
 namespace Scripts.Game
 {
     [RequireComponent(typeof(CharacterController))]
-    public sealed class Character : MonoBehaviour, ICharacterController, IControllable
+    public sealed class Character : MonoBehaviour, ICharacterController, IMoveControllable
     {
         public event Action OnMow;
 
         [SerializeField] private ToolType _toolType;
         [SerializeField] private PlantCollectType _plantCollectType;
-        [SerializeField] private JoystickInputController _joystickInputController;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private Animator _playerAnimator;
         [SerializeField] private Transform _toolPoint;
         [SerializeField] private GameObject _bagObj;
         [SerializeField] private Transform _transformCollectPoint;
-        [SerializeField] private float _runSpeed = 2f;
+        [SerializeField] private float _runRunSpeed = 2f;
 
         private readonly AnimatorParameters _animatorParameters = new AnimatorParameters();
 
-        private Dictionary<Type, ICharacterBehavior> _behaviorsMap;
-        private ICharacterBehavior _behaviorCurrent;
+        private ICharacterStateMachine _characterStateMachine;
 
-        private GameUI _gameUI;
-        private ResourceController _resourceController;
+        private IResourceController _resourceController;
+        private ITool _currentTool;
+
         private CharacterAnimationEvents _eventFromAnimation;
         private ToolsSettings _toolsSettings;
-        private ITool _currentTool;
-        
+
         private CharacterController _characterController;
 
-        public CharacterController CharacterController => _characterController;
-        public Transform BodyTransform => _bodyTransform;
-        
-        public float Speed => _runSpeed;
-        public Transform Body => _bodyTransform;
-
         [Inject]
-        public void Init(GameUI gameUI, ResourceController resourceController, ToolsSettings toolsSettings)
+        public void Init(
+            IResourceController resourceController, 
+            ToolsSettings toolsSettings, 
+            ICharacterStateMachine characterStateMachine)
         {
-            _gameUI = gameUI;
             _resourceController = resourceController;
             _toolsSettings = toolsSettings;
+            _characterStateMachine = characterStateMachine;
+        }
+
+        public void Move(Vector3 velocity)
+        {
+            _characterController.Move(velocity);
+        }
+
+        public void Rotate(Quaternion rotation)
+        {
+            _bodyTransform.rotation = rotation;
         }
 
         public void SetAnimationForField(FieldStateType fieldState)
@@ -93,14 +98,9 @@ namespace Scripts.Game
             _resourceController.Buy(plants);
         }
 
-        public void StartMove()
+        public void ChangeMoveState(bool isMove)
         {
-            SetBehavior(GetBehavior<CharacterBehaviorRun>());
-        }
-
-        public void StopMove()
-        {
-            SetBehavior(GetBehavior<CharacterBehaviorIdle>());
+            _characterStateMachine.SetBehaviorByType(isMove ? CharacterStateType.Run : CharacterStateType.Idle);
         }
 
         private void Awake()
@@ -108,24 +108,19 @@ namespace Scripts.Game
             SetTool();
 
             _bagObj.SetActive(_plantCollectType == PlantCollectType.InBag);
+            
             _characterController = GetComponent<CharacterController>();
-
             _eventFromAnimation = GetComponentInChildren<CharacterAnimationEvents>();
+            
             _eventFromAnimation.OnMow += InvokeMowEventFromAnimation;
             
-            _joystickInputController.Init(_gameUI.GetJoystick());
-            InitBehaviors();
-            SetBehavior(GetBehavior<CharacterBehaviorIdle>());
+            _characterStateMachine.InitBehaviors(this);
+            _characterStateMachine.SetBehaviorByType(CharacterStateType.Idle);
         }
 
         private void Update()
         {
-            _behaviorCurrent.Update();
-        }
-
-        private void FixedUpdate()
-        {
-            _behaviorCurrent.FixedUpdate();
+            _characterStateMachine.CurrentBehavior?.Update();
         }
 
         private void OnDestroy()
@@ -145,28 +140,6 @@ namespace Scripts.Game
             
             _playerAnimator.SetFloat(_animatorParameters.MowSpeed, _currentTool.MowSpeed);
             _currentTool.SetActive(false);
-        }
-
-        private void InitBehaviors()
-        {
-            _behaviorsMap = new Dictionary<Type, ICharacterBehavior>
-            {
-                [typeof(CharacterBehaviorIdle)] = new CharacterBehaviorIdle(this),
-                [typeof(CharacterBehaviorRun)] = new CharacterBehaviorRun(this, _gameUI.GetJoystick())
-            };
-        }
-
-        private void SetBehavior(ICharacterBehavior newBehavior)
-        {
-            _behaviorCurrent?.Exit();
-            _behaviorCurrent = newBehavior;
-            _behaviorCurrent?.Enter();
-        }
-
-        private ICharacterBehavior GetBehavior<T>() where T : ICharacterBehavior
-        {
-            var type = typeof(T);
-            return _behaviorsMap[type];
         }
 
         private void InvokeMowEventFromAnimation()

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2439322611680783754}
   - component: {fileID: 2439322611680783755}
   - component: {fileID: 2439322611680783753}
-  - component: {fileID: 1082072152}
   m_Layer: 8
   m_Name: Character
   m_TagString: Untagged
@@ -47,12 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e561e5194c89d41ad95ee0b12baf8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _joystickInputController: {fileID: 1082072152}
+  _toolType: 0
+  _plantCollectType: 0
   _bodyTransform: {fileID: 2760864355142539104}
-  _runSpeed: 3.5
   _playerAnimator: {fileID: 2439322610979513592}
   _toolPoint: {fileID: 486405624832565784}
-  _blocksPoint: {fileID: 2439322611220021170}
+  _bagObj: {fileID: 0}
+  _transformCollectPoint: {fileID: 0}
+  _runRunSpeed: 2
 --- !u!143 &2439322611680783753
 CharacterController:
   m_ObjectHideFlags: 0
@@ -71,19 +72,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1082072152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2439322611680783748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4ea106541df66b47a0a56bef715abd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isLocal: 1
 --- !u!1 &3973745931981080134
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,8 +582,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29b3c0b551c0afa4794192bc01ad052a, type: 3}
---- !u!4 &2439322611220021170 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9020861893268973076, guid: 29b3c0b551c0afa4794192bc01ad052a, type: 3}
-  m_PrefabInstance: {fileID: 6695371489023056294}
-  m_PrefabAsset: {fileID: 0}

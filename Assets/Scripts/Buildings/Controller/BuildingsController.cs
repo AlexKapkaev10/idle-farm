@@ -4,7 +4,7 @@ using VContainer;
 
 namespace Scripts.Buildings
 {
-    public class BuildingsController : MonoBehaviour, IBuildingsController
+    public sealed class BuildingsController : MonoBehaviour, IBuildingsController
     {
         [SerializeField] private BuildingsSettings _buildingsSettings;
         

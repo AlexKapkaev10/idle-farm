@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Scripts
 {
-    [CreateAssetMenu(fileName = "BankSettings", menuName = "Bank_Settings", order = 1)]
-    public class BankSettings : ScriptableObject
+    [CreateAssetMenu(fileName = "BankSettings", menuName = "SO/Bank_Settings", order = 1)]
+    public sealed class BankSettings : ScriptableObject
     {
         [SerializeField]
         private List<ResourcePrice> _resourcePrices;

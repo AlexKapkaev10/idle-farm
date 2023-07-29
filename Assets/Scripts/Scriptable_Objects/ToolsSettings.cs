@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Scripts.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "ToolsSettings", menuName = "Tools Settings", order = 51)]
-    public class ToolsSettings : ScriptableObject
+    [CreateAssetMenu(fileName = "ToolsSettings", menuName = "SO/Tools Settings", order = 51)]
+    public sealed class ToolsSettings : ScriptableObject
     {
         [SerializeField] private List<CharacterTool> _characterTools = new List<CharacterTool>();
 

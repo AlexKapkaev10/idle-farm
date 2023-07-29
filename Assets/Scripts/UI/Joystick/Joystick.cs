@@ -5,10 +5,9 @@ using UnityEngine.EventSystems;
 namespace Scripts.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public sealed class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+    public sealed class Joystick : GameUI, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
-        public event Action OnDown;
-        public event Action OnUp;
+        public event Action<bool> OnPress;
 
         [SerializeField] private float _handleRange = 1;
         [SerializeField] private float _deadZone = 0;
@@ -37,7 +36,7 @@ namespace Scripts.UI
         public void OnPointerDown(PointerEventData eventData)
         {
             _canvasGroup.blocksRaycasts = false;
-            OnDown?.Invoke();
+            OnPress?.Invoke(true);
             _background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
         }
 
@@ -68,7 +67,7 @@ namespace Scripts.UI
         public void OnPointerUp(PointerEventData eventData)
         {
             _canvasGroup.blocksRaycasts = true;
-            OnUp?.Invoke();
+            OnPress?.Invoke(false);
             _input = Vector2.zero;
             _background.anchoredPosition = _defaultPosition;
             _handle.anchoredPosition = Vector2.zero;

@@ -10,16 +10,16 @@ namespace Scripts.Game
 {
     public sealed class ResourceController : IResourceController
     {
-        private readonly Bank _bank;
+        private readonly IBank _bank;
         private readonly List<Plant> _plants = new List<Plant>();
-        private readonly GameUI _gameUI;
+        private readonly IGameUIController _gameUIController;
         private readonly BankSettings _bankSettings;
 
         [Inject]
-        public ResourceController(GameUI gameUI, Bank bank, BankSettings bankSettings)
+        public ResourceController(IGameUIController gameUIController, IBank bank, BankSettings bankSettings)
         {
-            _gameUI = gameUI;
-            _gameUI.SetResourceController(this);
+            _gameUIController = gameUIController;
+            //_gameUIController.SetResourceController(this);
             _bank = bank;
             _bankSettings = bankSettings;
             _bank.OnMoneyChange += DisplayMoney;
@@ -41,7 +41,7 @@ namespace Scripts.Game
         public void Add(Plant plant)
         {
             _plants.Add(plant);
-            _gameUI.DisplayPlantCount(plant, _plants.Count);
+            //_gameUIController.DisplayPlantCount(plant, _plants.Count);
         }
 
         public void Buy(in List<PlantType> plantTypes)
@@ -64,13 +64,13 @@ namespace Scripts.Game
                 
                 _plants.RemoveAll(item => item == null);
                 _bank.MoneyValueChange(availablePlants.Count * _bankSettings.GetResourcePriceByPlantType(type));
-                _gameUI.DisplayByuPlants(availablePlants.Count, 0);
+                //_gameUIController.DisplayByuPlants(availablePlants.Count, 0);
             }
         }
 
         private void DisplayMoney(int from, int to)
         {
-            _gameUI.DisplayMoneyCount(from, to);
+            //_gameUIController.DisplayMoneyCount(from, to);
         }
     }
 }
