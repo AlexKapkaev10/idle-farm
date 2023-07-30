@@ -7,7 +7,7 @@ namespace Scripts.Resources
         public event Action<int, int> OnMoneyChange;
         public int Money { get; }
         public bool IsEnough(int value);
-        public void Init();
+        public void Init(int moneyCount);
         public void MoneyValueChange(int value);
 
     }

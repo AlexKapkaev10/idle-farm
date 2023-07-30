@@ -29,7 +29,7 @@ namespace Scripts.Architecture
             builder.RegisterComponentInNewPrefab<Character>(_character, Lifetime.Scoped)
                 .As<ICharacterController>()
                 .WithParameter(_toolsSettings);
-            builder.RegisterComponentInHierarchy<BuildingsController>().As<IBuildingsController>();
+            builder.RegisterComponentInHierarchy<LevelController>().As<ILevelController>();
             builder.RegisterComponentInHierarchy<JoystickInputHandler>().As<IJoystickInputHandler>();
         }
 

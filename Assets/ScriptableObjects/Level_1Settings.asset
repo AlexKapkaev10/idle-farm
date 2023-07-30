@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e1d8eb57da04f6481f6fcacccd48ecc, type: 3}
-  m_Name: BuildingsSettings
+  m_Name: Level_1Settings
   m_EditorClassIdentifier: 
   _buildingsData:
   - PlantTypes: 0200000001000000

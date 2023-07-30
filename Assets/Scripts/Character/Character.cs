@@ -16,15 +16,10 @@ namespace Scripts.Game
         public event Action OnMow;
 
         [SerializeField] private ToolType _toolType;
-        [SerializeField] private PlantCollectType _plantCollectType;
         [SerializeField] private Transform _bodyTransform;
         [SerializeField] private Animator _playerAnimator;
         [SerializeField] private Transform _toolPoint;
-        [SerializeField] private GameObject _bagObj;
         [SerializeField] private Transform _transformCollectPoint;
-        [SerializeField] private float _runRunSpeed = 2f;
-
-        private readonly AnimatorParameters _animatorParameters = new AnimatorParameters();
 
         private ICharacterStateMachine _characterStateMachine;
 
@@ -60,13 +55,14 @@ namespace Scripts.Game
         public void SetAnimationForField(FieldStateType fieldState)
         {
             _currentTool.SetActive(fieldState == FieldStateType.Mow);
+            
             switch (fieldState)
             {
                 case FieldStateType.Default:
-                    _playerAnimator.SetTrigger(_animatorParameters.Base);
+                    _playerAnimator.SetTrigger(AnimatorParameters.Base);
                     break;
                 case FieldStateType.Mow:
-                    _playerAnimator.SetTrigger(_animatorParameters.Mow);
+                    _playerAnimator.SetTrigger(AnimatorParameters.Mow);
                     break;
             }
         }
@@ -106,8 +102,6 @@ namespace Scripts.Game
         private void Awake()
         {
             SetTool();
-
-            _bagObj.SetActive(_plantCollectType == PlantCollectType.InBag);
             
             _characterController = GetComponent<CharacterController>();
             _eventFromAnimation = GetComponentInChildren<CharacterAnimationEvents>();
@@ -138,7 +132,7 @@ namespace Scripts.Game
             if (_currentTool == null) 
                 return;
             
-            _playerAnimator.SetFloat(_animatorParameters.MowSpeed, _currentTool.MowSpeed);
+            _playerAnimator.SetFloat(AnimatorParameters.MowSpeed, _currentTool.MowSpeed);
             _currentTool.SetActive(false);
         }
 
@@ -148,10 +142,10 @@ namespace Scripts.Game
         }
     }
     
-    public partial class AnimatorParameters
+    public static partial class AnimatorParameters
     {
-        public readonly int Base = Animator.StringToHash("Base");
-        public readonly int Mow = Animator.StringToHash("Mow");
-        public readonly int MowSpeed = Animator.StringToHash("mowSpeed");
+        public static readonly int Base = Animator.StringToHash("Base");
+        public static readonly int Mow = Animator.StringToHash("Mow");
+        public static readonly int MowSpeed = Animator.StringToHash("mowSpeed");
     }
 }

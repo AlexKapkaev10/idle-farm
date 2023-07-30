@@ -12,9 +12,9 @@ namespace Scripts.Resources
 
         public int Money => _money;
 
-        public void Init()
+        public void Init(int moneyCount)
         {
-            _money = PlayerPrefs.GetInt(SaveMoneyKey, 0);
+            _money = moneyCount;
         }
 
         public bool IsEnough(int value)

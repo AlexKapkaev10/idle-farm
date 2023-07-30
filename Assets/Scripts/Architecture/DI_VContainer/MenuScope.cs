@@ -1,4 +1,3 @@
-using Scripts.Game;
 using VContainer;
 using VContainer.Unity;
 
@@ -8,7 +7,6 @@ namespace Scripts.Architecture
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            
         }
     }
 }

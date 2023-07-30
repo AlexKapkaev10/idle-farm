@@ -1,11 +1,8 @@
 ﻿using Scripts.Enums;
-using Scripts.UI;
 using System;
 using System.Collections.Generic;
 using Scripts.Plants;
 using Scripts.Resources;
-using UnityEngine;
-using UnityEngine.Assertions.Must;
 using VContainer;
 
 namespace Scripts.Game
@@ -28,7 +25,6 @@ namespace Scripts.Game
             _bank = bank;
             _bankSettings = bankSettings;
             _bank.OnMoneyChange += ChangeMoney;
-            _bank.Init();
         }
 
         public void TryGetMoney(int value, Action<bool> callBack)

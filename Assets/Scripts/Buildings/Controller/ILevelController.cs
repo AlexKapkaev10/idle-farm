@@ -1,6 +1,6 @@
 ﻿namespace Scripts.Buildings
 {
-    public interface IBuildingsController
+    public interface ILevelController
     {
         
     }

@@ -1,32 +1,27 @@
-﻿using Scripts.Interfaces;
+using Scripts.Buildings;
+using Scripts.Interfaces;
 using UnityEngine;
-using VContainer;
 
-namespace Scripts.Buildings
+namespace Scripts
 {
-    public sealed class BuildingsController : MonoBehaviour, IBuildingsController
+    public class Level : MonoBehaviour
     {
-        [SerializeField] private BuildingsSettings _buildingsSettings;
-        
+        [SerializeField] private LevelSettings _levelSettings;
+
         private ICharacterController _characterController;
 
-        [Inject]
-        private void Construct(ICharacterController characterController)
+        public void Init(ICharacterController characterController)
         {
             _characterController = characterController;
-        }
-
-        private void Start()
-        {
             SpawnBuildings();
         }
 
         private void SpawnBuildings()
         {
-            if (_buildingsSettings == null)
+            if (_levelSettings == null)
                 return;
             
-            foreach (var data in _buildingsSettings.BuildingsData)
+            foreach (var data in _levelSettings.BuildingsData)
             {
                 var build = Instantiate(data.Prefab, transform);
                 build.SetTransform(data.Position, data.Rotation);
