@@ -8,7 +8,7 @@ namespace Scripts.StateMachine
 {
     public sealed class CharacterStateMachine : ICharacterStateMachine
     {
-        private readonly Joystick _joystick = default;
+        private readonly IGameUIController _gameUIController = default;
         private readonly CharacterSettings _characterSettings = default;
         
         private Dictionary<CharacterStateType, ICharacterBehavior> _behaviorsMap;
@@ -19,7 +19,7 @@ namespace Scripts.StateMachine
         [Inject]
         public CharacterStateMachine(IObjectResolver resolver, CharacterSettings characterSettings)
         {
-            _joystick = resolver.Resolve<IGameUIController>().GetJoystick();
+            _gameUIController = resolver.Resolve<IGameUIController>();
             _characterSettings = characterSettings;
         }
 
@@ -28,12 +28,15 @@ namespace Scripts.StateMachine
             _behaviorsMap = new Dictionary<CharacterStateType, ICharacterBehavior>
             {
                 [CharacterStateType.Idle] = new CharacterBehaviorIdle(characterController),
-                [CharacterStateType.Run] = new CharacterBehaviorRun(characterController, _joystick, _characterSettings)
+                [CharacterStateType.Run] = new CharacterBehaviorRun(characterController, _gameUIController, _characterSettings)
             };
         }
 
         public void SetBehaviorByType(CharacterStateType type)
         {
+            if (_currentBehavior == GetBehavior<ICharacterBehavior>(type))
+                return;
+            
             _currentBehavior?.Exit();
             _currentBehavior = GetBehavior<ICharacterBehavior>(type);
             _currentBehavior?.Enter();

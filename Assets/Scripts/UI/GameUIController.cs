@@ -2,39 +2,36 @@
 using Scripts.Enums;
 using System.Collections;
 using System.Collections.Generic;
-using Scripts.Game;
+using Scripts.Level;
 using Scripts.Plants;
 using TMPro;
 using UnityEngine;
-using VContainer;
 
 namespace Scripts.UI
 {
     public class GameUIController : MonoBehaviour, IGameUIController
     {
-        public event Action OnUIesReady;
-        
+        public event Action OnLevelPlay;
+        public event Action<Joystick> OnJoystickCreate;
+
         [SerializeField] private GameUISettings _settings;
-        [SerializeField] private Joystick _joystick;
-        
-        [SerializeField] private TMP_Text _textPeasCount;
-        [SerializeField] private TMP_Text _textWheatCount;
+        [SerializeField] private RectTransform _resourceGroupParent;
+
         [SerializeField] private TMP_Text _textMoneyCount;
         [SerializeField] private TMP_Text _textTimer;
 
-        private Dictionary<PlantType, TMP_Text> _textsByPlantsType;
+        [SerializeField] private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
+        private Dictionary<PlantType, ResourceView> _resourceViewMap;
 
-        private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
-
-        [Inject]
-        private void Construct()
-        {
-            
-        }
+        private event Action OnAddTimeClick;
+        private Joystick _joystick;
+        private QuestInfoView _questInfoView;
+        private WinLoseView _winLoseView;
+        private ResourceGroup _resourceGroup;
 
         public void DisplayPlantCount(PlantBlock plantBlock, int count)
         {
-            _textsByPlantsType[plantBlock.PlantType].SetText(count.ToString());
+            _resourceViewMap[plantBlock.PlantType].UpdateProgressCount(count.ToString());
         }
         
         public void DisplayMoneyCount(int from, int to)
@@ -44,7 +41,7 @@ namespace Scripts.UI
 
         public void DisplayByuPlants(PlantType type, int from)
         {
-            StartCoroutine(TextCounterCoroutine(_textsByPlantsType[type], from, 0));
+            StartCoroutine(TextCounterCoroutine(_resourceViewMap[type], from, 0));
         }
 
         public void DisplayTimer(string textTimer)
@@ -52,14 +49,51 @@ namespace Scripts.UI
             _textTimer.SetText(textTimer);
         }
 
-        public void ChangeTimer(bool isChange)
+        public void ChangeTimerStyle(bool isChange)
         {
             _textTimer.color = isChange ? _settings.TimerColorHurry : _settings.TimerColorDefault;
         }
 
-        public Joystick GetJoystick()
+        public void CreateWinLoseView(bool isWin, Action callBack)
         {
-            return _joystick;
+            DestroyJoystick();
+            _winLoseView = Instantiate(_settings.WinLoseViewPrefab, transform) as WinLoseView;
+            _winLoseView?.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
+            _winLoseView?.ButtonAction.onClick.AddListener(PlayLevelClick);
+            
+            if (callBack != null)
+            {
+                OnAddTimeClick = callBack;
+                _winLoseView?.ButtonAddTime.onClick.AddListener(AddTimeButtonClick);
+            }
+            else
+            {
+                _winLoseView?.ButtonAddTime.onClick.RemoveAllListeners();
+            }
+        }
+
+        public void SetQuestInfo(LevelQuestData levelQuestData, Action callBack)
+        {
+            _questInfoView = Instantiate(_settings.QuestInfoView, transform);
+            
+            _questInfoView.OnPlayClick += () =>
+            {
+                callBack?.Invoke();
+                _questInfoView.RectTransform.SetParent(_resourceGroupParent);
+                _resourceGroup = _resourceGroupParent.GetComponentInChildren<ResourceGroup>();
+                _resourceGroup.ChangeRectPosition(false);
+                CreateJoystick();
+            };
+            
+            if (_resourceViewMap == null)
+                _resourceViewMap = new Dictionary<PlantType, ResourceView>();
+            
+            foreach (var data in levelQuestData.QuestPlantsData)
+            {
+                var resourceInfo = Instantiate(_settings.ResourceViewPrefab, _questInfoView.RectTransform);
+                resourceInfo.Init(data.Count.ToString(), _settings.GetSpriteByPlantType(data.PlantType));
+                _resourceViewMap.Add(data.PlantType, resourceInfo);
+            }
         }
 
         public T GetGameUIByType<T>() where T : GameUI
@@ -97,42 +131,55 @@ namespace Scripts.UI
             }
         }
 
+        private void AddTimeButtonClick()
+        {
+            CreateJoystick();
+            Destroy(_winLoseView.gameObject);
+            OnAddTimeClick?.Invoke();
+        }
+
+        private void PlayLevelClick()
+        {
+            Clear();
+            
+            OnLevelPlay?.Invoke();
+            Destroy(_winLoseView.gameObject);
+        }
+
+        private void Clear()
+        {
+            if (_resourceGroup)
+                Destroy(_resourceGroup.gameObject);
+            
+            _resourceViewMap.Clear();
+        }
+
         private void OnBuy(bool isBuy)
         {
             Debug.Log($"Money is enough: {isBuy}");
         }
 
-        private void Awake()
+        private void CreateJoystick()
         {
-            CreateGameUI();
-
-            _textsByPlantsType = new Dictionary<PlantType, TMP_Text>
-            {
-                [PlantType.Peas] = _textPeasCount,
-                [PlantType.Wheat] = _textWheatCount
-            };
-        }
-
-        private void CreateGameUI()
-        {
+            _joystick = Instantiate(_settings.JoystickPrefab, transform);
+            OnJoystickCreate?.Invoke(_joystick);
             _currentGameUIs.Add(_joystick);
-            
-            foreach (var prefab in _settings.DefaultUIPrefabs)
-            {
-                var ui = Instantiate(prefab);
-                _currentGameUIs.Add(ui);
-            }
-            
-            OnUIesReady?.Invoke();
         }
 
-        private IEnumerator TextCounterCoroutine(TMP_Text text, int from, int to , float time = 1f, string additionalText = null)
+        private void DestroyJoystick()
+        {
+            _currentGameUIs.Remove(_joystick);
+            Destroy(_joystick.gameObject);
+            OnJoystickCreate?.Invoke(null);
+        }
+
+        private IEnumerator TextCounterCoroutine(ResourceView view, int from, int to , float time = 1f, string additionalText = null)
         {
             float t = 0f;
             while (t < 1)
             {
                 t += Time.unscaledDeltaTime / time;
-                text.SetText(Mathf.Lerp(from, to, t).ToString("0"));
+                view.UpdateProgressCount(Mathf.Lerp(from, to, t).ToString("0"));
                 yield return null;
             }
         }

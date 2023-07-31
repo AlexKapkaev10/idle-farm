@@ -8,16 +8,19 @@ namespace Scripts.StateMachine
     public sealed class CharacterBehaviorRun : ICharacterBehavior
     {
         private readonly ICharacterController _character = default;
-        private readonly Joystick _joystick = default;
+        private readonly IGameUIController _gameUIController;
+        
+        private Joystick _joystick = default;
 
         private const string ANIMATION_KEY = "Run";
         private readonly float _runSpeed = default;
         
-        public CharacterBehaviorRun(ICharacterController characterController, Joystick joystick, CharacterSettings characterSettings)
+        public CharacterBehaviorRun(ICharacterController characterController, IGameUIController gameUIController, CharacterSettings characterSettings)
         {
             _character = characterController;
-            _joystick = joystick;
+            _gameUIController = gameUIController;
             _runSpeed = characterSettings.RunSpeed;
+            _gameUIController.OnJoystickCreate += SetJoystick;
         }
 
         public void Enter()
@@ -32,8 +35,10 @@ namespace Scripts.StateMachine
 
         public void Update()
         {
+            if (!_joystick)
+                return;
+            
             var direction = Vector3.forward * _joystick.Direction.y + Vector3.right * _joystick.Direction.x;
-
             if (direction != Vector3.zero)
             {
                 var rotate = Quaternion.LookRotation(direction);
@@ -41,6 +46,11 @@ namespace Scripts.StateMachine
             }
             
             _character.Move(direction * (_runSpeed * Time.deltaTime));
+        }
+
+        private void SetJoystick(Joystick joystick)
+        {
+            _joystick = joystick;
         }
     }
 }

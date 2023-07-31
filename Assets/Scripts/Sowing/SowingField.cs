@@ -27,6 +27,12 @@ namespace Scripts
         private int _interactCount = 0;
         private float _cellInteractDistance;
 
+        public void SetTransform(Vector3 position, Vector3 rotation)
+        {
+            transform.position = position;
+            transform.eulerAngles = rotation;
+        }
+
         public void BuildField()
         {
 #if UNITY_EDITOR
@@ -103,6 +109,14 @@ namespace Scripts
             {
                 block.OnBlockReturn -= OnBlockReturn;
             }
+            
+            if (_iCharacterController != null)
+            {
+                _characterTransform = null;
+                _iCharacterController.SetAnimationForField(FieldStateType.Default);
+                _iCharacterController.OnMow -= MowPlants;
+                _iCharacterController = null;
+            }
         }
 
         private void CellInteract()
@@ -139,9 +153,9 @@ namespace Scripts
             {
                 SowingCell cell = _cells[i];
                 
-                if (cell.IsMow)
+                if (cell.IsMow || !_characterTransform)
                     continue;
-
+                
                 var direction = _characterTransform.InverseTransformPoint(cell.transform.position);
                 if (direction.z < 0)
                     continue;

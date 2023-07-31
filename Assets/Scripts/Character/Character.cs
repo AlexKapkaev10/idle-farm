@@ -94,6 +94,13 @@ namespace Scripts.Game
             _resourceController.Buy(plants);
         }
 
+        public void SetTransform(Vector3 position, Vector3 bodyRotation)
+        {
+            transform.position = position;
+            _bodyTransform.localEulerAngles = bodyRotation;
+            ChangeMoveState(false);
+        }
+
         public void ChangeMoveState(bool isMove)
         {
             _characterStateMachine.SetBehaviorByType(isMove ? CharacterStateType.Run : CharacterStateType.Idle);
@@ -107,7 +114,10 @@ namespace Scripts.Game
             _eventFromAnimation = GetComponentInChildren<CharacterAnimationEvents>();
             
             _eventFromAnimation.OnMow += InvokeMowEventFromAnimation;
-            
+        }
+
+        private void Start()
+        {
             _characterStateMachine.InitBehaviors(this);
             _characterStateMachine.SetBehaviorByType(CharacterStateType.Idle);
         }

@@ -14,7 +14,7 @@ namespace Scripts.Game
         
         public void SetActive(bool value)
         {
-            gameObject.SetActive(value);
+            gameObject?.SetActive(value);
         }
 
         public void Clear()

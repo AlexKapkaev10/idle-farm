@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -14,11 +13,11 @@ namespace Scripts.Game
         public int[] AvailableToolsID = default;
     }
     
-    public class Progress : MonoBehaviour
+    public class SaveLoadService : MonoBehaviour
     {
+        [SerializeField] private SaveLoadSettings _saveLoadSettings;
         [SerializeField] private ProgressData _progressData;
-        
-        public static Progress Instance;
+        public static SaveLoadService Instance;
 
         [DllImport("__Internal")]
         private static extern void SaveExtern(string data);
@@ -37,9 +36,6 @@ namespace Scripts.Game
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
-/*#if UNITY_EDITOR
-                _progressData = new ProgressData();
-#endif*/
             }
             else
             {
@@ -47,9 +43,22 @@ namespace Scripts.Game
             }
         }
 
-        public void SaveMoney(int count)
+        private void LoadProgress()
         {
+#if !UNITY_WEBGL
+            _progressData.Money = PlayerPrefs.GetInt(_saveLoadSettings.SaveMoneyKey);
+#endif
+        }
+        
+        public void SaveLevelProgress(int moneyCount, int levelCount)
+        {
+            _progressData.Money = moneyCount;
+            _progressData.Level = levelCount;
             
+#if !UNITY_WEBGL
+            PlayerPrefs.SetInt(_saveLoadSettings.SaveMoneyKey, Money);
+            PlayerPrefs.SetInt(_saveLoadSettings.SaveLevelKey, Level);
+#endif
         }
 
         public void Save()

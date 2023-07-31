@@ -1,17 +1,20 @@
 ﻿using System;
 using Scripts.Enums;
+using Scripts.Level;
 using Scripts.Plants;
 
 namespace Scripts.UI
 {
     public interface IGameUIController
     {
-        public event Action OnUIesReady;
+        public event Action OnLevelPlay;
+        public event Action<Joystick> OnJoystickCreate;
         public void DisplayPlantCount(PlantBlock plantBlock, int count);
         public void DisplayMoneyCount(int from, int to);
         public void DisplayByuPlants(PlantType type, int from);
         public void DisplayTimer(string textTimer);
-        public void ChangeTimer(bool isChange);
-        public Joystick GetJoystick();
+        public void CreateWinLoseView(bool isWin, Action callBack);
+        public void ChangeTimerStyle(bool isChange);
+        public void SetQuestInfo(LevelQuestData levelQuestData, Action callBack);
     }
 }

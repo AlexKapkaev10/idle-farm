@@ -18,24 +18,35 @@ namespace Scripts.Game
         {
             _gameUIController = resolver.Resolve<IGameUIController>();
             _characterController = resolver.Resolve<ICharacterController>();
-            Initialization();
+            _gameUIController.OnJoystickCreate += SetJoystick;
         }
 
-        private void Initialization()
+        private void SetJoystick(Joystick joystick)
         {
-            _joystick = _gameUIController.GetJoystick();
-            _joystick.OnPress += ChangeMoveState;
-            _moveControllable = _characterController.GetGameObject().GetComponent<IMoveControllable>();
+            _joystick = joystick;
+            
+            if (_joystick)
+            {
+                _joystick.OnPress += ChangeMoveState;
+                _moveControllable ??= _characterController.GetGameObject().GetComponent<IMoveControllable>();
+            }
+            else
+            {
+                ChangeMoveState(false);
+            }
         }
         
         private void OnDestroy()
         {
-            _joystick.OnPress -= ChangeMoveState;
+            _gameUIController.OnJoystickCreate -= SetJoystick;
+            
+            if (_joystick)
+                _joystick.OnPress -= ChangeMoveState;
         }
 
-        private void ChangeMoveState(bool value)
+        private void ChangeMoveState(bool isMove)
         {
-            _moveControllable.ChangeMoveState(value);
+            _moveControllable.ChangeMoveState(isMove);
         }
     }
 }

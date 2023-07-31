@@ -13,6 +13,17 @@ MonoBehaviour:
   m_Name: GameUISettings
   m_EditorClassIdentifier: 
   _defaultUIPrefabs: []
-  _storePrefab: {fileID: 0}
+  _spritesByPlantType:
+  - PlantType: 1
+    Sprite: {fileID: 21300000, guid: 2c7d58bc7e0da5e49b747732469b785f, type: 3}
+  - PlantType: 2
+    Sprite: {fileID: 21300000, guid: 514743d6ed3789a4d971dd625099336b, type: 3}
+  _joystickPrefab: {fileID: 4523672214763280414, guid: f369b9967a72f3e4eb085a641ad1444c, type: 3}
+  _resourceViewPrefab: {fileID: 6267993216786967612, guid: a496a11b6d318604da662d4113efeffb, type: 3}
+  _questInfoViewPrefab: {fileID: 882137668555447224, guid: 4a61a50c68a36de42a7e3d6de1a4fc7d, type: 3}
+  _storePrefab: {fileID: 6935726679996909946, guid: cf0020fd1e8182246a2f27190938e01c, type: 3}
+  _winLoseViewPrefab: {fileID: 8091432854343041498, guid: 7e22d6409942c344888f7f545e81526d, type: 3}
+  _winHeader: "\u0423\u0441\u043F\u0435\u0445"
+  _loseHeader: "\u041F\u0440\u043E\u0432\u0430\u043B"
   _timerColorDefault: {r: 0, g: 1, b: 0.28627452, a: 1}
   _timerColorHurry: {r: 1, g: 0.13725491, b: 0.2627451, a: 1}

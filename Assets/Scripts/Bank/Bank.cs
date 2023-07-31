@@ -1,4 +1,5 @@
 ﻿using System;
+using Scripts.Game;
 using UnityEngine;
 
 namespace Scripts.Resources
@@ -7,7 +8,6 @@ namespace Scripts.Resources
     {
         public event Action<int, int> OnMoneyChange;
         
-        private const string SaveMoneyKey = "money";
         private int _money = 0;
 
         public int Money => _money;
@@ -25,7 +25,6 @@ namespace Scripts.Resources
         public void MoneyValueChange(int value)
         {
             _money += value;
-            PlayerPrefs.SetInt(SaveMoneyKey, _money);
             var from = _money - value;
             OnMoneyChange?.Invoke(from, _money);
         }

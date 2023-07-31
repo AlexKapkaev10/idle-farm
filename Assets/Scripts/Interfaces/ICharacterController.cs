@@ -17,5 +17,6 @@ namespace Scripts.Interfaces
         public GameObject GetGameObject();
         public void AddPlant(in PlantBlock block);
         public void BuyPlants(in List<PlantType> plants);
+        public void SetTransform(Vector3 position, Vector3 bodyRotation);
     }
 }

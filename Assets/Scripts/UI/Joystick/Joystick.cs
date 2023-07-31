@@ -52,6 +52,11 @@ namespace Scripts.UI
             _handle.anchoredPosition = _input * radius * _handleRange;
         }
 
+        private void OnDestroy()
+        {
+            OnPress = null;
+        }
+
         private void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
         {
             if (magnitude > _deadZone)

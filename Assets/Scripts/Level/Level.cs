@@ -7,13 +7,13 @@ namespace Scripts.Level
 {
     public class Level : MonoBehaviour
     {
-        public event Action<LevelQuestData> OnLevelQuestReady;
+        public event Action<LevelQuestData> OnQuestReady;
         
         [SerializeField] private LevelSettings _levelSettings;
 
         public void Init(in ICharacterController characterController)
         {
-            SpawnBuildings(characterController);
+            CreateLevel(characterController);
             
             var levelQuestData = new LevelQuestData
             {
@@ -21,20 +21,28 @@ namespace Scripts.Level
                 QuestPlantsData = _levelSettings.QuestPlantsData
             };
             
-            OnLevelQuestReady?.Invoke(levelQuestData);
+            OnQuestReady?.Invoke(levelQuestData);
         }
 
-        private void SpawnBuildings(in ICharacterController characterController)
+        private void CreateLevel(in ICharacterController characterController)
         {
             if (_levelSettings == null)
                 return;
             
-            foreach (var data in _levelSettings.BuildingsData)
+            characterController.SetTransform(_levelSettings.CharacterSpawnPosition, _levelSettings.CharacterSpawnRotation);
+            
+            foreach (var buildData in _levelSettings.BuildingsData)
             {
-                var build = Instantiate(data.Prefab, transform);
-                build.SetTransform(data.Position, data.Rotation);
+                var build = Instantiate(buildData.Prefab, transform);
+                build.SetTransform(buildData.Position, buildData.Rotation);
                 build.SetCharacterController(characterController);
-                build.PlantTypes = data.PlantTypes;
+                build.PlantTypes = buildData.PlantTypes;
+            }
+
+            foreach (var fieldData in _levelSettings.FieldsData)
+            {
+                var field = Instantiate(fieldData.Field, transform);
+                field.SetTransform(fieldData.Position, fieldData.Rotation);
             }
         }
     }
