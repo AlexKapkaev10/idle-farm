@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultUIPrefabs: []
   _storePrefab: {fileID: 0}
+  _timerColorDefault: {r: 0, g: 1, b: 0.28627452, a: 1}
+  _timerColorHurry: {r: 1, g: 0.13725491, b: 0.2627451, a: 1}

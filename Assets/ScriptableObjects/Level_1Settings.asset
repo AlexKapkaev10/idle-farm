@@ -21,3 +21,9 @@ MonoBehaviour:
     Prefab: {fileID: 3410466251084054026, guid: 4b1e73c9900db514e9b5569be75e78e0, type: 3}
     Position: {x: -9, y: 1.3, z: 13.5}
     Rotation: {x: 0, y: 180, z: 0}
+  _questPlantsData:
+  - PlantType: 1
+    Count: 50
+  - PlantType: 2
+    Count: 20
+  _questTime: 10

@@ -1,22 +1,30 @@
-using Scripts.Buildings;
+using System;
+using System.Collections.Generic;
 using Scripts.Interfaces;
 using UnityEngine;
 
-namespace Scripts
+namespace Scripts.Level
 {
     public class Level : MonoBehaviour
     {
+        public event Action<LevelQuestData> OnLevelQuestReady;
+        
         [SerializeField] private LevelSettings _levelSettings;
 
-        private ICharacterController _characterController;
-
-        public void Init(ICharacterController characterController)
+        public void Init(in ICharacterController characterController)
         {
-            _characterController = characterController;
-            SpawnBuildings();
+            SpawnBuildings(characterController);
+            
+            var levelQuestData = new LevelQuestData
+            {
+                QuestTime = _levelSettings.QuestTime,
+                QuestPlantsData = _levelSettings.QuestPlantsData
+            };
+            
+            OnLevelQuestReady?.Invoke(levelQuestData);
         }
 
-        private void SpawnBuildings()
+        private void SpawnBuildings(in ICharacterController characterController)
         {
             if (_levelSettings == null)
                 return;
@@ -25,9 +33,15 @@ namespace Scripts
             {
                 var build = Instantiate(data.Prefab, transform);
                 build.SetTransform(data.Position, data.Rotation);
-                build.SetCharacterController(_characterController);
+                build.SetCharacterController(characterController);
                 build.PlantTypes = data.PlantTypes;
             }
         }
+    }
+
+    public struct LevelQuestData
+    {
+        public float QuestTime;
+        public List<QuestPlantData> QuestPlantsData;
     }
 }

@@ -10,13 +10,13 @@ namespace Scripts.Game
     {
         public int Level = default;
         public int Money = default;
-        public int ToolId = default;
+        public int CurrentToolId = default;
         public int[] AvailableToolsID = default;
     }
     
     public class Progress : MonoBehaviour
     {
-        public ProgressData ProgressData;
+        [SerializeField] private ProgressData _progressData;
         
         public static Progress Instance;
 
@@ -26,12 +26,20 @@ namespace Scripts.Game
         [DllImport("__Internal")]
         private static extern void LoadExtern();
 
+        public int Level => _progressData.Level;
+        public int Money => _progressData.Money;
+        public int CurrentTool => _progressData.CurrentToolId;
+        public int[] AvailableToolsID => _progressData.AvailableToolsID;
+
         private void Awake()
         {
             if (Instance == null)
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+/*#if UNITY_EDITOR
+                _progressData = new ProgressData();
+#endif*/
             }
             else
             {
@@ -39,15 +47,20 @@ namespace Scripts.Game
             }
         }
 
+        public void SaveMoney(int count)
+        {
+            
+        }
+
         public void Save()
         {
-            string jsonData = JsonUtility.ToJson(ProgressData);
+            string jsonData = JsonUtility.ToJson(_progressData);
             SaveExtern(jsonData);
         }
 
         public void SetProgress(string value)
         {
-            ProgressData = JsonUtility.FromJson<ProgressData>(value);
+            _progressData = JsonUtility.FromJson<ProgressData>(value);
         }
     }
 }

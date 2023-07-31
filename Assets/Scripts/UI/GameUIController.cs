@@ -15,59 +15,61 @@ namespace Scripts.UI
         public event Action OnUIesReady;
         
         [SerializeField] private GameUISettings _settings;
-
         [SerializeField] private Joystick _joystick;
         
         [SerializeField] private TMP_Text _textPeasCount;
         [SerializeField] private TMP_Text _textWheatCount;
         [SerializeField] private TMP_Text _textMoneyCount;
+        [SerializeField] private TMP_Text _textTimer;
 
         private Dictionary<PlantType, TMP_Text> _textsByPlantsType;
 
         private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
-        
-        private IResourceController _resourceController;
 
         [Inject]
-        private void Construct(IResourceController resourceController)
+        private void Construct()
         {
-            _resourceController = resourceController;
-        }
-
-        private void Awake()
-        {
-            CreateGameUI();
-
-            _textsByPlantsType = new Dictionary<PlantType, TMP_Text>
-            {
-                [PlantType.Peas] = _textPeasCount,
-                [PlantType.Wheat] = _textWheatCount
-            };
             
-            _textMoneyCount.SetText(_resourceController.Money.ToString());
-            _resourceController.OnAddPlant += DisplayPlantCount;
-            _resourceController.OnChangeMoney += DisplayMoneyCount;
-            _resourceController.OnBuyPlants += DisplayByuPlants;
         }
 
-        private void OnDestroy()
+        public void DisplayPlantCount(PlantBlock plantBlock, int count)
         {
-            _resourceController.OnAddPlant -= DisplayPlantCount;
-            _resourceController.OnChangeMoney -= DisplayMoneyCount;
-            _resourceController.OnBuyPlants -= DisplayByuPlants;
+            _textsByPlantsType[plantBlock.PlantType].SetText(count.ToString());
+        }
+        
+        public void DisplayMoneyCount(int from, int to)
+        {
+            StartCoroutine(TextCounterCoroutineMoney(_textMoneyCount, from, to));
         }
 
-        private void CreateGameUI()
+        public void DisplayByuPlants(PlantType type, int from)
         {
-            _currentGameUIs.Add(_joystick);
-            
-            foreach (var prefab in _settings.DefaultUIPrefabs)
+            StartCoroutine(TextCounterCoroutine(_textsByPlantsType[type], from, 0));
+        }
+
+        public void DisplayTimer(string textTimer)
+        {
+            _textTimer.SetText(textTimer);
+        }
+
+        public void ChangeTimer(bool isChange)
+        {
+            _textTimer.color = isChange ? _settings.TimerColorHurry : _settings.TimerColorDefault;
+        }
+
+        public Joystick GetJoystick()
+        {
+            return _joystick;
+        }
+
+        public T GetGameUIByType<T>() where T : GameUI
+        {
+            foreach (var gameUI in _currentGameUIs)
             {
-                var ui = Instantiate(prefab);
-                _currentGameUIs.Add(ui);
+                if (gameUI is T t)
+                    return t;
             }
-            
-            OnUIesReady?.Invoke();
+            return null;
         }
 
         public void DisplayUI(bool value, GameUI exclude = null)
@@ -95,39 +97,33 @@ namespace Scripts.UI
             }
         }
 
-        public T GetGameUIByType<T>() where T : GameUI
-        {
-            foreach (var gameUI in _currentGameUIs)
-            {
-                if (gameUI is T t)
-                    return t;
-            }
-            return null;
-        }
-
         private void OnBuy(bool isBuy)
         {
             Debug.Log($"Money is enough: {isBuy}");
         }
-        
-        public Joystick GetJoystick()
+
+        private void Awake()
         {
-            return _joystick;
+            CreateGameUI();
+
+            _textsByPlantsType = new Dictionary<PlantType, TMP_Text>
+            {
+                [PlantType.Peas] = _textPeasCount,
+                [PlantType.Wheat] = _textWheatCount
+            };
         }
 
-        private void DisplayPlantCount(PlantBlock plantBlock, int count)
+        private void CreateGameUI()
         {
-            _textsByPlantsType[plantBlock.PlantType].SetText(count.ToString());
-        }
-
-        private void DisplayMoneyCount(int from, int to)
-        {
-            StartCoroutine(TextCounterCoroutineMoney(_textMoneyCount, from, to));
-        }
-
-        private void DisplayByuPlants(PlantType type, int from)
-        {
-            StartCoroutine(TextCounterCoroutine(_textsByPlantsType[type], from, 0));
+            _currentGameUIs.Add(_joystick);
+            
+            foreach (var prefab in _settings.DefaultUIPrefabs)
+            {
+                var ui = Instantiate(prefab);
+                _currentGameUIs.Add(ui);
+            }
+            
+            OnUIesReady?.Invoke();
         }
 
         private IEnumerator TextCounterCoroutine(TMP_Text text, int from, int to , float time = 1f, string additionalText = null)

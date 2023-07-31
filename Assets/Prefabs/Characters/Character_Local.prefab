@@ -58,7 +58,7 @@ PrefabInstance:
     - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _bagObj
       value: 
-      objectReference: {fileID: 6338084354871780036}
+      objectReference: {fileID: 0}
     - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _toolType
       value: 1
@@ -66,7 +66,7 @@ PrefabInstance:
     - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _bagCollectPoint
       value: 
-      objectReference: {fileID: 8222355565785729527}
+      objectReference: {fileID: 0}
     - target: {fileID: 2439322611680783755, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
       propertyPath: _plantCollectType
       value: 1
@@ -88,15 +88,5 @@ PrefabInstance:
 --- !u!4 &4161686023329595825 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7638348288160266228, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
-  m_PrefabInstance: {fileID: 6035274502806812229}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6338084354871780036 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 303144207660504193, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
-  m_PrefabInstance: {fileID: 6035274502806812229}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8222355565785729527 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2439322611220021170, guid: 3694f55bde45c7b499a75e1053c9e038, type: 3}
   m_PrefabInstance: {fileID: 6035274502806812229}
   m_PrefabAsset: {fileID: 0}

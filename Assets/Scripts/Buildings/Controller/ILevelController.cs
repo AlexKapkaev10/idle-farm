@@ -1,4 +1,4 @@
-﻿namespace Scripts.Buildings
+﻿namespace Scripts.Level
 {
     public interface ILevelController
     {
