@@ -37,5 +37,6 @@ namespace Scripts.Level
         public SowingField Field;
         public Vector3 Position;
         public Vector3 Rotation;
+        public bool NotAutoRepair;
     }
 }

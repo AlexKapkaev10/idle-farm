@@ -14,12 +14,15 @@ namespace Scripts.StateMachine
 
         private const string ANIMATION_KEY = "Run";
         private readonly float _runSpeed = default;
+        private readonly float _rotateSpeed = default;
         
         public CharacterBehaviorRun(ICharacterController characterController, IGameUIController gameUIController, CharacterSettings characterSettings)
         {
             _character = characterController;
             _gameUIController = gameUIController;
             _runSpeed = characterSettings.RunSpeed;
+            _rotateSpeed = characterSettings.RotateSpeed;
+            
             _gameUIController.OnJoystickCreate += SetJoystick;
         }
 
@@ -39,13 +42,15 @@ namespace Scripts.StateMachine
                 return;
             
             var direction = Vector3.forward * _joystick.Direction.y + Vector3.right * _joystick.Direction.x;
+
             if (direction != Vector3.zero)
             {
                 var rotate = Quaternion.LookRotation(direction);
-                _character.Rotate(rotate);
+                var slerpRotate = Quaternion.Slerp(_character.GetBodyTransform().rotation, rotate, Time.deltaTime * _rotateSpeed);
+                _character.Rotate(slerpRotate);
             }
             
-            _character.Move(direction * (_runSpeed * Time.deltaTime));
+            _character.Move(direction * (_runSpeed * Time.deltaTime), direction.magnitude);
         }
 
         private void SetJoystick(Joystick joystick)

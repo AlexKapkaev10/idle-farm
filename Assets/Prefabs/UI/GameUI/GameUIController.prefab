@@ -382,8 +382,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 0, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &8743613947890962114
 CanvasGroup:
@@ -512,11 +512,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: d3843c60f38c0744495d3cda1272fcfa, type: 2}
-  _joystick: {fileID: 0}
   _resourceGroupParent: {fileID: 1525503121342309136}
   _textMoneyCount: {fileID: 1798605127278472226}
   _textTimer: {fileID: 3175809768408734515}
-  _resourceGroup: {fileID: 0}
 --- !u!1 &5807181455643286803
 GameObject:
   m_ObjectHideFlags: 0

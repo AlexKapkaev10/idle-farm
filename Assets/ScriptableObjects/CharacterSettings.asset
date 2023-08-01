@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: CharacterSettings
   m_EditorClassIdentifier: 
   _runSpeed: 3
+  _rotateSpeed: 5

@@ -48,6 +48,7 @@ namespace Scripts.Level
 
         private void Start()
         {
+            Application.targetFrameRate = 100;
             _levelPrefabs = _controllerSettings.LevelPrefabs;
             InitializeLevel();
         }
@@ -69,7 +70,7 @@ namespace Scripts.Level
             var index = _levelsComplete > (_levelPrefabs.Count - 1)
                 ? Random.Range(0, _levelPrefabs.Count)
                 : _levelsComplete;
-            Debug.Log(index);
+
             _currentLevel = Instantiate(_levelPrefabs[index]);
             _currentLevel.OnQuestReady += InitializeQuest;
             _currentLevel.Init(_characterController);

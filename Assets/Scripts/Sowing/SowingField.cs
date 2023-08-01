@@ -19,6 +19,8 @@ namespace Scripts
         [Range(0, 40)]
         [SerializeField] private int _sowingCellCount;
 
+        [SerializeField] private bool _autoRepair = true;
+
         private ObjectsPool<PlantBlock> _blocksPool;
         private List<PlantBlock> _blocks;
         private FieldStateType _fieldStateType = FieldStateType.Default;
@@ -26,6 +28,12 @@ namespace Scripts
         private Transform _characterTransform;
         private int _interactCount = 0;
         private float _cellInteractDistance;
+
+        public bool AutoRepair
+        {
+            get => _autoRepair;
+            set => _autoRepair = value;
+        }
 
         public void SetTransform(Vector3 position, Vector3 rotation)
         {
@@ -138,9 +146,11 @@ namespace Scripts
                         _fieldStateType = FieldStateType.Default;
                         if (_iCharacterController != null)
                             _iCharacterController.SetAnimationForField(_fieldStateType);
-                        for (int i = 0; i < _cells.Count; i++)
+                        if (!AutoRepair)
+                            return;
+                        foreach (var cell in _cells)
                         {
-                            _cells[i].StartRipening();
+                            cell.StartRipening();
                         }
                         break;
                 }

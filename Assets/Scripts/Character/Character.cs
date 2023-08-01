@@ -42,9 +42,10 @@ namespace Scripts.Game
             _characterStateMachine = characterStateMachine;
         }
 
-        public void Move(Vector3 velocity)
+        public void Move(Vector3 velocity, float magnitude)
         {
             _characterController.Move(velocity);
+            _playerAnimator.SetFloat(AnimatorParameters.RunSpeed, magnitude);
         }
 
         public void Rotate(Quaternion rotation)
@@ -157,5 +158,6 @@ namespace Scripts.Game
         public static readonly int Base = Animator.StringToHash("Base");
         public static readonly int Mow = Animator.StringToHash("Mow");
         public static readonly int MowSpeed = Animator.StringToHash("mowSpeed");
+        public static readonly int RunSpeed = Animator.StringToHash("runSpeed");
     }
 }

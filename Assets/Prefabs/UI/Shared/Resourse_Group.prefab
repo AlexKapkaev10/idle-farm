@@ -76,3 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85de6e27ad3175c43aadee5e2c2751e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveDuration: 0
+  _centerPosition: {x: 0, y: 0}
+  _cornerPosition: {x: 0, y: 0}
+  _rectTransform: {fileID: 3911220065134535275}

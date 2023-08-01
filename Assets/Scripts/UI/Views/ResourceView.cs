@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,12 +15,12 @@ namespace Scripts.UI
         {
             _questCount = questCount;
             _imageIcon.sprite = icon;
-            UpdateProgressCount("0");
+            _textCount.SetText(questCount);
         }
 
         public void UpdateProgressCount(string value)
         {
-            string progress = $"{_questCount}/{value}";
+            string progress = $"{value}/{_questCount}";
             _textCount.SetText(progress);
         }
 

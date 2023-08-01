@@ -91,6 +91,7 @@ MonoBehaviour:
   _sowingData: {fileID: 11400000, guid: a5b6b32a6d4a8b7438e02516d537a7d9, type: 2}
   _plantType: 1
   _sowingCellCount: 40
+  _autoRepair: 0
 --- !u!65 &2256391609032347776
 BoxCollider:
   m_ObjectHideFlags: 0

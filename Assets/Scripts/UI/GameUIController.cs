@@ -20,7 +20,7 @@ namespace Scripts.UI
         [SerializeField] private TMP_Text _textMoneyCount;
         [SerializeField] private TMP_Text _textTimer;
 
-        [SerializeField] private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
+        private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
         private Dictionary<PlantType, ResourceView> _resourceViewMap;
 
         private event Action OnAddTimeClick;
@@ -79,8 +79,8 @@ namespace Scripts.UI
             _questInfoView.OnPlayClick += () =>
             {
                 callBack?.Invoke();
-                _questInfoView.RectTransform.SetParent(_resourceGroupParent);
-                _resourceGroup = _resourceGroupParent.GetComponentInChildren<ResourceGroup>();
+                _resourceGroup = _questInfoView.ResourceGroup;
+                _resourceGroup.RectTransform.SetParent(_resourceGroupParent);
                 _resourceGroup.ChangeRectPosition(false);
                 CreateJoystick();
             };
@@ -90,9 +90,10 @@ namespace Scripts.UI
             
             foreach (var data in levelQuestData.QuestPlantsData)
             {
-                var resourceInfo = Instantiate(_settings.ResourceViewPrefab, _questInfoView.RectTransform);
-                resourceInfo.Init(data.Count.ToString(), _settings.GetSpriteByPlantType(data.PlantType));
-                _resourceViewMap.Add(data.PlantType, resourceInfo);
+                var resourceView = Instantiate(_settings.ResourceViewPrefab, _questInfoView.ResourceGroup.RectTransform);
+                resourceView.Init(data.Count.ToString(), _settings.GetSpriteByPlantType(data.PlantType));
+                _questInfoView.ResourceGroup.AddResourceView(resourceView);
+                _resourceViewMap.Add(data.PlantType, resourceView);
             }
         }
 
@@ -129,6 +130,11 @@ namespace Scripts.UI
                     ui.SetVisible(true);
                 }
             }
+        }
+
+        private void OnDestroy()
+        {
+            OnJoystickCreate = null;
         }
 
         private void AddTimeButtonClick()

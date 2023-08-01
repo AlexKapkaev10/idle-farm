@@ -43,6 +43,7 @@ namespace Scripts.Level
             {
                 var field = Instantiate(fieldData.Field, transform);
                 field.SetTransform(fieldData.Position, fieldData.Rotation);
+                field.AutoRepair = !fieldData.NotAutoRepair;
             }
         }
     }

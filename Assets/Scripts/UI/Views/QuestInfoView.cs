@@ -9,10 +9,10 @@ namespace Scripts.UI
     {
         public event Action OnPlayClick;
         [SerializeField] private TMP_Text _textHeader;
-        [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private ResourceGroup _resourceGroup;
         [SerializeField] private Button _buttonPlay;
-
-        public RectTransform RectTransform => _rectTransform;
+        
+        public ResourceGroup ResourceGroup => _resourceGroup;
         public Button ButtonPlay => _buttonPlay;
 
         public void PlayClick()
