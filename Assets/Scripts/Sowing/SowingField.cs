@@ -15,6 +15,7 @@ namespace Scripts
         [SerializeField] private List<SowingCell> _cells = new List<SowingCell>();
         [SerializeField] private Transform _cellsPoint;
         [SerializeField] private SowingData _sowingData;
+        [SerializeField] private GameObject _marker;
         [SerializeField] private PlantType _plantType;
         [Range(0, 40)]
         [SerializeField] private int _sowingCellCount;
@@ -112,7 +113,7 @@ namespace Scripts
         {
             if (_blocks == null && _blocks.Count <= 0)
                 return;
-            
+            _blocksPool.OnCreate -= CreateNewBlock;
             foreach (var block in _blocks)
             {
                 block.OnBlockReturn -= OnBlockReturn;
@@ -146,11 +147,18 @@ namespace Scripts
                         _fieldStateType = FieldStateType.Default;
                         if (_iCharacterController != null)
                             _iCharacterController.SetAnimationForField(_fieldStateType);
-                        if (!AutoRepair)
-                            return;
-                        foreach (var cell in _cells)
+                        if (AutoRepair)
                         {
-                            cell.StartRipening();
+                            foreach (var cell in _cells)
+                            {
+                                cell.StartRipening();
+                            }
+                        }
+                        else
+                        {
+                            Destroy(_marker);
+                            _blocksPool.Clear();
+                            _blocksPool.OnCreate -= CreateNewBlock;
                         }
                         break;
                 }

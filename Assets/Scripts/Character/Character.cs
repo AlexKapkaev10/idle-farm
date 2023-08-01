@@ -55,17 +55,12 @@ namespace Scripts.Game
 
         public void SetAnimationForField(FieldStateType fieldState)
         {
-            _currentTool.SetActive(fieldState == FieldStateType.Mow);
-            
-            switch (fieldState)
-            {
-                case FieldStateType.Default:
-                    _playerAnimator.SetTrigger(AnimatorParameters.Base);
-                    break;
-                case FieldStateType.Mow:
-                    _playerAnimator.SetTrigger(AnimatorParameters.Mow);
-                    break;
-            }
+            _currentTool?.SetActive(fieldState == FieldStateType.Mow);
+            if (!_playerAnimator)
+                return;
+            _playerAnimator?.SetTrigger(fieldState == FieldStateType.Default
+                ? AnimatorParameters.Base
+                : AnimatorParameters.Mow);
         }
 
         public void SetAnimationForMove(string key)
@@ -144,7 +139,7 @@ namespace Scripts.Game
                 return;
             
             _playerAnimator.SetFloat(AnimatorParameters.MowSpeed, _currentTool.MowSpeed);
-            _currentTool.SetActive(false);
+            _currentTool?.SetActive(false);
         }
 
         private void InvokeMowEventFromAnimation()

@@ -14,7 +14,7 @@ namespace Scripts.UI
             IsCheckVisible = _canvasGroup.alpha < 0.1f;
         }
         
-        public virtual void SetVisible(bool isVisible)
+        public virtual void SetVisible(bool isVisible, bool fastSet = false)
         {
             if (!_canvasGroup)
                 return;

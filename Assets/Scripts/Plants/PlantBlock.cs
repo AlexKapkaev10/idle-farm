@@ -26,7 +26,12 @@ namespace Scripts.Plants
                 seq.Append(transform.DOLocalMove(Vector3.zero, duration / 2).SetEase(Ease.Linear))
                     .Join(transform.DOLocalRotateQuaternion(Quaternion.identity, duration / 2))
                     .Join(transform.DOScale(0, duration).SetEase(Ease.Linear));
-                seq.OnComplete(() => OnBlockReturn?.Invoke(this));
+                seq.OnComplete(() =>
+                {
+                    OnBlockReturn?.Invoke(this);
+                    DOTween.Kill(transform);
+                    DOTween.Kill(seq);
+                });
             });
         }
     }

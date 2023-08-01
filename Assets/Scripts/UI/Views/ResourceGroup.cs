@@ -44,6 +44,8 @@ namespace Scripts.UI
 
         private void ChangeResourceViewStringFormat()
         {
+            DOTween.Kill(transform);
+            
             foreach (var view in _resourceViews)
             {
                 view.UpdateProgressCount("0");

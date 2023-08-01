@@ -15,10 +15,7 @@ namespace Scripts.UI
         public event Action<Joystick> OnJoystickCreate;
 
         [SerializeField] private GameUISettings _settings;
-        [SerializeField] private RectTransform _resourceGroupParent;
-
-        [SerializeField] private TMP_Text _textMoneyCount;
-        [SerializeField] private TMP_Text _textTimer;
+        [SerializeField] private GameInfoView _gameInfoView;
 
         private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
         private Dictionary<PlantType, ResourceView> _resourceViewMap;
@@ -36,7 +33,7 @@ namespace Scripts.UI
         
         public void DisplayMoneyCount(int from, int to)
         {
-            StartCoroutine(TextCounterCoroutineMoney(_textMoneyCount, from, to));
+            StartCoroutine(TextCounterCoroutineMoney(_gameInfoView.TextMoney, from, to));
         }
 
         public void DisplayByuPlants(PlantType type, int from)
@@ -46,17 +43,18 @@ namespace Scripts.UI
 
         public void DisplayTimer(string textTimer)
         {
-            _textTimer.SetText(textTimer);
+            _gameInfoView.SetTimerText(textTimer);
         }
 
-        public void ChangeTimerStyle(bool isChange)
+        public void UpdateTimerStyle(bool isDefault)
         {
-            _textTimer.color = isChange ? _settings.TimerColorHurry : _settings.TimerColorDefault;
+            _gameInfoView.UpdateTextColor(isDefault);
         }
 
         public void CreateWinLoseView(bool isWin, Action callBack)
         {
             DestroyJoystick();
+            _gameInfoView.SetVisible(false);
             _winLoseView = Instantiate(_settings.WinLoseViewPrefab, transform) as WinLoseView;
             _winLoseView?.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
             _winLoseView?.ButtonAction.onClick.AddListener(PlayLevelClick);
@@ -72,21 +70,20 @@ namespace Scripts.UI
             }
         }
 
-        public void SetQuestInfo(LevelQuestData levelQuestData, Action callBack)
+        public void CreateQuestInfo(LevelQuestData levelQuestData, Action callBack)
         {
+            _gameInfoView.SetVisible(false, true);
             _questInfoView = Instantiate(_settings.QuestInfoView, transform);
             
             _questInfoView.OnPlayClick += () =>
             {
-                callBack?.Invoke();
                 _resourceGroup = _questInfoView.ResourceGroup;
-                _resourceGroup.RectTransform.SetParent(_resourceGroupParent);
-                _resourceGroup.ChangeRectPosition(false);
+                _gameInfoView.SetResourceGroup(_resourceGroup);
                 CreateJoystick();
+                callBack?.Invoke();
             };
             
-            if (_resourceViewMap == null)
-                _resourceViewMap = new Dictionary<PlantType, ResourceView>();
+            _resourceViewMap ??= new Dictionary<PlantType, ResourceView>();
             
             foreach (var data in levelQuestData.QuestPlantsData)
             {
@@ -97,7 +94,7 @@ namespace Scripts.UI
             }
         }
 
-        public T GetGameUIByType<T>() where T : GameUI
+        /*public T GetGameUIByType<T>() where T : GameUI
         {
             foreach (var gameUI in _currentGameUIs)
             {
@@ -130,7 +127,7 @@ namespace Scripts.UI
                     ui.SetVisible(true);
                 }
             }
-        }
+        }*/
 
         private void OnDestroy()
         {
@@ -147,7 +144,6 @@ namespace Scripts.UI
         private void PlayLevelClick()
         {
             Clear();
-            
             OnLevelPlay?.Invoke();
             Destroy(_winLoseView.gameObject);
         }

@@ -21,9 +21,6 @@ namespace Scripts.UI
         [SerializeField] private string _winHeader;
         [SerializeField] private string _loseHeader;
 
-        [SerializeField] private Color _timerColorDefault;
-        [SerializeField] private Color _timerColorHurry;
-
         public List<GameUI> DefaultUIPrefabs => _defaultUIPrefabs;
         public Joystick JoystickPrefab => _joystickPrefab;
         public ResourceView ResourceViewPrefab => _resourceViewPrefab;
@@ -32,8 +29,6 @@ namespace Scripts.UI
         public GameUI WinLoseViewPrefab => _winLoseViewPrefab;
         public string WinHeader => _winHeader;
         public string LoseHeader => _loseHeader;
-        public Color TimerColorDefault => _timerColorDefault;
-        public Color TimerColorHurry => _timerColorHurry;
 
         public Sprite GetSpriteByPlantType(PlantType type)
         {

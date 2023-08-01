@@ -7,7 +7,10 @@ namespace Scripts.CameraGame
 {
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class CameraController : MonoBehaviour
-    { 
+    {
+        [SerializeField] private MapCamera _mapCameraPrefab;
+
+        private MapCamera _mapCamera;
         private CinemachineVirtualCamera _virtualCamera;
         private ICharacterController _characterController;
 
@@ -22,6 +25,8 @@ namespace Scripts.CameraGame
             _virtualCamera = GetComponent<CinemachineVirtualCamera>();
             _virtualCamera.Follow = _characterController.GetGameObject().transform;
             _virtualCamera.LookAt = _characterController.GetGameObject().transform;
+            _mapCamera = Instantiate(_mapCameraPrefab);
+            _mapCamera.SetFollowTarget(_characterController.GetBodyTransform());
         }
     }
 }

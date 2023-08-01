@@ -7,7 +7,9 @@ namespace Scripts.Level
     public class LevelControllerSettings : ScriptableObject
     {
         [SerializeField] private List<Level> _levelPrefabs = new List<Level>();
+        [SerializeField] private float _addTimeCount = 20;
 
         public List<Level> LevelPrefabs => _levelPrefabs;
+        public float AddTimeCount => _addTimeCount;
     }
 }

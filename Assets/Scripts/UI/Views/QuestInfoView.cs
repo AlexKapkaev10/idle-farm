@@ -1,28 +1,34 @@
 ﻿using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Scripts.UI
 {
-    public class QuestInfoView : MonoBehaviour
+    public class QuestInfoView : GameUI
     {
         public event Action OnPlayClick;
+        
         [SerializeField] private TMP_Text _textHeader;
         [SerializeField] private ResourceGroup _resourceGroup;
-        [SerializeField] private Button _buttonPlay;
-        
+        [SerializeField] private float _fadeDurationTime = 0.2f;
+
         public ResourceGroup ResourceGroup => _resourceGroup;
-        public Button ButtonPlay => _buttonPlay;
 
         public void PlayClick()
         {
             OnPlayClick?.Invoke();
-            Destroy(gameObject);
+            Disable();
+        }
+
+        private void Disable()
+        {
+            _canvasGroup.DOFade(0, _fadeDurationTime).SetEase(Ease.Linear).OnComplete(()=> Destroy(gameObject));
         }
 
         private void OnDestroy()
         {
+            DOTween.Kill(_canvasGroup);
             OnPlayClick = null;
         }
 

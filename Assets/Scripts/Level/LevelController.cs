@@ -14,6 +14,8 @@ namespace Scripts.Level
 {
     public sealed class LevelController : MonoBehaviour, ILevelController
     {
+        public event Action<bool> OnLevelComplete;
+        public event Action OnQuestNotComplete;
         private event Action onStartPlay;
         private event Action onAddQuestTime;
 
@@ -29,7 +31,7 @@ namespace Scripts.Level
         private Coroutine _updateTimerRoutine;
         private readonly bool _isHurry = default;
         
-        private int _levelsComplete = 0;
+        private int _completeLevels = 0;
         private float _questTime = 0.0f;
 
         private List<Level> _levelPrefabs;
@@ -42,20 +44,29 @@ namespace Scripts.Level
             _gameUIController = gameUIController;
             _resourceController = resourceController;
             
-            _levelsComplete = SaveLoadService.Instance.Level;
+            _completeLevels = SaveLoadService.Instance.Level;
             _gameUIController.OnLevelPlay += InitializeLevel;
         }
-
+        
         private void Start()
         {
             Application.targetFrameRate = 100;
             _levelPrefabs = _controllerSettings.LevelPrefabs;
+            
+            _resourceController.OnAddPlant += AddResources;
+            _resourceController.OnBuyPlants += BuyResources;
+            _resourceController.OnChangeMoney += MoneyChange;
+            _resourceController.QuestNotComplete += QuestNotComplete;
             InitializeLevel();
         }
 
         private void OnDestroy()
         {
             _gameUIController.OnLevelPlay -= InitializeLevel;
+            _resourceController.OnAddPlant -= AddResources;
+            _resourceController.OnBuyPlants -= BuyResources;
+            _resourceController.OnChangeMoney -= MoneyChange;
+            _resourceController.QuestNotComplete -= QuestNotComplete;
         }
 
         private void InitializeLevel()
@@ -63,25 +74,23 @@ namespace Scripts.Level
             if (_currentLevel)
                 ClearLevel();
             
-            _resourceController.OnAddPlant += AddResources;
-            _resourceController.OnBuyPlants += BuyResources;
-            _resourceController.OnChangeMoney += MoneyChange;
-
-            var index = _levelsComplete > (_levelPrefabs.Count - 1)
+            var index = _completeLevels > (_levelPrefabs.Count - 1)
                 ? Random.Range(0, _levelPrefabs.Count)
-                : _levelsComplete;
+                : _completeLevels;
 
             _currentLevel = Instantiate(_levelPrefabs[index]);
             _currentLevel.OnQuestReady += InitializeQuest;
-            _currentLevel.Init(_characterController);
+            _currentLevel.Init(_characterController, this);
+            _gameUIController.UpdateTimerStyle(true);
+        }
+
+        private void QuestNotComplete()
+        {
+            OnQuestNotComplete?.Invoke();
         }
 
         private void ClearLevel()
         {
-            _resourceController.OnAddPlant -= AddResources;
-            _resourceController.OnBuyPlants -= BuyResources;
-            _resourceController.OnChangeMoney -= MoneyChange;
-            _gameUIController.ChangeTimerStyle(false);
             Destroy(_currentLevel.gameObject);
             _currentLevel = null;
         }
@@ -90,44 +99,45 @@ namespace Scripts.Level
         {
             _gameUIController.DisplayMoneyCount(oldValue, newValue);
         }
-        private void BuyResources(PlantType type, int countFrom)
-        {
-            _gameUIController.DisplayByuPlants(type, countFrom);
-            _questMap[type] -= countFrom;
 
-            if (IsQuestComplete())
+        private void BuyResources(BuyResource[] buyResources)
+        {
+            foreach (var buyResource in buyResources)
             {
-                EndLevel(true);
+                _gameUIController.DisplayByuPlants(buyResource.PlantType, buyResource.Count);
             }
+            
+            EndLevel(true);
         }
 
         private void EndLevel(bool isWin)
         {
-            onAddQuestTime = null;
-            
-            if (isWin)
-            {
-                _levelsComplete++;
-                SaveLoadService.Instance.SaveLevelProgress(_resourceController.Money, _levelsComplete);
-            }
-            else
-            {
-                onAddQuestTime += AddQuestTimeForReward;
-            }
-            
-            _gameUIController.CreateWinLoseView(isWin, isWin ? null : onAddQuestTime);
-            
             if (_updateTimerRoutine != null)
             {
                 StopCoroutine(_updateTimerRoutine);
                 _updateTimerRoutine = null;
             }
+
+            onAddQuestTime = null;
+            if (isWin)
+            {
+                _completeLevels++;
+                _gameUIController.UpdateTimerStyle(true);
+                SaveLoadService.Instance.SaveLevelProgress(_resourceController.Money, _completeLevels);
+            }
+            else
+            {
+                onAddQuestTime += AddQuestTimeForReward;
+            }
+
+            _gameUIController.CreateWinLoseView(isWin, isWin ? null : onAddQuestTime);
+            OnLevelComplete?.Invoke(isWin);
         }
 
         private void AddQuestTimeForReward()
         {
             onAddQuestTime -= AddQuestTimeForReward;
-            _questTime = 20f;
+            _questTime = _controllerSettings.AddTimeCount;
             _updateTimerRoutine = StartCoroutine(UpdateTimer());
         }
 
@@ -135,7 +145,7 @@ namespace Scripts.Level
         {
             _gameUIController.DisplayPlantCount(plantBlock, count);
         }
-        
+
         private void InitializeQuest(LevelQuestData levelData)
         {
             _currentLevel.OnQuestReady -= InitializeQuest;
@@ -150,8 +160,10 @@ namespace Scripts.Level
             {
                 _questMap.Add(plantData.PlantType, plantData.Count);
             }
+            
+            _resourceController.SetQuestMap(_questMap);
             onStartPlay += StartTimer;
-            _gameUIController.SetQuestInfo(levelData, onStartPlay);
+            _gameUIController.CreateQuestInfo(levelData, onStartPlay);
         }
 
         private void StartTimer()
@@ -172,26 +184,13 @@ namespace Scripts.Level
                 
                 if (_questTime < 6f && !_isHurry)
                 {
-                    _gameUIController.ChangeTimerStyle(true);
+                    _gameUIController.UpdateTimerStyle(false);
                 }
                 yield return null;
             }
             
-            if (!IsQuestComplete())
-                EndLevel(false);
-
+            EndLevel(false);
             _updateTimerRoutine = null;
-        }
-
-        private bool IsQuestComplete()
-        {
-            foreach (var map in _questMap)
-            {
-                if (map.Value > 0)
-                    return false;
-            }
-            
-            return true;
         }
     }
 }

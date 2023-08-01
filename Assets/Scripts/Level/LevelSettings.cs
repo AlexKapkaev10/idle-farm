@@ -12,8 +12,10 @@ namespace Scripts.Level
         [SerializeField] private List<BuildingData> _buildingsData = new List<BuildingData>();
         [SerializeField] private List<FieldData> _fieldsData = new List<FieldData>();
         [SerializeField] private List<QuestPlantData> _questPlantsData = new List<QuestPlantData>();
+        
         [SerializeField] private Vector3 _characterSpawnPosition = new Vector3(0f, 0.65f, 0f);
         [SerializeField] private Vector3 _characterSpawnRotation = new Vector3(0f, 180.0f, 0f);
+        
         [SerializeField] private int _questTime;
         
         public List<BuildingData> BuildingsData => _buildingsData;
@@ -37,6 +39,6 @@ namespace Scripts.Level
         public SowingField Field;
         public Vector3 Position;
         public Vector3 Rotation;
-        public bool NotAutoRepair;
+        public bool AutoRepair;
     }
 }

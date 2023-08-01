@@ -9,18 +9,26 @@ namespace Scripts.Game
         [SerializeField] private float _mowSpeed = 0;
         [SerializeField] private ToolType _toolType;
 
+        private bool _dispose; 
         public ToolType ToolType => _toolType;
         public float MowSpeed => _mowSpeed;
         
         public void SetActive(bool value)
         {
-            if (gameObject != null)
-                gameObject.SetActive(value);
+            if (_dispose)
+                return;
+            
+            gameObject.SetActive(value);
         }
 
         public void Clear()
         {
             Destroy(gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            _dispose = true;
         }
     }
 }

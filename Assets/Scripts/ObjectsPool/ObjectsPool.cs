@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine;
 
 namespace Scripts.ObjectsPool
 {
@@ -44,6 +45,14 @@ namespace Scripts.ObjectsPool
             element.gameObject.transform.SetParent(container);
             element.gameObject.SetActive(false);
             element.gameObject.transform.localScale = Vector3.one;
+        }
+
+        public void Clear()
+        {
+            foreach (var element in _pool)
+            {
+                UnityEngine.Object.Destroy(element.gameObject);
+            }
         }
 
         private bool HasElement(out T element)

@@ -11,11 +11,13 @@ namespace Scripts.Game
     {
         public event Action<PlantBlock, int> OnAddPlant;
         public event Action<int, int> OnChangeMoney;
-        public event Action<PlantType, int> OnBuyPlants;
-        
+        public event Action<BuyResource[]> OnBuyPlants;
+        public event Action QuestNotComplete;
+
         private readonly IBank _bank;
         private readonly List<PlantBlock> _plants = new List<PlantBlock>();
         private readonly BankSettings _bankSettings;
+        private Dictionary<PlantType, int> _questMap;
 
         public int Money => _bank.Money;
 
@@ -25,6 +27,39 @@ namespace Scripts.Game
             _bank = bank;
             _bankSettings = bankSettings;
             _bank.OnMoneyChange += ChangeMoney;
+        }
+
+        public void SetQuestMap(in Dictionary<PlantType, int> questMap)
+        {
+            _plants.Clear();
+            
+            if (_questMap != null)
+            {
+                _questMap.Clear();
+                _questMap = null;
+            }
+
+            _questMap = questMap;
+        }
+
+        private bool IsQuestComplete()
+        {
+            foreach (var map in _questMap)
+            {
+                var count = 0;
+                for (int i = 0; i < _plants.Count; i++)
+                {
+                    var plant = _plants[i];
+                    if (plant.PlantType == map.Key)
+                    {
+                        count++;
+                    }
+                }
+                if (count < map.Value)
+                    return false;
+            }
+            
+            return true;
         }
 
         public void TryGetMoney(int value, Action<bool> callBack)
@@ -47,31 +82,35 @@ namespace Scripts.Game
 
         public void Buy(in List<PlantType> plantTypes)
         {
-            if (_plants.Count <= 0)
+            if (_plants.Count <= 0 || !IsQuestComplete())
+            {
+                QuestNotComplete?.Invoke();
                 return;
+            }
             
             var totalMoney = 0;
-            foreach (var type in plantTypes)
+            var buyResources = new BuyResource[plantTypes.Count];
+
+            for (var i = 0; i < plantTypes.Count; i++)
             {
-                var availablePlants = new List<PlantBlock>();
-                
-                for (int i = 0; i < _plants.Count; i++)
+                var type = plantTypes[i];
+                var availablePlants = 0;
+                for (int a = 0; a < _plants.Count; a++)
                 {
-                    var plant = _plants[i];
+                    var plant = _plants[a];
                     if (plant.PlantType == type)
                     {
-                        availablePlants.Add(plant);
-                        _plants[i] = null;
+                        availablePlants++;
+                        _plants[a] = null;
                     }
                 }
-                
-                if (availablePlants.Count <= 0)
-                    continue;
+                buyResources[i].PlantType = type;
+                buyResources[i].Count = availablePlants;
                 
                 _plants.RemoveAll(item => item == null);
-                OnBuyPlants?.Invoke(type, availablePlants.Count);
-                totalMoney += availablePlants.Count * _bankSettings.GetResourcePriceByPlantType(type);
+                totalMoney += availablePlants * _bankSettings.GetResourcePriceByPlantType(type);
             }
+            OnBuyPlants?.Invoke(buyResources);
             _bank.MoneyValueChange(totalMoney);
         }
 
@@ -91,5 +130,11 @@ namespace Scripts.Game
         {
             OnChangeMoney?.Invoke(from, to);
         }
+    }
+
+    public struct BuyResource
+    {
+        public PlantType PlantType;
+        public int Count;
     }
 }

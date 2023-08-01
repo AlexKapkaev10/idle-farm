@@ -21,9 +21,10 @@ MonoBehaviour:
   - Field: {fileID: 2256391609032347777, guid: 57a3a312f5463a04cbf6773873eac7e5, type: 3}
     Position: {x: -7.56, y: 0, z: 2.45}
     Rotation: {x: 0, y: 90, z: 0}
+    NotAutoRepair: 0
   _questPlantsData:
   - PlantType: 1
     Count: 35
   _characterSpawnPosition: {x: 0, y: 0.65, z: 0}
   _characterSpawnRotation: {x: 0, y: 180, z: 0}
-  _questTime: 90
+  _questTime: 900
