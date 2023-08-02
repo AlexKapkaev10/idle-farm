@@ -123,9 +123,11 @@ namespace Scripts.Level
                 _updateTimerRoutine = null;
             }
 
-            _completeLevels = isWin ? _completeLevels++ : _completeLevels;
+            _completeLevels = isWin ? _completeLevels +1 : _completeLevels;
+
             if (isWin)
                 SaveLoadService.Instance.SaveLevelProgress(_resourceController.Money, _completeLevels);
+            
             _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
             _characterController.EndLevel(isWin);
             onAddQuestTime += isWin ? null : AddQuestTimeForReward;

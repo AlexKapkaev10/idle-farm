@@ -11,8 +11,7 @@ namespace Scripts.StateMachine
         private readonly IGameUIController _gameUIController;
         
         private Joystick _joystick = default;
-
-        private const string ANIMATION_KEY = "Run";
+        
         private readonly float _runSpeed = default;
         private readonly float _rotateSpeed = default;
         
@@ -28,12 +27,13 @@ namespace Scripts.StateMachine
 
         public void Enter()
         {
-            _character.SetAnimationForMove(ANIMATION_KEY);
+            _character.Animator.SetBool(AnimatorParameters.RunBool, true);
         }
 
         public void Exit()
         {
             
+            _character.Animator.SetBool(AnimatorParameters.RunBool, false);
         }
 
         public void Update()

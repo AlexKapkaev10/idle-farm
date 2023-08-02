@@ -31,6 +31,8 @@ namespace Scripts.Game
 
         private CharacterController _characterController;
 
+        public Animator Animator => _playerAnimator;
+
         [Inject]
         public void Init(
             IResourceController resourceController, 
@@ -44,13 +46,13 @@ namespace Scripts.Game
 
         public void EndLevel(bool isWin)
         {
-            Debug.Log(isWin);
-            
+            _characterController.center = new Vector3(0, 10, 0);
+            _playerAnimator.SetTrigger(isWin ? AnimatorParameters.Win : AnimatorParameters.Lose);
         }
 
         public void StartLevel()
         {
-            Debug.Log("Start");
+            _characterController.center = new Vector3(0, 1, 0);
         }
 
         public void Move(Vector3 velocity, float magnitude)
@@ -73,12 +75,6 @@ namespace Scripts.Game
             _playerAnimator?.SetTrigger(fieldState == FieldStateType.Default
                 ? AnimatorParameters.Base
                 : AnimatorParameters.Mow);
-        }
-
-        public void SetAnimationForMove(string key)
-        {
-            if (_playerAnimator)
-                _playerAnimator.SetTrigger(Animator.StringToHash(key));
         }
 
         public Transform GetBodyTransform()
@@ -106,12 +102,11 @@ namespace Scripts.Game
         {
             transform.position = position;
             _bodyTransform.localEulerAngles = bodyRotation;
-            ChangeMoveState(false);
         }
 
-        public void ChangeMoveState(bool isMove)
+        public void ChangeMoveState(bool isRun)
         {
-            _characterStateMachine.SetBehaviorByType(isMove ? CharacterStateType.Run : CharacterStateType.Idle);
+            _characterStateMachine.SetBehaviorByType(isRun ? CharacterStateType.Run : CharacterStateType.Idle);
         }
 
         private void Awake()
@@ -127,7 +122,7 @@ namespace Scripts.Game
         private void Start()
         {
             _characterStateMachine.InitBehaviors(this);
-            _characterStateMachine.SetBehaviorByType(CharacterStateType.Idle);
+            ChangeMoveState(false);
         }
 
         private void Update()
@@ -163,7 +158,11 @@ namespace Scripts.Game
     public static partial class AnimatorParameters
     {
         public static readonly int Base = Animator.StringToHash("Base");
+        public static readonly int IdleBool = Animator.StringToHash("IdleBool");
+        public static readonly int RunBool = Animator.StringToHash("RunBool");
         public static readonly int Mow = Animator.StringToHash("Mow");
+        public static readonly int Win = Animator.StringToHash("Win");
+        public static readonly int Lose = Animator.StringToHash("Lose");
         public static readonly int MowSpeed = Animator.StringToHash("mowSpeed");
         public static readonly int RunSpeed = Animator.StringToHash("runSpeed");
     }

@@ -28,7 +28,6 @@ namespace Scripts.Game
             if (_joystick)
             {
                 _joystick.OnPress += ChangeMoveState;
-                _moveControllable ??= _characterController.GetGameObject().GetComponent<IMoveControllable>();
             }
             else
             {
@@ -46,7 +45,7 @@ namespace Scripts.Game
 
         private void ChangeMoveState(bool isMove)
         {
-            _moveControllable.ChangeMoveState(isMove);
+            _characterController.ChangeMoveState(isMove);
         }
     }
 }

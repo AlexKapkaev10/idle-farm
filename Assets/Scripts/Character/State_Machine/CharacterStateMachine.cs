@@ -2,6 +2,7 @@
 using Scripts.Game;
 using Scripts.Interfaces;
 using Scripts.UI;
+using UnityEngine;
 using VContainer;
 
 namespace Scripts.StateMachine
@@ -13,8 +14,10 @@ namespace Scripts.StateMachine
         
         private Dictionary<CharacterStateType, ICharacterBehavior> _behaviorsMap;
         private ICharacterBehavior _currentBehavior;
+        private CharacterStateType _characterStateType;
 
         public ICharacterBehavior CurrentBehavior => _currentBehavior;
+        public CharacterStateType CharacterStateType => _characterStateType;
 
         [Inject]
         public CharacterStateMachine(IObjectResolver resolver, CharacterSettings characterSettings)
@@ -37,6 +40,7 @@ namespace Scripts.StateMachine
             if (_currentBehavior == GetBehavior<ICharacterBehavior>(type))
                 return;
             
+            _characterStateType = type;
             _currentBehavior?.Exit();
             _currentBehavior = GetBehavior<ICharacterBehavior>(type);
             _currentBehavior?.Enter();
