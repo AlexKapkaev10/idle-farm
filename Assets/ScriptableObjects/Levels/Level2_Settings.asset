@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Level2_Settings
   m_EditorClassIdentifier: 
   _buildingsData:
-  - PlantTypes: 0200000001000000
-    Prefab: {fileID: 641712711119922530, guid: 37eddb8c08ccd804d837790f0a765c51, type: 3}
-    Position: {x: 10, y: 0.58, z: 10}
-    Rotation: {x: 0, y: 0, z: 0}
+  - Prefab: {fileID: 641712711119922530, guid: d6e628d527c5e734dba374de67ad9f7b, type: 3}
+    Position: {x: 10, y: 0.3, z: 8}
+    Rotation: {x: 0, y: 180, z: 0}
   _fieldsData:
   - Field: {fileID: 8567691467776511428, guid: e73f4317ef043314897bb15eb1899954, type: 3}
     Position: {x: 8.11, y: 0, z: -2.89}
@@ -24,7 +23,9 @@ MonoBehaviour:
     AutoRepair: 0
   _questPlantsData:
   - PlantType: 2
-    Count: 1
+    Count: 40
   _characterSpawnPosition: {x: 0, y: 0.65, z: 0}
   _characterSpawnRotation: {x: 0, y: 180, z: 0}
+  _bobSpawnPosition: {x: 10, y: 0.5, z: 5}
+  _bobSpawnRotation: {x: 0, y: 215, z: 0}
   _questTime: 90

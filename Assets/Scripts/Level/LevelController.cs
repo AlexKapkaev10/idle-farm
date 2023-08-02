@@ -62,6 +62,7 @@ namespace Scripts.Level
             _resourceController.OnBuyPlants += BuyResources;
             _resourceController.OnChangeMoney += MoneyChange;
             _resourceController.QuestNotComplete += QuestNotComplete;
+            _resourceController.OnResourceComplete += ResourceComplete;
             InitializeLevel();
         }
 
@@ -72,6 +73,7 @@ namespace Scripts.Level
             _resourceController.OnBuyPlants -= BuyResources;
             _resourceController.OnChangeMoney -= MoneyChange;
             _resourceController.QuestNotComplete -= QuestNotComplete;
+            _resourceController.OnResourceComplete -= ResourceComplete;
         }
 
         private void InitializeLevel()
@@ -85,17 +87,49 @@ namespace Scripts.Level
 
             _currentLevel = Instantiate(_levelPrefabs[index]);
             _currentLevel.OnQuestReady += InitializeQuest;
+            _currentLevel.OnFieldClear += FieldClear;
             _currentLevel.Init(_characterController, _bobController);
+        }
+
+        private void InitializeQuest(LevelQuestData levelData)
+        {
+            _currentLevel.OnQuestReady -= InitializeQuest;
+            
+            _questTime = levelData.QuestTime;
+            _questPlantsData = levelData.QuestPlantsData;
+            
+            _questMap = null;
+            _questMap = new Dictionary<PlantType, int>();
+            
+            foreach (var plantData in _questPlantsData)
+            {
+                _questMap.Add(plantData.PlantType, plantData.Count);
+            }
+            
+            _resourceController.SetQuestMap(_questMap);
+            
+            onStartPlay += StartTimer;
+            _gameUIController.CreateQuestInfo(levelData, onStartPlay);
+        }
+
+        private void FieldClear(SowingField field)
+        {
+            _resourceController.CalculateQuestComplete(field);
         }
 
         private void QuestNotComplete()
         {
-            Debug.Log("Чарли! Этого не достаточно");
             _bobController.SwitchAnimation(BobAnimationType.NotComplete);
+        }
+
+        private void ResourceComplete(PlantType type)
+        {
+            _gameUIController.ResourceComplete(type);
         }
 
         private void ClearLevel()
         {
+            _currentLevel.OnFieldClear -= FieldClear;
             Destroy(_currentLevel.gameObject);
             _currentLevel = null;
         }
@@ -145,26 +179,6 @@ namespace Scripts.Level
         private void AddResources(PlantBlock plantBlock, int count)
         {
             _gameUIController.DisplayPlantCount(plantBlock, count);
-        }
-
-        private void InitializeQuest(LevelQuestData levelData)
-        {
-            _currentLevel.OnQuestReady -= InitializeQuest;
-            
-            _questTime = levelData.QuestTime;
-            _questPlantsData = levelData.QuestPlantsData;
-            
-            _questMap = null;
-            _questMap = new Dictionary<PlantType, int>();
-            
-            foreach (var plantData in _questPlantsData)
-            {
-                _questMap.Add(plantData.PlantType, plantData.Count);
-            }
-            
-            _resourceController.SetQuestMap(_questMap);
-            onStartPlay += StartTimer;
-            _gameUIController.CreateQuestInfo(levelData, onStartPlay);
         }
 
         private void StartTimer()

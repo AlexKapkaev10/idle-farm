@@ -9,6 +9,8 @@ namespace Scripts.UI
         [SerializeField] private TMP_Text _textCount;
         [SerializeField] private Image _imageIcon;
 
+        [SerializeField] private Color _colorComplete;
+
         private string _questCount;
 
         public void Init(string questCount, Sprite icon)
@@ -22,6 +24,11 @@ namespace Scripts.UI
         {
             string progress = $"{value}/{_questCount}";
             _textCount.SetText(progress);
+        }
+
+        public void SetColorComplete()
+        {
+            _textCount.color = _colorComplete;
         }
 
     }

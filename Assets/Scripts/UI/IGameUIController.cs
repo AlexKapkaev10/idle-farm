@@ -16,5 +16,6 @@ namespace Scripts.UI
         public void CreateWinLoseView(bool isWin, Action callBack);
         public void UpdateTimerStyle(bool isDefault);
         public void CreateQuestInfo(LevelQuestData levelQuestData, Action callBack);
+        public void ResourceComplete(PlantType type);
     }
 }

@@ -25,5 +25,4 @@ MonoBehaviour:
   _winLoseViewPrefab: {fileID: 8091432854343041498, guid: 7e22d6409942c344888f7f545e81526d, type: 3}
   _winHeader: "\u0423\u0441\u043F\u0435\u0445"
   _loseHeader: "\u041F\u0440\u043E\u0432\u0430\u043B"
-  _timerColorDefault: {r: 0, g: 1, b: 0.28627452, a: 1}
-  _timerColorHurry: {r: 1, g: 0.13725491, b: 0.2627451, a: 1}
+  _displayWinLoseTime: 3

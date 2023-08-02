@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d63d4f8e484ed7b64ba538bb767f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mowSpeed: 4
+  _mowSpeed: 4.5
   _toolType: 1
 --- !u!1 &8866029338525979135
 GameObject:

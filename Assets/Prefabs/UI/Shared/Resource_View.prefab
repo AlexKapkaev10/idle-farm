@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textCount: {fileID: 4614116912751778613}
   _imageIcon: {fileID: 6284375454513083673}
+  _colorComplete: {r: 0, g: 1, b: 0.28627452, a: 1}
 --- !u!1001 &8594902127592019787
 PrefabInstance:
   m_ObjectHideFlags: 0

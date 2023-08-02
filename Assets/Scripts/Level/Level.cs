@@ -11,6 +11,7 @@ namespace Scripts.Level
     public class Level : MonoBehaviour
     {
         public event Action<LevelQuestData> OnQuestReady;
+        public event Action<SowingField> OnFieldClear;
         
         [SerializeField] private LevelSettings _levelSettings;
 
@@ -57,7 +58,20 @@ namespace Scripts.Level
                 var field = Instantiate(fieldData.Field, transform);
                 field.SetTransform(fieldData.Position, fieldData.Rotation);
                 field.AutoRepair = fieldData.AutoRepair;
+                field.OnFieldClear += FieldClear;
             }
+        }
+
+        private void OnDestroy()
+        {
+            OnQuestReady = null;
+            OnFieldClear = null;
+        }
+
+        private void FieldClear(SowingField sowingField)
+        {
+            sowingField.OnFieldClear -= FieldClear;
+            OnFieldClear?.Invoke(sowingField);
         }
     }
 

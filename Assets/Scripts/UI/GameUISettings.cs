@@ -21,6 +21,8 @@ namespace Scripts.UI
         [SerializeField] private string _winHeader;
         [SerializeField] private string _loseHeader;
 
+        [SerializeField] private float _displayWinLoseTime;
+
         public List<GameUI> DefaultUIPrefabs => _defaultUIPrefabs;
         public Joystick JoystickPrefab => _joystickPrefab;
         public ResourceView ResourceViewPrefab => _resourceViewPrefab;
@@ -29,6 +31,7 @@ namespace Scripts.UI
         public GameUI WinLoseViewPrefab => _winLoseViewPrefab;
         public string WinHeader => _winHeader;
         public string LoseHeader => _loseHeader;
+        public float DisplayWinLoseTime => _displayWinLoseTime;
 
         public Sprite GetSpriteByPlantType(PlantType type)
         {

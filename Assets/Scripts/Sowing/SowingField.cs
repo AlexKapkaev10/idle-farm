@@ -13,6 +13,8 @@ namespace Scripts
 {
     public class SowingField : MonoBehaviour
     {
+        public Action<SowingField> OnFieldClear;
+        
         [SerializeField] private List<SowingCell> _cells = new List<SowingCell>();
         [SerializeField] private Collider _collider;
         [SerializeField] private Transform _cellsPoint;
@@ -21,7 +23,6 @@ namespace Scripts
         [SerializeField] private PlantType _plantType;
         [Range(0, 40)]
         [SerializeField] private int _sowingCellCount;
-
         [SerializeField] private bool _autoRepair = true;
         
         private ObjectsPool<PlantBlock> _blocksPool;
@@ -31,6 +32,9 @@ namespace Scripts
         private Transform _characterTransform;
         private int _interactCount = 0;
         private float _cellInteractDistance;
+
+        public PlantType PlantType => _plantType;
+        public int Count => _sowingCellCount;
 
         public bool AutoRepair
         {
@@ -118,6 +122,7 @@ namespace Scripts
 
         private void OnDestroy()
         {
+            OnFieldClear = null;
             if (_blocks == null && _blocks.Count <= 0)
                 return;
             
@@ -164,7 +169,9 @@ namespace Scripts
                                 SowingCell cell = _cells[i];
                                 cell.OnMow -= CellInteract;
                             }
-
+                            
+                            OnFieldClear?.Invoke(this);
+                            
                             Destroy(_marker);
                             _blocksPool.Clear();
                             _blocksPool.OnCreate -= CreateNewBlock;
@@ -184,10 +191,6 @@ namespace Scripts
                 if (cell.IsMow || !_characterTransform)
                     continue;
                 
-                var direction = _characterTransform.InverseTransformPoint(cell.transform.position);
-                if (direction.z < 0)
-                    continue;
-                
                 var distance = Vector3.Distance(_characterTransform.position, cell.transform.position);
                 
                 if (distance < _cellInteractDistance)
@@ -200,6 +203,11 @@ namespace Scripts
                     _iCharacterController.AddPlant(block);
                 }
             }
+        }
+
+        private Vector3 GetPointByTransform(in Transform from, in Transform to)
+        {
+            return from.InverseTransformPoint(to.position);
         }
 
         private void OnBlockReturn(PlantBlock block)

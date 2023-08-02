@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingsData:
   - Prefab: {fileID: 641712711119922530, guid: d6e628d527c5e734dba374de67ad9f7b, type: 3}
-    Position: {x: 10, y: 0.58, z: 10}
+    Position: {x: 10, y: 0.3, z: 8}
     Rotation: {x: 0, y: 180, z: 0}
   _fieldsData:
   - Field: {fileID: 2256391609032347777, guid: 57a3a312f5463a04cbf6773873eac7e5, type: 3}
@@ -23,9 +23,9 @@ MonoBehaviour:
     AutoRepair: 0
   _questPlantsData:
   - PlantType: 1
-    Count: 1
+    Count: 40
   _characterSpawnPosition: {x: 0, y: 0.65, z: 0}
   _characterSpawnRotation: {x: 0, y: 180, z: 0}
-  _bobSpawnPosition: {x: 11.5, y: 0.5, z: 5}
+  _bobSpawnPosition: {x: 10, y: 0.5, z: 5}
   _bobSpawnRotation: {x: 0, y: 215, z: 0}
-  _questTime: 20
+  _questTime: 60

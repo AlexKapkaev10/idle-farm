@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Scripts.Plants;
 using Scripts.Resources;
+using UnityEngine;
 using VContainer;
 
 namespace Scripts.Game
@@ -13,11 +14,13 @@ namespace Scripts.Game
         public event Action<int, int> OnChangeMoney;
         public event Action<BuyResource[]> OnBuyPlants;
         public event Action QuestNotComplete;
+        public event Action<PlantType> OnResourceComplete;
 
         private readonly IBank _bank;
         private readonly List<PlantBlock> _plants = new List<PlantBlock>();
         private readonly BankSettings _bankSettings;
         private Dictionary<PlantType, int> _questMap;
+        private bool isQuestComplete;
 
         public int Money => _bank.Money;
 
@@ -31,6 +34,7 @@ namespace Scripts.Game
 
         public void SetQuestMap(in Dictionary<PlantType, int> questMap)
         {
+            isQuestComplete = false;
             _plants.Clear();
             
             if (_questMap != null)
@@ -42,24 +46,25 @@ namespace Scripts.Game
             _questMap = questMap;
         }
 
-        private bool IsQuestComplete()
+        public void CalculateQuestComplete(in SowingField completeField)
         {
+            if (_questMap[completeField.PlantType] <= 0 || isQuestComplete)
+                return;
+            
+            var calculatedCount = _questMap[completeField.PlantType] -= completeField.Count;
+            if (calculatedCount <= 0)
+                OnResourceComplete?.Invoke(completeField.PlantType);
+
             foreach (var map in _questMap)
             {
-                var count = 0;
-                for (int i = 0; i < _plants.Count; i++)
+                if (map.Value > 0)
                 {
-                    var plant = _plants[i];
-                    if (plant.PlantType == map.Key)
-                    {
-                        count++;
-                    }
+                    return;
                 }
-                if (count < map.Value)
-                    return false;
             }
-            
-            return true;
+
+            isQuestComplete = true;
+            Debug.Log("questComplete");
         }
 
         public void TryGetMoney(int value, Action<bool> callBack)
@@ -82,7 +87,7 @@ namespace Scripts.Game
 
         public void Buy(in List<PlantType> plantTypes)
         {
-            if (_plants.Count <= 0 || !IsQuestComplete())
+            if (_plants.Count == 0 || !isQuestComplete)
             {
                 QuestNotComplete?.Invoke();
                 return;

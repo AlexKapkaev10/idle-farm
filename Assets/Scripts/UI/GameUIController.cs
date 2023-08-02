@@ -25,6 +25,7 @@ namespace Scripts.UI
         private QuestInfoView _questInfoView;
         private WinLoseView _winLoseView;
         private ResourceGroup _resourceGroup;
+        private WaitForSeconds _displayWinLoseDelay;
 
         public void DisplayPlantCount(PlantBlock plantBlock, int count)
         {
@@ -55,20 +56,26 @@ namespace Scripts.UI
         public void CreateWinLoseView(bool isWin, Action callBack)
         {
             DestroyJoystick();
+            StartCoroutine(DisplayWinLoseViewAsync());
             
-            _gameInfoView.SetVisible(false);
-            _winLoseView = Instantiate(_settings.WinLoseViewPrefab, transform) as WinLoseView;
-            _winLoseView?.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
-            _winLoseView?.ButtonAction.onClick.AddListener(PlayLevelClick);
+            IEnumerator DisplayWinLoseViewAsync()
+            {
+                yield return _displayWinLoseDelay;
+                _winLoseView = Instantiate(_settings.WinLoseViewPrefab, transform) as WinLoseView;
+                _winLoseView?.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
+
+                _gameInfoView.SetVisible(false);
+                _winLoseView?.ButtonAction.onClick.AddListener(PlayLevelClick);
             
-            if (callBack != null)
-            {
-                OnAddTimeClick = callBack;
-                _winLoseView?.ButtonAddTime.onClick.AddListener(AddTimeButtonClick);
-            }
-            else
-            {
-                _winLoseView?.ButtonAddTime.onClick.RemoveAllListeners();
+                if (callBack != null)
+                {
+                    OnAddTimeClick = callBack;
+                    _winLoseView?.ButtonAddTime.onClick.AddListener(AddTimeButtonClick);
+                }
+                else
+                {
+                    _winLoseView?.ButtonAddTime.onClick.RemoveAllListeners();
+                }
             }
         }
 
@@ -94,6 +101,11 @@ namespace Scripts.UI
                 _questInfoView.ResourceGroup.AddResourceView(resourceView);
                 _resourceViewMap.Add(data.PlantType, resourceView);
             }
+        }
+
+        public void ResourceComplete(PlantType type)
+        {
+            _resourceViewMap[type].SetColorComplete();
         }
 
         /*public T GetGameUIByType<T>() where T : GameUI
@@ -130,6 +142,11 @@ namespace Scripts.UI
                 }
             }
         }*/
+
+        private void Awake()
+        {
+            _displayWinLoseDelay = new WaitForSeconds(_settings.DisplayWinLoseTime);
+        }
 
         private void OnDestroy()
         {
@@ -199,5 +216,7 @@ namespace Scripts.UI
                 yield return null;
             }
         }
+
+
     }
 }
