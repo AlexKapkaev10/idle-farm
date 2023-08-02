@@ -14,6 +14,7 @@ namespace Scripts.Architecture
     public sealed class GameScope : LifetimeScope
     {
         [SerializeField] private Character _character;
+        [SerializeField] private BobController _bobController;
         [SerializeField] private ToolsSettings _toolsSettings;
         [SerializeField] private BankSettings _bankSettings;
         [SerializeField] private CharacterSettings _characterSettings;
@@ -29,6 +30,7 @@ namespace Scripts.Architecture
             builder.RegisterComponentInNewPrefab<Character>(_character, Lifetime.Scoped)
                 .As<ICharacterController>()
                 .WithParameter(_toolsSettings);
+            builder.RegisterComponentInNewPrefab<BobController>(_bobController, Lifetime.Scoped).As<IBobController>();
             builder.RegisterComponentInHierarchy<LevelController>().As<ILevelController>();
             builder.RegisterComponentInHierarchy<JoystickInputHandler>().As<IJoystickInputHandler>();
         }

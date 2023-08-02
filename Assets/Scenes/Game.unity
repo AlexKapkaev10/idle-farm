@@ -314,6 +314,7 @@ MonoBehaviour:
   autoInjectGameObjects:
   - {fileID: 1975510879}
   _character: {fileID: 8222355566329732046, guid: ab1f1b426c72605418a354564709bb50, type: 3}
+  _bobController: {fileID: 682195301610784025, guid: 7ac470e91f5f3f340b0b0806aa7164d6, type: 3}
   _toolsSettings: {fileID: 11400000, guid: be873a67b167cd348bd415d250472da1, type: 2}
   _bankSettings: {fileID: 11400000, guid: 119a1d3018cb94349ba11e5e2da6859b, type: 2}
   _characterSettings: {fileID: 11400000, guid: 1275f5c1632190745a0efc8c87e5e701, type: 2}

@@ -36,8 +36,6 @@ namespace Scripts.UI
 
         public void UpdateTextColor(bool isDefault)
         {
-            if (!isDefault)
-                SetTimerText("00:00");
             _textTimer.color = isDefault ? _settings.ColorDefaultTimer : _settings.ColorHurryTimer;
         }
 

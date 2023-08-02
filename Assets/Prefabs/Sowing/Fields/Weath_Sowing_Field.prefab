@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2256391609032347778
 Transform:
@@ -121,7 +121,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2256391610092870606
 Transform:
@@ -233,6 +233,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &1430870207784343224 stripped
@@ -258,6 +274,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2256391609032347778}
     m_Modifications:
+    - target: {fileID: 2845500065975146747, guid: 6f547a9e82d6253408d52699f04475da, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4737331337023054333, guid: 6f547a9e82d6253408d52699f04475da, type: 3}
       propertyPath: m_LocalScale.x
       value: 7
@@ -273,6 +293,10 @@ PrefabInstance:
     - target: {fileID: 7042653284236953249, guid: 6f547a9e82d6253408d52699f04475da, type: 3}
       propertyPath: m_Name
       value: Map_Marker
+      objectReference: {fileID: 0}
+    - target: {fileID: 7042653284236953249, guid: 6f547a9e82d6253408d52699f04475da, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8574295690285184996, guid: 6f547a9e82d6253408d52699f04475da, type: 3}
       propertyPath: m_Sprite
@@ -389,6 +413,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &1662676153672683868 stripped
@@ -461,6 +501,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -535,6 +591,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &1883255156554442644 stripped
@@ -607,6 +679,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -681,6 +769,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &1755836371567386701 stripped
@@ -753,6 +857,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -827,6 +947,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!114 &524211347139151552 stripped
@@ -899,6 +1035,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -973,6 +1125,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &821276153183862961 stripped
@@ -1045,6 +1213,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -1119,6 +1303,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &4103170213162556709 stripped
@@ -1191,6 +1391,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -1265,6 +1481,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &2599546093304163737 stripped
@@ -1337,6 +1569,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -1411,6 +1659,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &3348744000452502512 stripped
@@ -1483,6 +1747,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -1557,6 +1837,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &6322389511589838421 stripped
@@ -1629,6 +1925,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -1703,6 +2015,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!114 &6351828574526848168 stripped
@@ -1775,6 +2103,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -1849,6 +2193,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &4645616339469953485 stripped
@@ -1921,6 +2281,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -1995,6 +2371,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &4979007646149809248 stripped
@@ -2067,6 +2459,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -2141,6 +2549,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &4900633962653948577 stripped
@@ -2213,6 +2637,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -2287,6 +2727,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!114 &8130318884937371204 stripped
@@ -2359,6 +2815,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -2433,6 +2905,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!114 &8757845765495623744 stripped
@@ -2505,6 +2993,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -2579,6 +3083,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!114 &9193379867763545049 stripped
@@ -2651,6 +3171,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -2725,6 +3261,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &8946971684636842580 stripped
@@ -2797,6 +3349,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -2871,6 +3439,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!114 &7021818950071486180 stripped
@@ -2943,6 +3527,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
@@ -3017,6 +3617,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!114 &7233686090298348329 stripped
@@ -3090,6 +3706,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weath_Cell
       objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
 --- !u!4 &7273423345152582293 stripped
@@ -3162,6 +3794,22 @@ PrefabInstance:
     - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
       propertyPath: m_Name
       value: Weath_Cell
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376216418051723471, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562317266857155793, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6407812362731694257, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253885670875098264, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ce90dd4a63a6e4eb52836f2b7e54d0, type: 3}

@@ -56,6 +56,7 @@ namespace Scripts.Game
         public void SetAnimationForField(FieldStateType fieldState)
         {
             _currentTool?.SetActive(fieldState == FieldStateType.Mow);
+            
             if (!_playerAnimator)
                 return;
             _playerAnimator?.SetTrigger(fieldState == FieldStateType.Default

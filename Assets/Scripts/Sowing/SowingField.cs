@@ -102,9 +102,9 @@ namespace Scripts
                 for (int i = 0; i < _cells.Count; i++)
                 {
                     SowingCell cell = _cells[i];
-                    cell.Init(_sowingData, _plantType);
                     cell.OnRipe += CellInteract;
                     cell.OnMow += CellInteract;
+                    cell.Init(_sowingData, _plantType);
                 }
             }
         }
@@ -113,6 +113,7 @@ namespace Scripts
         {
             if (_blocks == null && _blocks.Count <= 0)
                 return;
+            
             _blocksPool.OnCreate -= CreateNewBlock;
             foreach (var block in _blocks)
             {

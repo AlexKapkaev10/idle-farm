@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Enums;
+using Scripts.Game;
 using Scripts.Interfaces;
 using UnityEngine;
 
@@ -13,9 +14,9 @@ namespace Scripts.Level
         
         [SerializeField] private LevelSettings _levelSettings;
 
-        public void Init(in ICharacterController characterController, in ILevelController levelController)
+        public void Init(in ICharacterController characterController, in IBobController bobController)
         {
-            CreateLevel(characterController, levelController);
+            CreateLevel(characterController, bobController);
             
             var levelQuestData = new LevelQuestData
             {
@@ -26,12 +27,13 @@ namespace Scripts.Level
             OnQuestReady?.Invoke(levelQuestData);
         }
 
-        private void CreateLevel(in ICharacterController characterController, in ILevelController levelController)
+        private void CreateLevel(in ICharacterController characterController, in IBobController bobController)
         {
             if (_levelSettings == null)
                 return;
             
             characterController.SetTransform(_levelSettings.CharacterSpawnPosition, _levelSettings.CharacterSpawnRotation);
+            bobController.SetTransform(_levelSettings.BobSpawnPosition, _levelSettings.BobSpawnRotation);
             var questPlantsData = _levelSettings.QuestPlantsData;
             var plantTypes = new PlantType[questPlantsData.Count];
 
@@ -45,7 +47,7 @@ namespace Scripts.Level
             {
                 var build = Instantiate(buildData.Prefab, transform);
                 build.SetTransform(buildData.Position, buildData.Rotation);
-                build.SetDependency(characterController, levelController);
+                build.SetDependency(characterController);
                 build.PlantTypes = plantTypes.ToList();
             }
 

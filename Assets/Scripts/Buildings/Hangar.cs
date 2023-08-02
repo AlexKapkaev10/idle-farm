@@ -1,23 +1,18 @@
-using Scripts.Game;
+using System.Collections;
 using UnityEngine;
 
 namespace Scripts.Buildings
 {
     public class Hangar : Build
     {
-        [SerializeField] private BobController _bobController;
-
-        protected override void LevelComplete(bool isWin)
+        [SerializeField] private Collider _collider;
+        
+        private IEnumerator Start()
         {
-            _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
+            yield return null;
+            _collider.enabled = true;
         }
-
-        protected override void QuestNotComplete()
-        {
-            Debug.Log("Чарли! Этого не достаточно");
-            _bobController.SwitchAnimation(BobAnimationType.NotComplete);
-        }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == _characterController.GetGameObject())

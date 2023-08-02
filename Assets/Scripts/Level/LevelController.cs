@@ -15,13 +15,13 @@ namespace Scripts.Level
     public sealed class LevelController : MonoBehaviour, ILevelController
     {
         public event Action<bool> OnLevelComplete;
-        public event Action OnQuestNotComplete;
         private event Action onStartPlay;
         private event Action onAddQuestTime;
 
         [SerializeField] private LevelControllerSettings _controllerSettings;
 
         private ICharacterController _characterController = default;
+        private IBobController _bobController = default;
         private IGameUIController _gameUIController = default;
         private IResourceController _resourceController = default;
         
@@ -38,9 +38,14 @@ namespace Scripts.Level
         private Dictionary<PlantType, int> _questMap; 
 
         [Inject]
-        private void Construct(ICharacterController characterController, IGameUIController gameUIController, IResourceController resourceController)
+        private void Construct(
+            ICharacterController characterController,
+            IBobController bobController,
+            IGameUIController gameUIController, 
+            IResourceController resourceController)
         {
             _characterController = characterController;
+            _bobController = bobController;
             _gameUIController = gameUIController;
             _resourceController = resourceController;
             
@@ -80,13 +85,14 @@ namespace Scripts.Level
 
             _currentLevel = Instantiate(_levelPrefabs[index]);
             _currentLevel.OnQuestReady += InitializeQuest;
-            _currentLevel.Init(_characterController, this);
+            _currentLevel.Init(_characterController, _bobController);
             _gameUIController.UpdateTimerStyle(true);
         }
 
         private void QuestNotComplete()
         {
-            OnQuestNotComplete?.Invoke();
+            Debug.Log("Чарли! Этого не достаточно");
+            _bobController.SwitchAnimation(BobAnimationType.NotComplete);
         }
 
         private void ClearLevel()
@@ -131,6 +137,7 @@ namespace Scripts.Level
             }
 
             _gameUIController.CreateWinLoseView(isWin, isWin ? null : onAddQuestTime);
+            _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
             OnLevelComplete?.Invoke(isWin);
         }
 

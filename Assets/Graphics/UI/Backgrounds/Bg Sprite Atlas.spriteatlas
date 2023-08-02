@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Bg Sprite Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: ba7f87a8e49bd514a95c83f921d53c96, type: 3}
+    - {fileID: 2800000, guid: 0fd076cd56c351449bd5fd81e870c6c1, type: 3}
+    - {fileID: 2800000, guid: 34babd4341d6e4d468b06a718d0e3782, type: 3}
+    - {fileID: 2800000, guid: 89052408d4765bd4a845ecea18b4ff5a, type: 3}
+    - {fileID: 2800000, guid: 298e3566777793847b667773553642fa, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 34babd4341d6e4d468b06a718d0e3782, type: 3}
+  - {fileID: 21300000, guid: 298e3566777793847b667773553642fa, type: 3}
+  - {fileID: 21300000, guid: 89052408d4765bd4a845ecea18b4ff5a, type: 3}
+  - {fileID: -2413806693520163455, guid: ba7f87a8e49bd514a95c83f921d53c96, type: 3}
+  - {fileID: 21300000, guid: 0fd076cd56c351449bd5fd81e870c6c1, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - bg-rect-3
+  - bd-rect-circle-white
+  - bd-rect-2
+  - Circle
+  - bg-rect-2
+  m_RenderDataMap: {}
+  m_Tag: Bg Sprite Atlas
+  m_IsVariant: 0

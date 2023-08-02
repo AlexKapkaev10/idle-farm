@@ -38,7 +38,8 @@ namespace Scripts.UI
 
         public void DisplayByuPlants(PlantType type, int from)
         {
-            StartCoroutine(TextCounterCoroutine(_resourceViewMap[type], from, 0));
+            var view = _resourceViewMap[type];
+            view.StartCoroutine(TextCounterCoroutine(view, from, 0));
         }
 
         public void DisplayTimer(string textTimer)

@@ -2,9 +2,17 @@ using UnityEngine;
 
 namespace Scripts.Game
 {
-    public class BobController : MonoBehaviour
+    public class BobController : MonoBehaviour, IBobController
     {
         [SerializeField] private Animator _animator;
+        [SerializeField] private Transform _bodTransform;
+
+        private Transform _transform;
+
+        private void Awake()
+        {
+            _transform = transform;
+        }
 
         public void SwitchAnimation(BobAnimationType type)
         {
@@ -23,6 +31,12 @@ namespace Scripts.Game
                     _animator?.SetTrigger(AnimatorParameters.BobLose);
                     break;
             }
+        }
+
+        public void SetTransform(Vector3 position, Vector3 bodyRotation)
+        {
+            _transform.position = position;
+            _bodTransform.localEulerAngles = bodyRotation;
         }
     }
     
