@@ -42,6 +42,17 @@ namespace Scripts.Game
             _characterStateMachine = characterStateMachine;
         }
 
+        public void EndLevel(bool isWin)
+        {
+            Debug.Log(isWin);
+            
+        }
+
+        public void StartLevel()
+        {
+            Debug.Log("Start");
+        }
+
         public void Move(Vector3 velocity, float magnitude)
         {
             _characterController.Move(velocity);

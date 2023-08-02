@@ -9,6 +9,8 @@ namespace Scripts.Interfaces
     public interface ICharacterController
     {
         public event Action OnMow;
+        public void EndLevel(bool isWin);
+        public void StartLevel();
         public void Move(Vector3 velocity, float magnitude);
         public void Rotate(Quaternion rotation);
         public void SetAnimationForField(FieldStateType fieldState);

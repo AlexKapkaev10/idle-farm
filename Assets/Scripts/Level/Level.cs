@@ -34,6 +34,7 @@ namespace Scripts.Level
             
             characterController.SetTransform(_levelSettings.CharacterSpawnPosition, _levelSettings.CharacterSpawnRotation);
             bobController.SetTransform(_levelSettings.BobSpawnPosition, _levelSettings.BobSpawnRotation);
+            
             var questPlantsData = _levelSettings.QuestPlantsData;
             var plantTypes = new PlantType[questPlantsData.Count];
 

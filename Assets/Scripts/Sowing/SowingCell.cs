@@ -8,7 +8,6 @@ namespace Scripts
 {
     public class SowingCell : MonoBehaviour
     {
-        public event Action OnRipe;
         public event Action OnMow;
 
         [SerializeField]
@@ -47,7 +46,6 @@ namespace Scripts
             _plant = Instantiate(sowingData.GetPlant(), _plantPoint);
             _meshRenderer.material = _sowingData.GetSowMaterial();
             _plantPoint.localScale = Vector3.one;
-            OnRipe?.Invoke();
             _isMow = false;
             _meshRenderer.material = _sowingData.GetRipeMaterial();
         }
@@ -60,7 +58,6 @@ namespace Scripts
         private void OnDestroy()
         {
             OnMow = null;
-            OnRipe = null;
         }
 
         private void Interact()
@@ -81,8 +78,7 @@ namespace Scripts
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
-
-            OnRipe?.Invoke();
+            
             _isMow = false;
             _meshRenderer.material = _sowingData.GetRipeMaterial();
         }

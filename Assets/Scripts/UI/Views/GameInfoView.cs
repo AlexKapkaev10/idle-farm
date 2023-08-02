@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Scripts.Game;
 using TMPro;
 using UnityEngine;
 
@@ -24,9 +23,9 @@ namespace Scripts.UI
             }
             
             if (isVisible)
-                _infoGroup.DOFade(1, _settings.InfoFadeDuration).SetEase(Ease.Linear).OnComplete(KillTween);
+                _infoGroup.DOFade(1, _settings.InfoFadeDuration).SetEase(Ease.Linear).OnComplete(()=> DOTween.Kill(_infoGroup));
             else
-                _infoGroup.DOFade(0, _settings.InfoFadeDuration).SetEase(Ease.Linear).OnComplete(KillTween);
+                _infoGroup.DOFade(0, _settings.InfoFadeDuration).SetEase(Ease.Linear).OnComplete(Clear);
         }
         
         public void SetTimerText(string value)
@@ -48,11 +47,12 @@ namespace Scripts.UI
 
         private void OnDestroy()
         {
-            KillTween();
+            Clear();
         }
 
-        private void KillTween()
+        private void Clear()
         {
+            UpdateTextColor(true);
             DOTween.Kill(_infoGroup);
         }
     }

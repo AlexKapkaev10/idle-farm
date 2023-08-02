@@ -1,3 +1,4 @@
+using System;
 using Scripts.Enums;
 using Scripts.Interfaces;
 using Scripts.ScriptableObjects;
@@ -13,6 +14,7 @@ namespace Scripts
     public class SowingField : MonoBehaviour
     {
         [SerializeField] private List<SowingCell> _cells = new List<SowingCell>();
+        [SerializeField] private Collider _collider;
         [SerializeField] private Transform _cellsPoint;
         [SerializeField] private SowingData _sowingData;
         [SerializeField] private GameObject _marker;
@@ -21,10 +23,10 @@ namespace Scripts
         [SerializeField] private int _sowingCellCount;
 
         [SerializeField] private bool _autoRepair = true;
-
+        
         private ObjectsPool<PlantBlock> _blocksPool;
         private List<PlantBlock> _blocks;
-        private FieldStateType _fieldStateType = FieldStateType.Default;
+        private FieldStateType _fieldStateType = FieldStateType.Mow;
         private ICharacterController _iCharacterController;
         private Transform _characterTransform;
         private int _interactCount = 0;
@@ -102,11 +104,16 @@ namespace Scripts
                 for (int i = 0; i < _cells.Count; i++)
                 {
                     SowingCell cell = _cells[i];
-                    cell.OnRipe += CellInteract;
                     cell.OnMow += CellInteract;
                     cell.Init(_sowingData, _plantType);
                 }
             }
+        }
+
+        private IEnumerator Start()
+        {
+            yield return null;
+            _collider.enabled = true;
         }
 
         private void OnDestroy()
@@ -139,11 +146,6 @@ namespace Scripts
 
                 switch (_fieldStateType)
                 {
-                    case FieldStateType.Default:
-                        _fieldStateType = FieldStateType.Mow;
-                        if (_iCharacterController != null)
-                            _iCharacterController.SetAnimationForField(_fieldStateType);
-                        break;
                     case FieldStateType.Mow:
                         _fieldStateType = FieldStateType.Default;
                         if (_iCharacterController != null)
@@ -157,9 +159,16 @@ namespace Scripts
                         }
                         else
                         {
+                            for (int i = 0; i < _cells.Count; i++)
+                            {
+                                SowingCell cell = _cells[i];
+                                cell.OnMow -= CellInteract;
+                            }
+
                             Destroy(_marker);
                             _blocksPool.Clear();
                             _blocksPool.OnCreate -= CreateNewBlock;
+                            Destroy( this);
                         }
                         break;
                 }

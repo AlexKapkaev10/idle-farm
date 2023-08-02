@@ -88,6 +88,7 @@ MonoBehaviour:
   - {fileID: 8960874974448120593}
   - {fileID: 7225512246363034537}
   - {fileID: 1521047469387191327}
+  _collider: {fileID: 8567691467776511429}
   _cellsPoint: {fileID: 8567691467859219623}
   _sowingData: {fileID: 11400000, guid: 80b7e96dd5efa8c478276258c26a4ffb, type: 2}
   _marker: {fileID: 3097358021552658499}

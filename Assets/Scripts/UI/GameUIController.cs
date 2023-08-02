@@ -55,6 +55,7 @@ namespace Scripts.UI
         public void CreateWinLoseView(bool isWin, Action callBack)
         {
             DestroyJoystick();
+            
             _gameInfoView.SetVisible(false);
             _winLoseView = Instantiate(_settings.WinLoseViewPrefab, transform) as WinLoseView;
             _winLoseView?.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
@@ -137,6 +138,7 @@ namespace Scripts.UI
 
         private void AddTimeButtonClick()
         {
+            _gameInfoView.SetVisible(true);
             CreateJoystick();
             Destroy(_winLoseView.gameObject);
             OnAddTimeClick?.Invoke();

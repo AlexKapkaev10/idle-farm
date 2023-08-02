@@ -86,7 +86,6 @@ namespace Scripts.Level
             _currentLevel = Instantiate(_levelPrefabs[index]);
             _currentLevel.OnQuestReady += InitializeQuest;
             _currentLevel.Init(_characterController, _bobController);
-            _gameUIController.UpdateTimerStyle(true);
         }
 
         private void QuestNotComplete()
@@ -124,20 +123,13 @@ namespace Scripts.Level
                 _updateTimerRoutine = null;
             }
 
-            onAddQuestTime = null;
+            _completeLevels = isWin ? _completeLevels++ : _completeLevels;
             if (isWin)
-            {
-                _completeLevels++;
-                _gameUIController.UpdateTimerStyle(true);
                 SaveLoadService.Instance.SaveLevelProgress(_resourceController.Money, _completeLevels);
-            }
-            else
-            {
-                onAddQuestTime += AddQuestTimeForReward;
-            }
-
-            _gameUIController.CreateWinLoseView(isWin, isWin ? null : onAddQuestTime);
             _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
+            _characterController.EndLevel(isWin);
+            onAddQuestTime += isWin ? null : AddQuestTimeForReward;
+            _gameUIController.CreateWinLoseView(isWin, onAddQuestTime);
             OnLevelComplete?.Invoke(isWin);
         }
 
@@ -181,6 +173,7 @@ namespace Scripts.Level
 
         private IEnumerator UpdateTimer()
         {
+            _characterController.StartLevel();
             while (_questTime > 0.9f)
             {
                 _questTime -= Time.deltaTime;
@@ -190,9 +183,8 @@ namespace Scripts.Level
                 _gameUIController.DisplayTimer(time);
                 
                 if (_questTime < 6f && !_isHurry)
-                {
                     _gameUIController.UpdateTimerStyle(false);
-                }
+                
                 yield return null;
             }
             
