@@ -70,7 +70,9 @@ namespace Scripts.Level
 
         private void FieldClear(SowingField sowingField)
         {
-            sowingField.OnFieldClear -= FieldClear;
+            if (!sowingField.AutoRepair)
+                sowingField.OnFieldClear -= FieldClear;
+            
             OnFieldClear?.Invoke(sowingField);
         }
     }

@@ -10,6 +10,7 @@ namespace Scripts.UI
         [SerializeField] private RectTransform _resourcesView;
         [SerializeField] private RectTransform _resourcesParent;
         [SerializeField] private CanvasGroup _infoGroup;
+        [SerializeField] private RectTransform _moneyRectTransform;
         
         [SerializeField] private TMP_Text _textMoney;
         [SerializeField] private TMP_Text _textTimer;
@@ -69,12 +70,16 @@ namespace Scripts.UI
             if (isClear)
             {
                 _resourcesView.transform.localPosition = Vector3.zero;
-                Destroy(_resourceGroup.gameObject);
             }
             else
             {
                 _resourcesView.transform.DOLocalMove(Vector3.zero, FadeDuration * 0.5f).SetEase(Ease.Linear);
             }
+        }
+
+        public void ScaleMoneyView(float scaleValue, float duration)
+        {
+            _moneyRectTransform.DOScale(scaleValue, duration).SetEase(Ease.Linear).OnComplete(() => DOTween.Kill(_moneyRectTransform));
         }
 
         private void OnDestroy()
@@ -87,6 +92,7 @@ namespace Scripts.UI
             UpdateTextColor(true);
             DOTween.Kill(_infoGroup);
             DOTween.Kill(_transform);
+            DOTween.Kill(_moneyRectTransform);
         }
     }
 }

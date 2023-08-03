@@ -2,6 +2,7 @@
 using Scripts.Enums;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Game;
 using Scripts.Level;
 using Scripts.Plants;
 using TMPro;
@@ -17,10 +18,13 @@ namespace Scripts.UI
         [SerializeField] private GameUISettings _settings;
         [SerializeField] private GameInfoView _gameInfoView;
 
+        private event Action onEndLevelAnimation;
+        
         private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
         private Dictionary<PlantType, ResourceView> _resourceViewMap;
 
         private event Action OnAddTimeClick;
+        private BuyResourceData _buyResourceData;
         private Joystick _joystick;
         private QuestInfoView _questInfoView;
         private EndLevelView _endLevelView;
@@ -30,17 +34,6 @@ namespace Scripts.UI
         public void DisplayPlantCount(PlantBlock plantBlock, int count)
         {
             _resourceViewMap[plantBlock.PlantType].UpdateProgressCount(count.ToString());
-        }
-        
-        public void DisplayMoneyCount(int from, int to)
-        {
-            StartCoroutine(TextCounterCoroutineMoney(_gameInfoView.TextMoney, from, to));
-        }
-
-        public void DisplayByuPlants(PlantType type, int from)
-        {
-            var view = _resourceViewMap[type];
-            view.StartCoroutine(TextCounterCoroutine(view, from, 0));
         }
 
         public void DisplayTimer(string textTimer)
@@ -53,8 +46,10 @@ namespace Scripts.UI
             _gameInfoView.UpdateTextColor(isDefault);
         }
 
-        public void CreateEndLevelView(bool isWin, Action callBack)
+        public void CreateEndLevelView(BuyResourceData data, Action callBack)
         {
+            _buyResourceData = data;
+            
             DestroyJoystick();
             StartCoroutine(DisplayWinLoseViewAsync());
             
@@ -67,23 +62,30 @@ namespace Scripts.UI
                 if (!_endLevelView)
                     yield break;
 
-                _endLevelView.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
+                _endLevelView.SetHeader(_buyResourceData != null ? _settings.WinHeader : _settings.LoseHeader);
                 _endLevelView.ButtonAction.onClick.AddListener(PlayLevelClick);
 
                 _endLevelView.FadeDuration = _settings.FadeDurationView;
-                _endLevelView.SetResourcesViewParent(_gameInfoView.ResourcesView, true, _settings.FadeDurationView);
 
+                onEndLevelAnimation += EndLevelAnimations;
+                
+                _endLevelView.SetResourcesViewParent(
+                    _gameInfoView.ResourcesView, 
+                    true, 
+                    _settings.FadeDurationView, 
+                    onEndLevelAnimation);
+                
                 _endLevelView.SetVisible(true);
                 _gameInfoView.SetVisible(false);
 
                 if (callBack != null)
                 {
                     OnAddTimeClick = callBack;
-                    _endLevelView?.ButtonAddTime.onClick.AddListener(AddTimeButtonClick);
+                    _endLevelView?.ButtonShowAdd.onClick.AddListener(AddTimeButtonClick);
                 }
                 else
                 {
-                    _endLevelView?.ButtonAddTime.onClick.RemoveAllListeners();
+                    _endLevelView?.ButtonShowAdd.onClick.RemoveAllListeners();
                 }
             }
         }
@@ -92,7 +94,7 @@ namespace Scripts.UI
         {
             _gameInfoView.SetVisible(false, true);
             _questInfoView = Instantiate(_settings.QuestInfoView, transform);
-            
+
             _questInfoView.OnPlayClick += () =>
             {
                 _resourceGroup = _questInfoView.ResourceGroup;
@@ -163,6 +165,32 @@ namespace Scripts.UI
             OnJoystickCreate = null;
         }
 
+        private void EndLevelAnimations()
+        {
+            onEndLevelAnimation -= EndLevelAnimations;
+            
+            if (_buyResourceData != null)
+            {
+                _gameInfoView.ScaleMoneyView(2f, _settings.FadeDurationView);
+                
+                StartCoroutine(TextCounterCoroutineMoney(
+                    _gameInfoView.TextMoney,
+                _buyResourceData.oldMoneyValue, 
+                    _buyResourceData.newMoneyValue,
+                    _settings.FadeDurationView));
+                
+                foreach (var buyResource in _buyResourceData.BuyResources)
+                {
+                    var view = _resourceViewMap[buyResource.PlantType];
+                    view.StartCoroutine(TextCounterCoroutine(view, buyResource.Count, 0, _settings.FadeDurationView));
+                }
+            }
+            else
+            {
+                _endLevelView.ButtonActionSetVisible();
+            }
+        }
+
         private void AddTimeButtonClick()
         {
             _gameInfoView.ReturnResourcesView();
@@ -176,6 +204,7 @@ namespace Scripts.UI
         {
             Clear();
             OnLevelPlay?.Invoke();
+            _gameInfoView.ScaleMoneyView(1, 0);
             _gameInfoView.ReturnResourcesView(true);
             Destroy(_endLevelView.gameObject);
         }
@@ -227,6 +256,13 @@ namespace Scripts.UI
                 text.SetText(Mathf.Lerp(from, to, t).ToString("0"));
                 yield return null;
             }
+
+            yield return null;
+            
+            if (_resourceGroup)
+                Destroy(_resourceGroup.gameObject);
+            
+            _endLevelView.ButtonActionSetVisible();
         }
 
 

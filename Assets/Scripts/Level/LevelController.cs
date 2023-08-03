@@ -59,7 +59,6 @@ namespace Scripts.Level
             
             _resourceController.OnAddPlant += AddResources;
             _resourceController.OnBuyPlants += BuyResources;
-            _resourceController.QuestComplete += CheckQuestComplete;
             _resourceController.OnResourceComplete += ResourceComplete;
             InitializeLevel();
         }
@@ -69,7 +68,6 @@ namespace Scripts.Level
             _gameUIController.OnLevelPlay -= InitializeLevel;
             _resourceController.OnAddPlant -= AddResources;
             _resourceController.OnBuyPlants -= BuyResources;
-            _resourceController.QuestComplete -= CheckQuestComplete;
             _resourceController.OnResourceComplete -= ResourceComplete;
         }
 
@@ -85,6 +83,7 @@ namespace Scripts.Level
             _currentLevel = Instantiate(_levelPrefabs[index]);
             _currentLevel.OnQuestReady += InitializeQuest;
             _currentLevel.OnFieldClear += FieldClear;
+            _resourceController.QuestComplete += CheckQuestComplete;
             _currentLevel.Init(_characterController, _bobController);
         }
 
@@ -119,7 +118,8 @@ namespace Scripts.Level
             if (isComplete)
             {
                 _resourceController.QuestComplete -= CheckQuestComplete;
-                Debug.Log("QuestComplete");
+                _currentLevel.OnFieldClear -= FieldClear;
+                //Debug.Log("QuestComplete");
             }
             else
             {
@@ -141,23 +141,18 @@ namespace Scripts.Level
         
         private void BuyResources(BuyResourceData data)
         {
-            foreach (var buyResource in data.BuyResources)
-            {
-                _gameUIController.DisplayByuPlants(buyResource.PlantType, buyResource.Count);
-            }
-            
-            _gameUIController.DisplayMoneyCount(data.oldMoneyValue, data.newMoneyValue);
-            
-            EndLevel(true);
+            EndLevel(data);
         }
 
-        private void EndLevel(bool isWin)
+        private void EndLevel(in BuyResourceData data)
         {
             if (_updateTimerRoutine != null)
             {
                 StopCoroutine(_updateTimerRoutine);
                 _updateTimerRoutine = null;
             }
+
+            var isWin = data != null;
 
             _completeLevels = isWin ? _completeLevels +1 : _completeLevels;
 
@@ -166,8 +161,9 @@ namespace Scripts.Level
             
             _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
             _characterController.EndLevel(isWin);
+            
             onAddQuestTime += isWin ? null : AddQuestTimeForReward;
-            _gameUIController.CreateEndLevelView(isWin, onAddQuestTime);
+            _gameUIController.CreateEndLevelView(data, onAddQuestTime);
             OnLevelComplete?.Invoke(isWin);
         }
 
@@ -216,7 +212,7 @@ namespace Scripts.Level
                 yield return null;
             }
             
-            EndLevel(false);
+            EndLevel(null);
             _updateTimerRoutine = null;
         }
     }

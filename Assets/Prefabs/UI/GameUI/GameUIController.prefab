@@ -151,7 +151,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -55}
-  m_SizeDelta: {x: 350, y: 130}
+  m_SizeDelta: {x: 400, y: 130}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2948745226054330102
 CanvasRenderer:
@@ -296,6 +296,7 @@ MonoBehaviour:
   _resourcesView: {fileID: 1525503121342309136}
   _resourcesParent: {fileID: 1806594469789224765}
   _infoGroup: {fileID: 6545145862205716539}
+  _moneyRectTransform: {fileID: 1798605127278472237}
   _textMoney: {fileID: 1798605127278472226}
   _textTimer: {fileID: 1340528717905268264}
 --- !u!1 &4405352817767145884
@@ -965,6 +966,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1798605127278472237 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4614116912751778618, guid: a496a11b6d318604da662d4113efeffb, type: 3}
+  m_PrefabInstance: {fileID: 6412368545410201367}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8739760939609784151 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2428726023061653568, guid: a496a11b6d318604da662d4113efeffb, type: 3}

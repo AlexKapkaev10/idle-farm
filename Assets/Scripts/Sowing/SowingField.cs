@@ -185,9 +185,7 @@ namespace Scripts
                     }
                     
                     Destroy(_marker);
-                    _blocksPool.Clear();
-                    _blocksPool.OnCreate -= CreateNewBlock;
-                    Destroy( this);
+                    Destroy(_collider);
                 }
                 
                 OnFieldClear?.Invoke(this);

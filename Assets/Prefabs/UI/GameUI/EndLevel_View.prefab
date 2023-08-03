@@ -203,11 +203,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textHeader: {fileID: 4418831078160778800}
   _buttonAction: {fileID: 8541511147471756937}
-  _buttonAddTime: {fileID: 2356596505720337754}
+  _buttonShowAdd: {fileID: 2356596505720337754}
   _rectTransform: {fileID: 4657312481224655950}
   _canvasGroupBG: {fileID: 6292135389094965709}
   _centerPosition: {x: 0.5, y: 0.5}
   _cornerPosition: {x: 0, y: 1}
+  _canvasGroupButtonAction: {fileID: 8168818478487494215}
+  _canvasGroupButtonShowAdd: {fileID: 2025522476352400820}
 --- !u!1001 &728822707400264270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -424,6 +426,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_Action
       objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6879830082922177498, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
       propertyPath: m_text
       value: "\u0434\u0430\u043B\u0435\u0435"
@@ -544,7 +562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6879830082605212066, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 168
+      value: -133
       objectReference: {fileID: 0}
     - target: {fileID: 6879830082605212066, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -564,6 +582,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6879830082605212078, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879830082605212079, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6879830082922177498, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
@@ -605,7 +639,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2356596505720337755}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

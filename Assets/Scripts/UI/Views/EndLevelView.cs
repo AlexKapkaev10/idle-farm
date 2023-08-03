@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -9,17 +10,32 @@ namespace Scripts.UI
     {
         [SerializeField] private TMP_Text _textHeader;
         [SerializeField] private Button _buttonAction;
-        [SerializeField] private Button _buttonAddTime;
+        [SerializeField] private Button _buttonShowAdd;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CanvasGroup _canvasGroupBG;
         
         [SerializeField] private Vector2 _centerPosition;
         [SerializeField] private Vector2 _cornerPosition;
+
+        [SerializeField] private CanvasGroup _canvasGroupButtonAction;
+        [SerializeField] private CanvasGroup _canvasGroupButtonShowAdd;
         
         public Button ButtonAction => _buttonAction;
-        public Button ButtonAddTime => _buttonAddTime;
+        public Button ButtonShowAdd => _buttonShowAdd;
 
-        public void SetResourcesViewParent(RectTransform target, bool isCenter, float duration)
+        protected override void Awake()
+        {
+            _canvasGroupButtonAction.alpha = 0f;
+            _canvasGroupButtonShowAdd.alpha = 0f;
+            
+            _canvasGroupButtonAction.interactable = false;
+            _canvasGroupButtonShowAdd.interactable = false;
+            
+            _canvasGroupButtonAction.blocksRaycasts = false;
+            _canvasGroupButtonShowAdd.blocksRaycasts = false;
+        }
+
+        public void SetResourcesViewParent(RectTransform target, bool isCenter, float duration, Action callBack)
         {
             target.transform.SetParent(_rectTransform);
             
@@ -27,7 +43,11 @@ namespace Scripts.UI
             target.anchorMax = isCenter ? _centerPosition : _cornerPosition;
             target.pivot = isCenter ? _centerPosition : _cornerPosition;
 
-            target.DOLocalMove(Vector3.zero, duration * 0.5f).SetEase(Ease.Linear).OnComplete(() => DOTween.Kill(target));
+            target.DOLocalMove(Vector3.zero, duration * 0.5f).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                callBack?.Invoke();
+                DOTween.Kill(target);
+            });
         }
 
         public void SetHeader(string value)
@@ -38,6 +58,27 @@ namespace Scripts.UI
         public override void SetVisible(bool isVisible, bool fastSet = false)
         {
             _canvasGroupBG.DOFade(1, FadeDuration).SetEase(Ease.Linear).OnComplete(() => DOTween.Kill(_canvasGroupBG));
+        }
+
+        public void ButtonActionSetVisible()
+        {
+            _canvasGroupButtonAction.DOFade(1, FadeDuration).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                DOTween.Kill(_canvasGroupButtonAction);
+                ButtonShowAddSetVisible();
+            });
+        }
+        
+        public void ButtonShowAddSetVisible()
+        {
+            _canvasGroupButtonShowAdd.DOFade(1, FadeDuration).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                DOTween.Kill(_canvasGroupButtonShowAdd);
+                _canvasGroupButtonShowAdd.interactable = true;
+                _canvasGroupButtonShowAdd.blocksRaycasts = true;
+                _canvasGroupButtonAction.interactable = true;
+                _canvasGroupButtonAction.blocksRaycasts = true;
+            });
         }
     }
 }
