@@ -9,6 +9,7 @@ namespace Scripts
     public class SowingCell : MonoBehaviour
     {
         public event Action OnMow;
+        public event Action OnRipe; 
 
         [SerializeField]
         private MeshRenderer _meshRenderer;
@@ -58,6 +59,7 @@ namespace Scripts
         private void OnDestroy()
         {
             OnMow = null;
+            OnRipe = null;
         }
 
         private void Interact()
@@ -81,6 +83,8 @@ namespace Scripts
             
             _isMow = false;
             _meshRenderer.material = _sowingData.GetRipeMaterial();
+            OnRipe?.Invoke();
+            
         }
     }
 }

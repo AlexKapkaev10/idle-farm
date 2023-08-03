@@ -6,8 +6,15 @@ namespace Scripts.UI
     public class GameUI : MonoBehaviour
     {
         protected CanvasGroup _canvasGroup;
+        private float _fadeDuration = 0.3f;
 
         public bool IsCheckVisible { get; private set; }
+
+        public float FadeDuration
+        {
+            get => _fadeDuration;
+            set => _fadeDuration = value;
+        }
 
         public void CheckVisible()
         {

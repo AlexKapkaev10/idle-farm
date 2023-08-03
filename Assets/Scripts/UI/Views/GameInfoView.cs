@@ -23,9 +23,9 @@ namespace Scripts.UI
             }
             
             if (isVisible)
-                _infoGroup.DOFade(1, _settings.InfoFadeDuration).SetEase(Ease.Linear).OnComplete(()=> DOTween.Kill(_infoGroup));
+                _infoGroup.DOFade(1, FadeDuration).SetEase(Ease.Linear).OnComplete(()=> DOTween.Kill(_infoGroup));
             else
-                _infoGroup.DOFade(0, _settings.InfoFadeDuration).SetEase(Ease.Linear).OnComplete(Clear);
+                _infoGroup.DOFade(0, FadeDuration).SetEase(Ease.Linear).OnComplete(Clear);
         }
         
         public void SetTimerText(string value)
@@ -41,7 +41,7 @@ namespace Scripts.UI
         public void SetResourceGroup(in ResourceGroup resourceGroup)
         {
             resourceGroup.transform.SetParent(_resourceGroupParent);
-            resourceGroup.ChangeRectPosition(false);
+            resourceGroup.ChangeRectPosition(false, FadeDuration);
             SetVisible(true, true);
         }
 

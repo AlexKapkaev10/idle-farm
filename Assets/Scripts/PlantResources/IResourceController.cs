@@ -7,11 +7,10 @@ namespace Scripts.Game
 {
     public interface IResourceController
     {
-        public event Action QuestNotComplete;
         public event Action<PlantBlock, int> OnAddPlant;
-        public event Action<int, int> OnChangeMoney;
-        public event Action<BuyResource[]> OnBuyPlants;
+        public event Action<BuyResourceData> OnBuyPlants;
         public event Action<PlantType> OnResourceComplete;
+        public event Action<bool> QuestComplete;
         public int Money { get; }
         public void TryGetMoney(int value, Action<bool> callBack);
         public void CalculateQuestComplete(in SowingField completeField);

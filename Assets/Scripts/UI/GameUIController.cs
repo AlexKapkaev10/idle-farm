@@ -23,9 +23,9 @@ namespace Scripts.UI
         private event Action OnAddTimeClick;
         private Joystick _joystick;
         private QuestInfoView _questInfoView;
-        private WinLoseView _winLoseView;
+        private EndLevelView _endLevelView;
         private ResourceGroup _resourceGroup;
-        private WaitForSeconds _displayWinLoseDelay;
+        private WaitForSeconds _displayEndLevelDelay;
 
         public void DisplayPlantCount(PlantBlock plantBlock, int count)
         {
@@ -53,28 +53,37 @@ namespace Scripts.UI
             _gameInfoView.UpdateTextColor(isDefault);
         }
 
-        public void CreateWinLoseView(bool isWin, Action callBack)
+        public void CreateEndLevelView(bool isWin, Action callBack)
         {
             DestroyJoystick();
             StartCoroutine(DisplayWinLoseViewAsync());
             
             IEnumerator DisplayWinLoseViewAsync()
             {
-                yield return _displayWinLoseDelay;
-                _winLoseView = Instantiate(_settings.WinLoseViewPrefab, transform) as WinLoseView;
-                _winLoseView?.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
+                yield return _displayEndLevelDelay;
+                
+                _endLevelView = Instantiate(_settings.EndLevelPrefab, transform) as EndLevelView;
 
+                if (!_endLevelView)
+                    yield break;
+
+                _endLevelView.SetHeader(isWin ? _settings.WinHeader : _settings.LoseHeader);
+                _endLevelView.ButtonAction.onClick.AddListener(PlayLevelClick);
+
+                _endLevelView.FadeDuration = _settings.FadeDurationView;
+                _endLevelView.SetResourceGroup(_resourceGroup);
+                
+                _endLevelView.SetVisible(true);
                 _gameInfoView.SetVisible(false);
-                _winLoseView?.ButtonAction.onClick.AddListener(PlayLevelClick);
-            
+
                 if (callBack != null)
                 {
                     OnAddTimeClick = callBack;
-                    _winLoseView?.ButtonAddTime.onClick.AddListener(AddTimeButtonClick);
+                    _endLevelView?.ButtonAddTime.onClick.AddListener(AddTimeButtonClick);
                 }
                 else
                 {
-                    _winLoseView?.ButtonAddTime.onClick.RemoveAllListeners();
+                    _endLevelView?.ButtonAddTime.onClick.RemoveAllListeners();
                 }
             }
         }
@@ -145,7 +154,8 @@ namespace Scripts.UI
 
         private void Awake()
         {
-            _displayWinLoseDelay = new WaitForSeconds(_settings.DisplayWinLoseTime);
+            _displayEndLevelDelay = new WaitForSeconds(_settings.DisplayWinLoseTime);
+            _gameInfoView.FadeDuration = _settings.FadeDurationView;
         }
 
         private void OnDestroy()
@@ -155,9 +165,10 @@ namespace Scripts.UI
 
         private void AddTimeButtonClick()
         {
+            _gameInfoView.SetResourceGroup(_resourceGroup);
             _gameInfoView.SetVisible(true);
             CreateJoystick();
-            Destroy(_winLoseView.gameObject);
+            Destroy(_endLevelView.gameObject);
             OnAddTimeClick?.Invoke();
         }
 
@@ -165,7 +176,7 @@ namespace Scripts.UI
         {
             Clear();
             OnLevelPlay?.Invoke();
-            Destroy(_winLoseView.gameObject);
+            Destroy(_endLevelView.gameObject);
         }
 
         private void Clear()

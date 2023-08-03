@@ -2,7 +2,7 @@
 {
     public enum FieldStateType
     {
-        Default,
+        Ripe,
         Mow,
     }
 }

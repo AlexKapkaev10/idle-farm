@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: _LevelControllerSettings
   m_EditorClassIdentifier: 
   _levelPrefabs:
+  - {fileID: 5971675927873867782, guid: e9c6dc45414865942818df54c18edc67, type: 3}
   - {fileID: 5971675927873867782, guid: d1de30517411f414186fbc6e62ee722d, type: 3}
   - {fileID: 5971675927873867782, guid: 7ea5e1f905e13f04fa73de5407e1e961, type: 3}
-  - {fileID: 5971675927873867782, guid: e9c6dc45414865942818df54c18edc67, type: 3}
-  _addTimeCount: 20
+  _addTimeCount: 10

@@ -13,7 +13,7 @@ namespace Scripts.UI
         public void DisplayMoneyCount(int from, int to);
         public void DisplayByuPlants(PlantType type, int from);
         public void DisplayTimer(string textTimer);
-        public void CreateWinLoseView(bool isWin, Action callBack);
+        public void CreateEndLevelView(bool isWin, Action callBack);
         public void UpdateTimerStyle(bool isDefault);
         public void CreateQuestInfo(LevelQuestData levelQuestData, Action callBack);
         public void ResourceComplete(PlantType type);

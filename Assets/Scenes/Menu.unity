@@ -833,7 +833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3985574689122421886, guid: 1a04328f5bb77d34ead26082abfc501a, type: 3}
       propertyPath: m_text
-      value: LOADING...
+      value: "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a04328f5bb77d34ead26082abfc501a, type: 3}
@@ -940,5 +940,9 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1879761048}
+    - target: {fileID: 6879830082922177498, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}
+      propertyPath: m_text
+      value: "\u0418\u0413\u0420\u0410\u0422\u042C"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4c0bfd38665a1c48bcf7fee559baf72, type: 3}

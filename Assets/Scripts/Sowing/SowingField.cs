@@ -21,13 +21,13 @@ namespace Scripts
         [SerializeField] private SowingData _sowingData;
         [SerializeField] private GameObject _marker;
         [SerializeField] private PlantType _plantType;
+        
         [Range(0, 40)]
         [SerializeField] private int _sowingCellCount;
         [SerializeField] private bool _autoRepair = true;
         
         private ObjectsPool<PlantBlock> _blocksPool;
         private List<PlantBlock> _blocks;
-        private FieldStateType _fieldStateType = FieldStateType.Mow;
         private ICharacterController _iCharacterController;
         private Transform _characterTransform;
         private int _interactCount = 0;
@@ -90,8 +90,8 @@ namespace Scripts
             }
 #endif
         }
-
-        private void Awake()
+        
+        private void Start()
         {
             if (_cells.Count > 0)
             {
@@ -108,16 +108,13 @@ namespace Scripts
                 for (int i = 0; i < _cells.Count; i++)
                 {
                     SowingCell cell = _cells[i];
-                    cell.OnMow += CellInteract;
+                    cell.OnMow += CellMow;
+                    if (AutoRepair)
+                        cell.OnRipe += CellRipe;
+                    
                     cell.Init(_sowingData, _plantType);
                 }
             }
-        }
-
-        private IEnumerator Start()
-        {
-            yield return null;
-            _collider.enabled = true;
         }
 
         private void OnDestroy()
@@ -135,50 +132,65 @@ namespace Scripts
             if (_iCharacterController != null)
             {
                 _characterTransform = null;
-                _iCharacterController.SetAnimationForField(FieldStateType.Default);
+                _iCharacterController.SetAnimationForField(FieldStateType.Ripe);
                 _iCharacterController.OnMow -= MowPlants;
                 _iCharacterController = null;
             }
         }
 
-        private void CellInteract()
+        private bool CheckInteractComplete()
         {
             _interactCount++;
-
             if (_interactCount == _cells.Count)
             {
                 _interactCount = 0;
+                return true;
+            }
 
-                switch (_fieldStateType)
+            return false;
+        }
+
+        private void CellRipe()
+        {
+            if (CheckInteractComplete())
+            {
+                if (_iCharacterController != null)
                 {
-                    case FieldStateType.Mow:
-                        _fieldStateType = FieldStateType.Default;
-                        if (_iCharacterController != null)
-                            _iCharacterController.SetAnimationForField(_fieldStateType);
-                        if (AutoRepair)
-                        {
-                            foreach (var cell in _cells)
-                            {
-                                cell.StartRipening();
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < _cells.Count; i++)
-                            {
-                                SowingCell cell = _cells[i];
-                                cell.OnMow -= CellInteract;
-                            }
-                            
-                            OnFieldClear?.Invoke(this);
-                            
-                            Destroy(_marker);
-                            _blocksPool.Clear();
-                            _blocksPool.OnCreate -= CreateNewBlock;
-                            Destroy( this);
-                        }
-                        break;
+                    _collider.enabled = true;
                 }
+            }
+        }
+
+        private void CellMow()
+        {
+            if (CheckInteractComplete())
+            {
+                if (_iCharacterController != null)
+                    _iCharacterController.SetAnimationForField(FieldStateType.Ripe);
+                
+                if (AutoRepair)
+                {
+                    foreach (var cell in _cells)
+                    {
+                        cell.StartRipening();
+                    }
+
+                    _collider.enabled = false;
+                }
+                else
+                {
+                    foreach (var cell in _cells)
+                    {
+                        cell.OnMow -= CellMow;
+                    }
+                    
+                    Destroy(_marker);
+                    _blocksPool.Clear();
+                    _blocksPool.OnCreate -= CreateNewBlock;
+                    Destroy( this);
+                }
+                
+                OnFieldClear?.Invoke(this);
             }
         }
 
@@ -238,7 +250,7 @@ namespace Scripts
             if (other.gameObject.TryGetComponent<ICharacterController>(out _iCharacterController))
             {
                 _characterTransform = _iCharacterController.GetBodyTransform();
-                _iCharacterController.SetAnimationForField(_fieldStateType);
+                _iCharacterController.SetAnimationForField(FieldStateType.Mow);
                 _iCharacterController.OnMow += MowPlants;
             }
         }
@@ -248,7 +260,7 @@ namespace Scripts
             if (_iCharacterController != null)
             {
                 _characterTransform = null;
-                _iCharacterController.SetAnimationForField(FieldStateType.Default);
+                _iCharacterController.SetAnimationForField(FieldStateType.Ripe);
                 _iCharacterController.OnMow -= MowPlants;
                 _iCharacterController = null;
             }

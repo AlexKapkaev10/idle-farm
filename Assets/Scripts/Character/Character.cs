@@ -72,7 +72,7 @@ namespace Scripts.Game
             
             if (!_playerAnimator)
                 return;
-            _playerAnimator?.SetTrigger(fieldState == FieldStateType.Default
+            _playerAnimator?.SetTrigger(fieldState == FieldStateType.Ripe
                 ? AnimatorParameters.Base
                 : AnimatorParameters.Mow);
         }

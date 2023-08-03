@@ -24,18 +24,17 @@ namespace Scripts.Level
         private IBobController _bobController = default;
         private IGameUIController _gameUIController = default;
         private IResourceController _resourceController = default;
-        
+
+        private List<Level> _levelPrefabs;
         private Level _currentLevel = default;
         private List<QuestPlantData> _questPlantsData = default;
+        private Dictionary<PlantType, int> _questMap;
+        private Coroutine _updateTimerRoutine = default;
 
-        private Coroutine _updateTimerRoutine;
-        private readonly bool _isHurry = default;
-        
+        private bool _isHurry = default;
         private int _completeLevels = 0;
         private float _questTime = 0.0f;
 
-        private List<Level> _levelPrefabs;
-        private Dictionary<PlantType, int> _questMap; 
 
         [Inject]
         private void Construct(
@@ -60,8 +59,7 @@ namespace Scripts.Level
             
             _resourceController.OnAddPlant += AddResources;
             _resourceController.OnBuyPlants += BuyResources;
-            _resourceController.OnChangeMoney += MoneyChange;
-            _resourceController.QuestNotComplete += QuestNotComplete;
+            _resourceController.QuestComplete += CheckQuestComplete;
             _resourceController.OnResourceComplete += ResourceComplete;
             InitializeLevel();
         }
@@ -71,8 +69,7 @@ namespace Scripts.Level
             _gameUIController.OnLevelPlay -= InitializeLevel;
             _resourceController.OnAddPlant -= AddResources;
             _resourceController.OnBuyPlants -= BuyResources;
-            _resourceController.OnChangeMoney -= MoneyChange;
-            _resourceController.QuestNotComplete -= QuestNotComplete;
+            _resourceController.QuestComplete -= CheckQuestComplete;
             _resourceController.OnResourceComplete -= ResourceComplete;
         }
 
@@ -117,9 +114,17 @@ namespace Scripts.Level
             _resourceController.CalculateQuestComplete(field);
         }
 
-        private void QuestNotComplete()
+        private void CheckQuestComplete(bool isComplete)
         {
-            _bobController.SwitchAnimation(BobAnimationType.NotComplete);
+            if (isComplete)
+            {
+                _resourceController.QuestComplete -= CheckQuestComplete;
+                Debug.Log("QuestComplete");
+            }
+            else
+            {
+                _bobController.SwitchAnimation(BobAnimationType.NotComplete);
+            }
         }
 
         private void ResourceComplete(PlantType type)
@@ -133,18 +138,15 @@ namespace Scripts.Level
             Destroy(_currentLevel.gameObject);
             _currentLevel = null;
         }
-
-        private void MoneyChange(int oldValue, int newValue)
+        
+        private void BuyResources(BuyResourceData data)
         {
-            _gameUIController.DisplayMoneyCount(oldValue, newValue);
-        }
-
-        private void BuyResources(BuyResource[] buyResources)
-        {
-            foreach (var buyResource in buyResources)
+            foreach (var buyResource in data.BuyResources)
             {
                 _gameUIController.DisplayByuPlants(buyResource.PlantType, buyResource.Count);
             }
+            
+            _gameUIController.DisplayMoneyCount(data.oldMoneyValue, data.newMoneyValue);
             
             EndLevel(true);
         }
@@ -165,7 +167,7 @@ namespace Scripts.Level
             _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
             _characterController.EndLevel(isWin);
             onAddQuestTime += isWin ? null : AddQuestTimeForReward;
-            _gameUIController.CreateWinLoseView(isWin, onAddQuestTime);
+            _gameUIController.CreateEndLevelView(isWin, onAddQuestTime);
             OnLevelComplete?.Invoke(isWin);
         }
 
@@ -173,7 +175,7 @@ namespace Scripts.Level
         {
             onAddQuestTime -= AddQuestTimeForReward;
             _questTime = _controllerSettings.AddTimeCount;
-            _updateTimerRoutine = StartCoroutine(UpdateTimer());
+            StartTimer();
         }
 
         private void AddResources(PlantBlock plantBlock, int count)
@@ -183,7 +185,14 @@ namespace Scripts.Level
 
         private void StartTimer()
         {
+            _isHurry = false;
             onStartPlay -= StartTimer;
+            
+            if (_updateTimerRoutine != null)
+            {
+                StopCoroutine(_updateTimerRoutine);
+                _updateTimerRoutine = null;
+            }
             _updateTimerRoutine = StartCoroutine(UpdateTimer());
         }
 
@@ -199,7 +208,10 @@ namespace Scripts.Level
                 _gameUIController.DisplayTimer(time);
                 
                 if (_questTime < 6f && !_isHurry)
+                {
+                    _isHurry = true;
                     _gameUIController.UpdateTimerStyle(false);
+                }
                 
                 yield return null;
             }

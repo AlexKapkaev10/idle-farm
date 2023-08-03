@@ -16,22 +16,24 @@ namespace Scripts.UI
         [SerializeField] private QuestInfoView _questInfoViewPrefab;
         
         [SerializeField] private GameUI _storePrefab;
-        [SerializeField] private GameUI _winLoseViewPrefab;
+        [SerializeField] private GameUI _endLevelPrefab;
 
         [SerializeField] private string _winHeader;
         [SerializeField] private string _loseHeader;
 
         [SerializeField] private float _displayWinLoseTime;
+        [SerializeField] private float _fadeDurationView = 0.3f;
 
         public List<GameUI> DefaultUIPrefabs => _defaultUIPrefabs;
         public Joystick JoystickPrefab => _joystickPrefab;
         public ResourceView ResourceViewPrefab => _resourceViewPrefab;
         public QuestInfoView QuestInfoView => _questInfoViewPrefab;
         public GameUI StorePrefab => _storePrefab;
-        public GameUI WinLoseViewPrefab => _winLoseViewPrefab;
+        public GameUI EndLevelPrefab => _endLevelPrefab;
         public string WinHeader => _winHeader;
         public string LoseHeader => _loseHeader;
         public float DisplayWinLoseTime => _displayWinLoseTime;
+        public float FadeDurationView => _fadeDurationView;
 
         public Sprite GetSpriteByPlantType(PlantType type)
         {

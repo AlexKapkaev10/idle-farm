@@ -6,17 +6,18 @@ namespace Scripts.UI
 {
     public class ResourceGroup : MonoBehaviour
     {
-        [SerializeField] private float _moveDuration;
         [SerializeField] private Vector2 _centerPosition = new Vector2();
         [SerializeField] private Vector2 _cornerPosition = new Vector2();
         [SerializeField] private RectTransform _rectTransform;
         
         private readonly List<ResourceView> _resourceViews = new List<ResourceView>();
-
+        private Transform _transform;
+        
         public RectTransform RectTransform => _rectTransform;
 
         private void Awake()
         {
+            _transform = transform;
             _rectTransform = GetComponent<RectTransform>();
             ChangeRectPosition(true);
         }
@@ -26,7 +27,7 @@ namespace Scripts.UI
             _resourceViews.Add(resourceView);
         }
 
-        public void ChangeRectPosition(bool isCenter)
+        public void ChangeRectPosition(bool isCenter, float duration = 0.3f)
         {
             _rectTransform.anchorMin = isCenter ? _centerPosition : _cornerPosition;
             _rectTransform.anchorMax = isCenter ? _centerPosition : _cornerPosition;
@@ -34,17 +35,17 @@ namespace Scripts.UI
             
             if (!isCenter)
             {
-                transform.DOLocalMove(Vector3.zero, _moveDuration).SetEase(Ease.Linear).OnComplete(ChangeResourceViewStringFormat);
+                _transform.DOLocalMove(Vector3.zero, duration * 0.5f).SetEase(Ease.Linear).OnComplete(ChangeResourceViewStringFormat);
             }
             else
             {
-                transform.localPosition = Vector3.zero;
+                _transform.DOLocalMove(Vector3.zero, duration * 0.5f).SetEase(Ease.Linear).OnComplete(() => DOTween.Kill(_transform));
             }
         }
 
         private void ChangeResourceViewStringFormat()
         {
-            DOTween.Kill(transform);
+            DOTween.Kill(_transform);
             
             foreach (var view in _resourceViews)
             {
