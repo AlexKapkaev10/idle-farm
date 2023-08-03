@@ -6,8 +6,8 @@ namespace Scripts.UI
 {
     public class ResourceGroup : MonoBehaviour
     {
-        [SerializeField] private Vector2 _centerPosition = new Vector2();
-        [SerializeField] private Vector2 _cornerPosition = new Vector2();
+        [SerializeField] private Vector2 _centerPosition;
+        [SerializeField] private Vector2 _cornerPosition;
         [SerializeField] private RectTransform _rectTransform;
         
         private readonly List<ResourceView> _resourceViews = new List<ResourceView>();

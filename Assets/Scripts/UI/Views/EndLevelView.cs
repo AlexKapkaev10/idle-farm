@@ -12,14 +12,22 @@ namespace Scripts.UI
         [SerializeField] private Button _buttonAddTime;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CanvasGroup _canvasGroupBG;
-
+        
+        [SerializeField] private Vector2 _centerPosition;
+        [SerializeField] private Vector2 _cornerPosition;
+        
         public Button ButtonAction => _buttonAction;
         public Button ButtonAddTime => _buttonAddTime;
 
-        public void SetResourceGroup(ResourceGroup resourceGroup)
+        public void SetResourcesViewParent(RectTransform target, bool isCenter, float duration)
         {
-            resourceGroup.transform.SetParent(_rectTransform);
-            resourceGroup.ChangeRectPosition(true, FadeDuration);
+            target.transform.SetParent(_rectTransform);
+            
+            target.anchorMin = isCenter ? _centerPosition : _cornerPosition;
+            target.anchorMax = isCenter ? _centerPosition : _cornerPosition;
+            target.pivot = isCenter ? _centerPosition : _cornerPosition;
+
+            target.DOLocalMove(Vector3.zero, duration * 0.5f).SetEase(Ease.Linear).OnComplete(() => DOTween.Kill(target));
         }
 
         public void SetHeader(string value)

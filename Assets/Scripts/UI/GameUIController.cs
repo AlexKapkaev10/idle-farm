@@ -71,8 +71,8 @@ namespace Scripts.UI
                 _endLevelView.ButtonAction.onClick.AddListener(PlayLevelClick);
 
                 _endLevelView.FadeDuration = _settings.FadeDurationView;
-                _endLevelView.SetResourceGroup(_resourceGroup);
-                
+                _endLevelView.SetResourcesViewParent(_gameInfoView.ResourcesView, true, _settings.FadeDurationView);
+
                 _endLevelView.SetVisible(true);
                 _gameInfoView.SetVisible(false);
 
@@ -165,7 +165,7 @@ namespace Scripts.UI
 
         private void AddTimeButtonClick()
         {
-            _gameInfoView.SetResourceGroup(_resourceGroup);
+            _gameInfoView.ReturnResourcesView();
             _gameInfoView.SetVisible(true);
             CreateJoystick();
             Destroy(_endLevelView.gameObject);
@@ -176,6 +176,7 @@ namespace Scripts.UI
         {
             Clear();
             OnLevelPlay?.Invoke();
+            _gameInfoView.ReturnResourcesView(true);
             Destroy(_endLevelView.gameObject);
         }
 
