@@ -49,7 +49,7 @@ namespace Scripts.UI
             target.anchorMax = isCenter ? _centerPosition : _cornerPosition;
             target.pivot = isCenter ? _centerPosition : _cornerPosition;
 
-            target.DOLocalMove(Vector3.zero, duration * 0.5f).SetEase(Ease.Linear).OnComplete(() =>
+            target.DOLocalMove(Vector3.zero, duration).SetEase(Ease.Linear).OnComplete(() =>
             {
                 callBack?.Invoke();
                 DOTween.Kill(target);

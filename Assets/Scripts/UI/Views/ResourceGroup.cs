@@ -19,7 +19,6 @@ namespace Scripts.UI
         {
             _transform = transform;
             _rectTransform = GetComponent<RectTransform>();
-            ChangeRectPosition(true);
         }
 
         public void AddResourceView(ResourceView resourceView)

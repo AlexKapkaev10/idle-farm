@@ -17,15 +17,15 @@ MonoBehaviour:
     Position: {x: 10, y: 0.3, z: 8}
     Rotation: {x: 0, y: 180, z: 0}
   _fieldsData:
-  - Field: {fileID: 8567691467776511428, guid: e73f4317ef043314897bb15eb1899954, type: 3}
-    Position: {x: 8.11, y: 0, z: -2.89}
-    Rotation: {x: 0, y: 0, z: 0}
-    AutoRepair: 0
+  - Field: {fileID: 2256391609032347777, guid: 57a3a312f5463a04cbf6773873eac7e5, type: 3}
+    Position: {x: -7.56, y: 0, z: 2.45}
+    Rotation: {x: 0, y: 90, z: 0}
+    AutoRepair: 1
   _questPlantsData:
-  - PlantType: 2
+  - PlantType: 1
     Count: 40
-  _characterSpawnPosition: {x: 0, y: 0.65, z: 0}
-  _characterSpawnRotation: {x: 0, y: 180, z: 0}
+  _characterSpawnPosition: {x: 8, y: 0.65, z: 3.5}
+  _characterSpawnRotation: {x: 0, y: 60, z: 0}
   _bobSpawnPosition: {x: 10, y: 0.5, z: 5}
   _bobSpawnRotation: {x: 0, y: 215, z: 0}
-  _questTime: 90
+  _questTime: 30

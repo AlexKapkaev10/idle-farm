@@ -12,9 +12,13 @@ namespace Scripts.ScriptableObjects
         
         [SerializeField] private Material _sowMaterial;
         [SerializeField] private Material _ripeMaterial;
+
+        [SerializeField] private Color _colorHalfMow;
         
         [SerializeField] private float _cellInteractDistance = 1.2f;
         [SerializeField] private float _wheatRipeningTime = 11f;
+
+        public Color ColorHalfMow => _colorHalfMow;
 
         public SowingCell GetSowCell()
         {

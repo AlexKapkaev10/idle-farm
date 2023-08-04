@@ -17,5 +17,6 @@ MonoBehaviour:
   _wheatPlant: {fileID: 8489662677334713698, guid: 3e787ca3a29cf244dbf2fe158e3885f1, type: 3}
   _sowMaterial: {fileID: 2100000, guid: 748487d582b00d847bd57517f78d8e8f, type: 2}
   _ripeMaterial: {fileID: 2100000, guid: 36508c771463abf43b7135d9539897e7, type: 2}
+  _colorHalfMow: {r: 0.8443555, g: 0.9150943, b: 0.12517802, a: 0.69803923}
   _cellInteractDistance: 1.5
   _wheatRipeningTime: 2

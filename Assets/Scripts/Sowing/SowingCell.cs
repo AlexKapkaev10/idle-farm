@@ -1,4 +1,3 @@
-using Scripts.Enums;
 using Scripts.ScriptableObjects;
 using System;
 using System.Collections;
@@ -18,19 +17,21 @@ namespace Scripts
         [SerializeField]
         private Transform _blockPoint;
 
-        private float _ripeirTime;
         private SowingData _sowingData;
-        private PlantType _plantType;
-        private GameObject _plant;
-        private bool _isMow;
+        private float _ripeTime;
+        private int _hp = 2;
 
-        public bool IsMow
+        public int HP
         {
-            get => _isMow;
+            get => _hp;
             set
             {
-                _isMow = value;
-                Interact();
+                _hp = value;
+                
+                if (_hp <= 0)
+                    Interact();
+                else
+                    _meshRenderer.material.color = _sowingData.ColorHalfMow;
             }
         }
 
@@ -39,15 +40,13 @@ namespace Scripts
             return _blockPoint;
         }
 
-        public void Init(SowingData sowingData, PlantType type)
+        public void Init(SowingData sowingData)
         {
             _sowingData = sowingData;
-            _plantType = type;
-            _ripeirTime = sowingData.GetRipeningTime();
-            _plant = Instantiate(sowingData.GetPlant(), _plantPoint);
+            _ripeTime = sowingData.GetRipeningTime();
+            Instantiate(sowingData.GetPlant(), _plantPoint);
             _meshRenderer.material = _sowingData.GetSowMaterial();
             _plantPoint.localScale = Vector3.one;
-            _isMow = false;
             _meshRenderer.material = _sowingData.GetRipeMaterial();
         }
 
@@ -74,17 +73,17 @@ namespace Scripts
             yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1f));
             float timeElapsed = 0;
             Vector3 startValue = _plantPoint.localScale;
-            while (timeElapsed < _ripeirTime)
+            while (timeElapsed < _ripeTime)
             {
-                _plantPoint.localScale = Vector3.Lerp(startValue, Vector3.one, timeElapsed / _ripeirTime);
+                _plantPoint.localScale = Vector3.Lerp(startValue, Vector3.one, timeElapsed / _ripeTime);
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
-            
-            _isMow = false;
+
+            _hp = 2;
+            _meshRenderer.material.color = default;
             _meshRenderer.material = _sowingData.GetRipeMaterial();
             OnRipe?.Invoke();
-            
         }
     }
 }

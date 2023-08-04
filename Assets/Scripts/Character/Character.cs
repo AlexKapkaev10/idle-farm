@@ -13,7 +13,7 @@ namespace Scripts.Game
     [RequireComponent(typeof(CharacterController))]
     public sealed class Character : MonoBehaviour, ICharacterController, IMoveControllable
     {
-        public event Action OnMow;
+        public event Action<int> OnMow;
 
         [SerializeField] private ToolType _toolType;
         [SerializeField] private Transform _bodyTransform;
@@ -33,6 +33,8 @@ namespace Scripts.Game
 
         public Animator Animator => _playerAnimator;
 
+        public ITool CurrentTool => _currentTool;
+
         [Inject]
         public void Init(
             IResourceController resourceController, 
@@ -44,15 +46,15 @@ namespace Scripts.Game
             _characterStateMachine = characterStateMachine;
         }
 
+        public void StartLevel()
+        {
+            _characterController.center = new Vector3(0, 1, 0);
+        }
+
         public void EndLevel(bool isWin)
         {
             _characterController.center = new Vector3(0, 10, 0);
             _playerAnimator.SetTrigger(isWin ? AnimatorParameters.Win : AnimatorParameters.Lose);
-        }
-
-        public void StartLevel()
-        {
-            _characterController.center = new Vector3(0, 1, 0);
         }
 
         public void Move(Vector3 velocity, float magnitude)
@@ -77,22 +79,12 @@ namespace Scripts.Game
                 : AnimatorParameters.Mow);
         }
 
-        public Transform GetBodyTransform()
-        {
-            return _bodyTransform;
-        }
-
-        public GameObject GetGameObject()
-        {
-            return gameObject;
-        }
-
         public void AddPlant(in PlantBlock plantBlock)
         {
             _resourceController.Add(plantBlock);
             plantBlock.MoveToTarget(_transformCollectPoint, 0.5f);
         }
-        
+
         public void BuyPlants(in List<PlantType> plants)
         {
             _resourceController.Buy(plants);
@@ -109,10 +101,20 @@ namespace Scripts.Game
             _characterStateMachine.SetBehaviorByType(isRun ? CharacterStateType.Run : CharacterStateType.Idle);
         }
 
+
+        public Transform GetBodyTransform()
+        {
+            return _bodyTransform;
+        }
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
+        }
+
         private void Awake()
         {
-            SetTool();
-            
+            CreateTool();
             _characterController = GetComponent<CharacterController>();
             _eventFromAnimation = GetComponentInChildren<CharacterAnimationEvents>();
             
@@ -135,12 +137,13 @@ namespace Scripts.Game
             _eventFromAnimation.OnMow -= InvokeMowEventFromAnimation;
         }
 
-        private void SetTool()
+        private void CreateTool()
         {
             _currentTool?.Clear();
 
             var tool = Instantiate(_toolsSettings.GetTool(_toolType), _toolPoint);
             _currentTool = tool;
+            _currentTool.SetMaxSharpCount();
 
             if (_currentTool == null) 
                 return;
@@ -151,7 +154,7 @@ namespace Scripts.Game
 
         private void InvokeMowEventFromAnimation()
         {
-            OnMow?.Invoke();
+            OnMow?.Invoke(_currentTool.CurrentSharpCount);
         }
     }
     

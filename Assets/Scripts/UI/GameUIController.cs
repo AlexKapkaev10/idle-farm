@@ -63,7 +63,8 @@ namespace Scripts.UI
                 if (!_endLevelView)
                     yield break;
 
-                _endLevelView.SetHeader(_buyResourceData != null ? _settings.WinHeader : _settings.LoseHeader);
+                _endLevelView.SetHeader(_buyResourceData != null ? "ОТЛИЧНО \n ЗАБИРАЙ СВОЮ НАГРАДУ" : "ВРЕМЯ ВЫШЛО \n ПОПРОБУЙ ЕЩЕ РАЗ");
+                
                 _endLevelView.ButtonAction.onClick.AddListener(PlayLevelClick);
 
                 _endLevelView.FadeDuration = _settings.FadeDurationView;
@@ -89,8 +90,9 @@ namespace Scripts.UI
         {
             _gameInfoView.SetVisible(false, true);
             _questInfoView = Instantiate(_settings.QuestInfoView, transform);
+            _questInfoView.SetHeader("ЧАРЛИ, ПРИЯТЕЛЬ \n СОБЕРИ ЭТИ РЕСУРСЫ");
+            
             _currentGameUIs.Add(_questInfoView);
-
             _questInfoView.OnPlayClick += () =>
             {
                 _currentGameUIs.Remove(_questInfoView);

@@ -112,7 +112,7 @@ namespace Scripts
                     if (AutoRepair)
                         cell.OnRipe += CellRipe;
                     
-                    cell.Init(_sowingData, _plantType);
+                    cell.Init(_sowingData);
                 }
             }
         }
@@ -175,6 +175,9 @@ namespace Scripts
                         cell.StartRipening();
                     }
 
+                    if (_iCharacterController != null)
+                        _iCharacterController.OnMow -= MowPlants;
+                    
                     _collider.enabled = false;
                 }
                 else
@@ -187,25 +190,32 @@ namespace Scripts
                     Destroy(_marker);
                     Destroy(_collider);
                 }
+
+                if (_iCharacterController?.CurrentTool != null)
+                    _iCharacterController.CurrentTool.CurrentSharpCount--;
                 
                 OnFieldClear?.Invoke(this);
             }
         }
 
-        private void MowPlants()
+        private void MowPlants(int damage)
         {
             for (int i = 0; i < _cells.Count; i++)
             {
-                SowingCell cell = _cells[i];
+                var cell = _cells[i];
                 
-                if (cell.IsMow || !_characterTransform)
+                if (cell.HP == 0 || !_characterTransform)
                     continue;
                 
                 var distance = Vector3.Distance(_characterTransform.position, cell.transform.position);
-                
+
                 if (distance < _cellInteractDistance)
                 {
-                    cell.IsMow = true;
+                    cell.HP += _iCharacterController.CurrentTool.IsSharp() ? -2 : -1;
+
+                    if (cell.HP > 0)
+                        continue;
+                    
                     PlantBlock block = _blocksPool.Get();
                     var blockTransform = block.gameObject.transform;
                     blockTransform.position = cell.GetBlockPoint().position;

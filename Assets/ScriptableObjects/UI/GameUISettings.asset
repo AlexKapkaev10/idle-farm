@@ -23,7 +23,7 @@ MonoBehaviour:
   _questInfoViewPrefab: {fileID: 882137668555447224, guid: 4a61a50c68a36de42a7e3d6de1a4fc7d, type: 3}
   _storePrefab: {fileID: 6935726679996909946, guid: cf0020fd1e8182246a2f27190938e01c, type: 3}
   _endLevelPrefab: {fileID: 8091432854343041498, guid: 7e22d6409942c344888f7f545e81526d, type: 3}
-  _winHeader: "\u041E\u0422\u041B\u0418\u0427\u041D\u041E \\n \u041A\u0412\u0415\u0421\u0422
+  _winHeader: "\u041E\u0422\u041B\u0418\u0427\u041D\u041E <><\\n> \u041A\u0412\u0415\u0421\u0422
     \u041F\u0420\u041E\u0419\u0414\u0415\u041D"
   _loseHeader: "\u041F\u041E\u0427\u0422\u0418 \u041F\u041E\u041B\u0423\u0427\u0418\u041B\u041E\u0421\u042C
     \\n \u041F\u041E\u041F\u0420\u041E\u0411\u0423\u0419 \u0415\u0429\u0415"

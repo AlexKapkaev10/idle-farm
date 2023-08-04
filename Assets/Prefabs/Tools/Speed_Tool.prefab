@@ -131,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mowSpeed: 4.5
   _toolType: 1
+  _maxSharpCount: 2
 --- !u!1 &8866029338525979135
 GameObject:
   m_ObjectHideFlags: 0
