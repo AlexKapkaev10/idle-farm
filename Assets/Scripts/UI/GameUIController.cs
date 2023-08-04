@@ -20,10 +20,10 @@ namespace Scripts.UI
 
         private event Action onEndLevelAnimation;
         
-        private readonly List<GameUI> _currentGameUIs = new List<GameUI>();
+        [SerializeField] private List<GameUI> _currentGameUIs = new List<GameUI>();
         private Dictionary<PlantType, ResourceView> _resourceViewMap;
 
-        private event Action OnAddTimeClick;
+        private event Action OnShowAd;
         private BuyResourceData _buyResourceData;
         private Joystick _joystick;
         private QuestInfoView _questInfoView;
@@ -49,7 +49,7 @@ namespace Scripts.UI
         public void CreateEndLevelView(BuyResourceData data, Action callBack)
         {
             _buyResourceData = data;
-            
+
             DestroyJoystick();
             StartCoroutine(DisplayWinLoseViewAsync());
             
@@ -58,6 +58,7 @@ namespace Scripts.UI
                 yield return _displayEndLevelDelay;
                 
                 _endLevelView = Instantiate(_settings.EndLevelPrefab, transform) as EndLevelView;
+                _currentGameUIs.Add(_endLevelView);
 
                 if (!_endLevelView)
                     yield break;
@@ -77,16 +78,10 @@ namespace Scripts.UI
                 
                 _endLevelView.SetVisible(true);
                 _gameInfoView.SetVisible(false);
+                OnShowAd = callBack;
 
-                if (callBack != null)
-                {
-                    OnAddTimeClick = callBack;
-                    _endLevelView?.ButtonShowAdd.onClick.AddListener(AddTimeButtonClick);
-                }
-                else
-                {
-                    _endLevelView?.ButtonShowAdd.onClick.RemoveAllListeners();
-                }
+                if (OnShowAd != null)
+                    _endLevelView?.ButtonShowAdd.onClick.AddListener(_buyResourceData != null ? MultiplyMoneyClick : AddTimeButtonClick);
             }
         }
 
@@ -94,9 +89,11 @@ namespace Scripts.UI
         {
             _gameInfoView.SetVisible(false, true);
             _questInfoView = Instantiate(_settings.QuestInfoView, transform);
+            _currentGameUIs.Add(_questInfoView);
 
             _questInfoView.OnPlayClick += () =>
             {
+                _currentGameUIs.Remove(_questInfoView);
                 _resourceGroup = _questInfoView.ResourceGroup;
                 _gameInfoView.SetResourceGroup(_resourceGroup);
                 CreateJoystick();
@@ -154,10 +151,11 @@ namespace Scripts.UI
             }
         }*/
 
-        private void Awake()
+        private void Start()
         {
             _displayEndLevelDelay = new WaitForSeconds(_settings.DisplayWinLoseTime);
             _gameInfoView.FadeDuration = _settings.FadeDurationView;
+            _currentGameUIs.Add(_gameInfoView);
         }
 
         private void OnDestroy()
@@ -168,17 +166,14 @@ namespace Scripts.UI
         private void EndLevelAnimations()
         {
             onEndLevelAnimation -= EndLevelAnimations;
+            Coroutine moneyCounterRoutine = null;
             
             if (_buyResourceData != null)
             {
                 _gameInfoView.ScaleMoneyView(2f, _settings.FadeDurationView);
-                
-                StartCoroutine(TextCounterCoroutineMoney(
-                    _gameInfoView.TextMoney,
-                _buyResourceData.oldMoneyValue, 
-                    _buyResourceData.newMoneyValue,
-                    _settings.FadeDurationView));
-                
+
+                StartCoroutine(WaitForMoneyCounter());
+
                 foreach (var buyResource in _buyResourceData.BuyResources)
                 {
                     var view = _resourceViewMap[buyResource.PlantType];
@@ -187,34 +182,76 @@ namespace Scripts.UI
             }
             else
             {
-                _endLevelView.ButtonActionSetVisible();
+                _endLevelView.ButtonActionSetVisible(OnShowAd != null);
             }
+
+            IEnumerator WaitForMoneyCounter()
+            {
+               moneyCounterRoutine = StartCoroutine(TextCounterCoroutineMoney(
+                    _gameInfoView.TextMoney,
+                    _buyResourceData.oldMoneyValue, 
+                    _buyResourceData.newMoneyValue,
+                    _settings.FadeDurationView));
+               
+               yield return moneyCounterRoutine;
+               if (_resourceGroup)
+                   Destroy(_resourceGroup.gameObject);
+            
+               _endLevelView.ButtonActionSetVisible(OnShowAd != null);
+               moneyCounterRoutine = null;
+            }
+        }
+
+        private void MultiplyMoneyClick()
+        {
+            Debug.Log("Start Show Ad");
+            GameController.Instance.AdController.ShowRewardedVideo();
+            
+            GameController.Instance.AdController.OnRewardedShow += () =>
+            {
+                OnShowAd?.Invoke();
+                OnShowAd = null;
+            };
         }
 
         private void AddTimeButtonClick()
         {
-            _gameInfoView.ReturnResourcesView();
-            _gameInfoView.SetVisible(true);
-            CreateJoystick();
-            Destroy(_endLevelView.gameObject);
-            OnAddTimeClick?.Invoke();
+            GameController.Instance.AdController.ShowRewardedVideo();
+            Debug.Log("Start Show Ad");
+            GameController.Instance.AdController.OnRewardedShow += () =>
+            {
+                NextActionClick(false);
+            };
         }
 
         private void PlayLevelClick()
         {
-            Clear();
-            OnLevelPlay?.Invoke();
-            _gameInfoView.ScaleMoneyView(1, 0);
-            _gameInfoView.ReturnResourcesView(true);
-            Destroy(_endLevelView.gameObject);
+            NextActionClick(true);
         }
 
-        private void Clear()
+        private void NextActionClick(bool isLevelNext)
         {
-            if (_resourceGroup)
-                Destroy(_resourceGroup.gameObject);
-            
-            _resourceViewMap.Clear();
+            if (isLevelNext)
+            {
+                if (_resourceGroup)
+                    Destroy(_resourceGroup.gameObject);
+                
+                _gameInfoView.ReturnResourcesView(true);
+                _resourceViewMap.Clear();
+                _gameInfoView.ScaleMoneyView(1, 0);
+                OnLevelPlay?.Invoke();
+            }
+            else
+            {
+                _gameInfoView.ReturnResourcesView();
+                _gameInfoView.SetVisible(true);
+                OnShowAd?.Invoke();
+                OnShowAd = null;
+                CreateJoystick();
+            }
+
+            _currentGameUIs.Remove(_endLevelView);
+            Destroy(_endLevelView.gameObject);
         }
 
         private void OnBuy(bool isBuy)
@@ -258,11 +295,6 @@ namespace Scripts.UI
             }
 
             yield return null;
-            
-            if (_resourceGroup)
-                Destroy(_resourceGroup.gameObject);
-            
-            _endLevelView.ButtonActionSetVisible();
         }
 
 

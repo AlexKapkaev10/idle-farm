@@ -13,11 +13,15 @@ namespace Scripts.Game
         public int[] AvailableToolsID = default;
     }
     
-    public class SaveLoadService : MonoBehaviour
+    [RequireComponent(typeof(AdController))]
+    public class GameController : MonoBehaviour
     {
         [SerializeField] private SaveLoadSettings _saveLoadSettings;
+        [SerializeField] private AdController _adController;
         [SerializeField] private ProgressData _progressData;
-        public static SaveLoadService Instance;
+        
+        public static GameController Instance;
+        public AdController AdController => _adController;
 
         [DllImport("__Internal")]
         private static extern void SaveExtern(string data);
@@ -36,6 +40,7 @@ namespace Scripts.Game
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+                _adController = GetComponent<AdController>();
             }
             else
             {

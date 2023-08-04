@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Scripts.Plants;
 using Scripts.Resources;
+using UnityEngine;
 using VContainer;
 
 namespace Scripts.Game
@@ -36,6 +37,7 @@ namespace Scripts.Game
 
         public void SetQuestMap(in Dictionary<PlantType, int> questMap)
         {
+            _plants.Clear();
             _buyResourceData.BuyResources = null;
             _buyResourceData.oldMoneyValue = 0;
             _buyResourceData.newMoneyValue = 0;
@@ -108,7 +110,7 @@ namespace Scripts.Game
                 buyResources[i].Count = GetPlantsCountByType(type);
                 totalMoney += GetPlantsCountByType(type) * _bankSettings.GetResourcePriceByPlantType(type);
             }
-            _plants.Clear();
+            
             _bank.MoneyValueChange(totalMoney);
             var oldMoney = Money - totalMoney;
 

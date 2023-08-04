@@ -35,6 +35,12 @@ namespace Scripts.UI
             _canvasGroupButtonShowAdd.blocksRaycasts = false;
         }
 
+        private void OnDestroy()
+        {
+            _buttonAction.onClick.RemoveAllListeners();
+            _buttonShowAdd.onClick.RemoveAllListeners();
+        }
+
         public void SetResourcesViewParent(RectTransform target, bool isCenter, float duration, Action callBack)
         {
             target.transform.SetParent(_rectTransform);
@@ -60,12 +66,22 @@ namespace Scripts.UI
             _canvasGroupBG.DOFade(1, FadeDuration).SetEase(Ease.Linear).OnComplete(() => DOTween.Kill(_canvasGroupBG));
         }
 
-        public void ButtonActionSetVisible()
+        public void ButtonActionSetVisible(bool enableShowAdButton)
         {
             _canvasGroupButtonAction.DOFade(1, FadeDuration).SetEase(Ease.Linear).OnComplete(() =>
             {
                 DOTween.Kill(_canvasGroupButtonAction);
-                ButtonShowAddSetVisible();
+                
+                if (enableShowAdButton)
+                {
+                    ButtonShowAddSetVisible();
+                }
+                else
+                {
+                    Debug.Log("Not has Listener");
+                    _canvasGroupButtonAction.interactable = true;
+                    _canvasGroupButtonAction.blocksRaycasts = true;
+                }
             });
         }
         

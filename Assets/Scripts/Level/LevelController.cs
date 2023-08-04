@@ -16,7 +16,7 @@ namespace Scripts.Level
     {
         public event Action<bool> OnLevelComplete;
         private event Action onStartPlay;
-        private event Action onAddQuestTime;
+        private event Action onGetReward;
 
         [SerializeField] private LevelControllerSettings _controllerSettings;
 
@@ -48,8 +48,7 @@ namespace Scripts.Level
             _gameUIController = gameUIController;
             _resourceController = resourceController;
             
-            _completeLevels = SaveLoadService.Instance.Level;
-            _gameUIController.OnLevelPlay += InitializeLevel;
+            _completeLevels = GameController.Instance.Level;
         }
         
         private void Start()
@@ -57,9 +56,11 @@ namespace Scripts.Level
             Application.targetFrameRate = 100;
             _levelPrefabs = _controllerSettings.LevelPrefabs;
             
+            _gameUIController.OnLevelPlay += InitializeLevel;
             _resourceController.OnAddPlant += AddResources;
             _resourceController.OnBuyPlants += BuyResources;
             _resourceController.OnResourceComplete += ResourceComplete;
+            
             InitializeLevel();
         }
 
@@ -69,6 +70,8 @@ namespace Scripts.Level
             _resourceController.OnAddPlant -= AddResources;
             _resourceController.OnBuyPlants -= BuyResources;
             _resourceController.OnResourceComplete -= ResourceComplete;
+            onGetReward = null;
+            onStartPlay = null;
         }
 
         private void InitializeLevel()
@@ -90,7 +93,8 @@ namespace Scripts.Level
         private void InitializeQuest(LevelQuestData levelData)
         {
             _currentLevel.OnQuestReady -= InitializeQuest;
-            
+
+            onGetReward = null;
             _questTime = levelData.QuestTime;
             _questPlantsData = levelData.QuestPlantsData;
             
@@ -119,7 +123,6 @@ namespace Scripts.Level
             {
                 _resourceController.QuestComplete -= CheckQuestComplete;
                 _currentLevel.OnFieldClear -= FieldClear;
-                //Debug.Log("QuestComplete");
             }
             else
             {
@@ -134,6 +137,7 @@ namespace Scripts.Level
 
         private void ClearLevel()
         {
+            GameController.Instance.AdController.ShowRewardedCount = 0;
             _currentLevel.OnFieldClear -= FieldClear;
             Destroy(_currentLevel.gameObject);
             _currentLevel = null;
@@ -157,21 +161,36 @@ namespace Scripts.Level
             _completeLevels = isWin ? _completeLevels +1 : _completeLevels;
 
             if (isWin)
-                SaveLoadService.Instance.SaveLevelProgress(_resourceController.Money, _completeLevels);
+                GameController.Instance.SaveLevelProgress(_resourceController.Money, _completeLevels);
             
             _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
             _characterController.EndLevel(isWin);
             
-            onAddQuestTime += isWin ? null : AddQuestTimeForReward;
-            _gameUIController.CreateEndLevelView(data, onAddQuestTime);
+            var canShowAdd = GameController.Instance.AdController.ShowRewardedCount < 1;
+
+            if (isWin)
+                onGetReward += MultiplyMoneyForReward;
+            else if (canShowAdd)
+                onGetReward += AddQuestTimeForReward;
+            else
+                onGetReward = null;
+
+            _gameUIController.CreateEndLevelView(data, onGetReward);
             OnLevelComplete?.Invoke(isWin);
         }
 
         private void AddQuestTimeForReward()
         {
-            onAddQuestTime -= AddQuestTimeForReward;
+            Debug.Log("Add time Reward");
+            onGetReward -= AddQuestTimeForReward;
             _questTime = _controllerSettings.AddTimeCount;
             StartTimer();
+        }
+
+        private void MultiplyMoneyForReward()
+        {
+            Debug.Log("Money Multiply Reward");
+            onGetReward -= MultiplyMoneyForReward;
         }
 
         private void AddResources(PlantBlock plantBlock, int count)

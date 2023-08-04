@@ -329,8 +329,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1076131708}
   - component: {fileID: 1076131709}
+  - component: {fileID: 1076131710}
   m_Layer: 0
-  m_Name: Progress
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364,11 +365,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _saveLoadSettings: {fileID: 11400000, guid: 179c143a6d841ba46b2fe476cd655e50, type: 2}
+  _adController: {fileID: 0}
   _progressData:
     Level: 0
     Money: 0
     CurrentToolId: 0
     AvailableToolsID: 
+--- !u!114 &1076131710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076131707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 211fcb2119ac49fe966cd02dbdac5867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1583155185
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3911220065134535275}
   - component: {fileID: 8229263905990808774}
   - component: {fileID: 3492765834830496482}
+  - component: {fileID: 7105846558665855806}
   m_Layer: 5
   m_Name: Resourse_Group
   m_TagString: Untagged
@@ -79,3 +80,17 @@ MonoBehaviour:
   _centerPosition: {x: 0, y: 0}
   _cornerPosition: {x: 0, y: 0}
   _rectTransform: {fileID: 3911220065134535275}
+--- !u!114 &7105846558665855806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2986943435041749164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
