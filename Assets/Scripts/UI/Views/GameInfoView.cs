@@ -11,7 +11,6 @@ namespace Scripts.UI
         [SerializeField] private RectTransform _resourcesParent;
         [SerializeField] private CanvasGroup _infoGroup;
         [SerializeField] private RectTransform _moneyRectTransform;
-        
         [SerializeField] private TMP_Text _textMoney;
         [SerializeField] private TMP_Text _textTimer;
 
@@ -26,6 +25,11 @@ namespace Scripts.UI
         protected override void Awake()
         {
             _transform = transform;
+        }
+
+        public void SetMoneyTextParent(Transform parent)
+        {
+            _moneyRectTransform.SetParent(parent ? parent : transform, true);
         }
 
         public override void SetVisible(bool isVisible, bool fastSet = false)
@@ -55,17 +59,17 @@ namespace Scripts.UI
         public void SetResourceGroup(in ResourceGroup resourceGroup)
         {
             _resourceGroup = resourceGroup;
-            _resourceGroup.transform.SetParent(_resourcesView);
+            _resourceGroup.transform.SetParent(_resourcesView, true);
             _resourceGroup.ChangeRectPosition(false, FadeDuration);
             SetVisible(true, true);
         }
 
         public void ReturnResourcesView(bool isClear = false)
         {
-            _resourcesView.transform.SetParent(_resourcesParent);
             _resourcesView.anchorMin = _cornerValue;
             _resourcesView.anchorMax = _cornerValue;
             _resourcesView.pivot = _cornerValue;
+            _resourcesView.transform.SetParent(_resourcesParent, true);
 
             if (isClear)
             {

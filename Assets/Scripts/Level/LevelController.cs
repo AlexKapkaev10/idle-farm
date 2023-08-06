@@ -31,6 +31,7 @@ namespace Scripts.Level
         private Dictionary<PlantType, int> _questMap;
         private Coroutine _updateTimerRoutine = default;
 
+        private int _currentBuyMoneyValue;
         private bool _isHurry = default;
         private int _completeLevels = 0;
         private float _questTime = 0.0f;
@@ -48,13 +49,14 @@ namespace Scripts.Level
             _gameUIController = gameUIController;
             _resourceController = resourceController;
             
-            _completeLevels = GameController.Instance.Level;
+            _completeLevels = GameController.Instance.GetLevel();
         }
         
         private void Start()
         {
             Application.targetFrameRate = 100;
             _levelPrefabs = _controllerSettings.LevelPrefabs;
+            _gameUIController.DisplayMoneyCount(_resourceController.GetSaveMoney());
             
             _gameUIController.OnLevelPlay += InitializeLevel;
             _resourceController.OnAddPlant += AddResources;
@@ -159,13 +161,10 @@ namespace Scripts.Level
             var isWin = data != null;
 
             _completeLevels = isWin ? _completeLevels +1 : _completeLevels;
-
-            if (isWin)
-                GameController.Instance.SaveLevelProgress(_resourceController.Money, _completeLevels);
             
             _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
             _characterController.EndLevel(isWin);
-            
+            _currentBuyMoneyValue = isWin ? data.addMoneyValue : 0;
             var canShowAdd = GameController.Instance.AdController.ShowRewardedCount < 1;
 
             if (isWin)
@@ -181,7 +180,6 @@ namespace Scripts.Level
 
         private void AddQuestTimeForReward()
         {
-            Debug.Log("Add time Reward");
             onGetReward -= AddQuestTimeForReward;
             _questTime = _controllerSettings.AddTimeCount;
             StartTimer();
@@ -189,7 +187,8 @@ namespace Scripts.Level
 
         private void MultiplyMoneyForReward()
         {
-            Debug.Log("Money Multiply Reward");
+            _resourceController.SetMoneyForReward(_currentBuyMoneyValue);
+            _currentBuyMoneyValue = 0;
             onGetReward -= MultiplyMoneyForReward;
         }
 

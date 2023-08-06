@@ -1,6 +1,5 @@
 ﻿using System;
 using Scripts.Game;
-using UnityEngine;
 
 namespace Scripts.Resources
 {
@@ -25,6 +24,7 @@ namespace Scripts.Resources
         public void MoneyValueChange(int value)
         {
             _money += value;
+            GameController.Instance.SaveMoney(value);
             var from = _money - value;
             OnMoneyChange?.Invoke(from, _money);
         }

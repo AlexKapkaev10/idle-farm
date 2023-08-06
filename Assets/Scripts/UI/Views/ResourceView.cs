@@ -8,22 +8,33 @@ namespace Scripts.UI
     {
         [SerializeField] private TMP_Text _textCount;
         [SerializeField] private Image _imageIcon;
-
         [SerializeField] private Color _colorComplete;
+        [SerializeField] private Image _sliderImage;
 
-        private string _questCount;
+        private int _questCount;
 
-        public void Init(string questCount, Sprite icon)
+        public void Init(int questCount, Sprite icon)
         {
             _questCount = questCount;
             _imageIcon.sprite = icon;
-            _textCount.SetText(questCount);
+            SetSliderProgress(1);
+            _textCount.SetText(questCount.ToString());
         }
 
-        public void UpdateProgressCount(string value)
+        public void SetSliderProgress(float value)
         {
-            string progress = $"{value}/{_questCount}";
+            _sliderImage.fillAmount = value;
+        }
+
+        public void UpdateProgressCount(int value)
+        {
+            var progress = $"{value:0}/{_questCount.ToString()}";
             _textCount.SetText(progress);
+
+            if (value > _questCount)
+                return;
+            var percentage = value / (float)_questCount;
+            SetSliderProgress(percentage);
         }
 
         public void SetColorComplete()

@@ -18,9 +18,17 @@ namespace Scripts.UI
         [SerializeField] private GameUI _storePrefab;
         [SerializeField] private GameUI _endLevelPrefab;
 
+        [SerializeField] private string[] _questHeaders;
         [SerializeField] private string _winHeader;
         [SerializeField] private string _loseHeader;
+        [SerializeField] private string _buttonNextWinHeader;
+        [SerializeField] private string _buttonNextLoseHeader;
+        [SerializeField] private string _rewardWinHeader;
+        [SerializeField] private string _rewardLoseHeader;
+        [SerializeField] private string _buttonRewardWinHeader;
+        [SerializeField] private string _buttonRewardLoseHeader;
 
+        [SerializeField] private float _moneyCounterTimeDelay;
         [SerializeField] private float _displayWinLoseTime;
         [SerializeField] private float _fadeDurationView = 0.3f;
 
@@ -30,8 +38,16 @@ namespace Scripts.UI
         public QuestInfoView QuestInfoView => _questInfoViewPrefab;
         public GameUI StorePrefab => _storePrefab;
         public GameUI EndLevelPrefab => _endLevelPrefab;
+        public string[] QuestHeaders => _questHeaders;
         public string WinHeader => _winHeader;
         public string LoseHeader => _loseHeader;
+        public string ButtonNextWinHeader => _buttonNextWinHeader;
+        public string ButtonNextLoseHeader => _buttonNextLoseHeader;
+        public string WinRewardHeader => _rewardWinHeader;
+        public string LoseRewardHeader => _rewardLoseHeader;
+        public string ButtonRewardWinHeader => _buttonRewardWinHeader;
+        public string ButtonRewardLoseHeader => _buttonRewardLoseHeader;
+        public float MoneyCounterTimeDelay => _moneyCounterTimeDelay;
         public float DisplayWinLoseTime => _displayWinLoseTime;
         public float FadeDurationView => _fadeDurationView;
 

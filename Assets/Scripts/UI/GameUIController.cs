@@ -7,6 +7,7 @@ using Scripts.Level;
 using Scripts.Plants;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Scripts.UI
 {
@@ -19,21 +20,23 @@ namespace Scripts.UI
         [SerializeField] private GameInfoView _gameInfoView;
 
         private event Action onEndLevelAnimation;
-        
-        [SerializeField] private List<GameUI> _currentGameUIs = new List<GameUI>();
-        private Dictionary<PlantType, ResourceView> _resourceViewMap;
-
         private event Action OnShowAd;
+        private List<GameUI> _currentGameUIs = new List<GameUI>();
+        private Dictionary<PlantType, ResourceView> _resourceViewMap = new Dictionary<PlantType, ResourceView>();
+
         private BuyResourceData _buyResourceData;
         private Joystick _joystick;
         private QuestInfoView _questInfoView;
         private EndLevelView _endLevelView;
         private ResourceGroup _resourceGroup;
         private WaitForSeconds _displayEndLevelDelay;
+        private WaitForSeconds _moneyCounterDelay;
+
+        private int _moneyMultiplyValue;
 
         public void DisplayPlantCount(PlantBlock plantBlock, int count)
         {
-            _resourceViewMap[plantBlock.PlantType].UpdateProgressCount(count.ToString());
+            _resourceViewMap[plantBlock.PlantType].UpdateProgressCount(count);
         }
 
         public void DisplayTimer(string textTimer)
@@ -46,13 +49,44 @@ namespace Scripts.UI
             _gameInfoView.UpdateTextColor(isDefault);
         }
 
+        public void DisplayMoneyCount(int value)
+        {
+            _gameInfoView.TextMoney.SetText($"{value.ToString()}$");
+        }
+
+        public void CreateQuestInfo(LevelQuestData levelQuestData, Action callBack)
+        {
+            _gameInfoView.SetVisible(false, true);
+            _questInfoView = Instantiate(_settings.QuestInfoView, transform);
+            _currentGameUIs.Add(_questInfoView);
+            _questInfoView.SetHeader(_settings.QuestHeaders[Random.Range(0, _settings.QuestHeaders.Length - 1)]);
+
+            _questInfoView.OnPlayClick += () =>
+            {
+                _currentGameUIs.Remove(_questInfoView);
+                _resourceGroup = _questInfoView.ResourceGroup;
+                _gameInfoView.SetResourceGroup(_resourceGroup);
+                CreateJoystick();
+                callBack?.Invoke();
+            };
+
+            foreach (var data in levelQuestData.QuestPlantsData)
+            {
+                var resourceView = Instantiate(_settings.ResourceViewPrefab, _questInfoView.ResourceGroup.RectTransform);
+                resourceView.Init(data.Count, _settings.GetSpriteByPlantType(data.PlantType));
+                _questInfoView.ResourceGroup.AddResourceView(resourceView);
+                _resourceViewMap.Add(data.PlantType, resourceView);
+            }
+        }
+
         public void CreateEndLevelView(BuyResourceData data, Action callBack)
         {
             _buyResourceData = data;
+            var isWin = _buyResourceData != null;
 
             DestroyJoystick();
             StartCoroutine(DisplayWinLoseViewAsync());
-            
+
             IEnumerator DisplayWinLoseViewAsync()
             {
                 yield return _displayEndLevelDelay;
@@ -63,53 +97,34 @@ namespace Scripts.UI
                 if (!_endLevelView)
                     yield break;
 
-                _endLevelView.SetHeader(_buyResourceData != null ? "ОТЛИЧНО \n ЗАБИРАЙ СВОЮ НАГРАДУ" : "ВРЕМЯ ВЫШЛО \n ПОПРОБУЙ ЕЩЕ РАЗ");
-                
+                _endLevelView.SetContent(isWin, _settings);
                 _endLevelView.ButtonAction.onClick.AddListener(PlayLevelClick);
-
                 _endLevelView.FadeDuration = _settings.FadeDurationView;
-
+                
                 onEndLevelAnimation += EndLevelAnimations;
-                
-                _endLevelView.SetResourcesViewParent(
-                    _gameInfoView.ResourcesView, 
-                    true, 
-                    _settings.FadeDurationView, 
-                    onEndLevelAnimation);
-                
+
                 _endLevelView.SetVisible(true);
                 _gameInfoView.SetVisible(false);
+                
                 OnShowAd = callBack;
 
                 if (OnShowAd != null)
-                    _endLevelView?.ButtonShowAdd.onClick.AddListener(_buyResourceData != null ? MultiplyMoneyClick : AddTimeButtonClick);
-            }
-        }
-
-        public void CreateQuestInfo(LevelQuestData levelQuestData, Action callBack)
-        {
-            _gameInfoView.SetVisible(false, true);
-            _questInfoView = Instantiate(_settings.QuestInfoView, transform);
-            _questInfoView.SetHeader("ЧАРЛИ, ПРИЯТЕЛЬ \n СОБЕРИ ЭТИ РЕСУРСЫ");
-            
-            _currentGameUIs.Add(_questInfoView);
-            _questInfoView.OnPlayClick += () =>
-            {
-                _currentGameUIs.Remove(_questInfoView);
-                _resourceGroup = _questInfoView.ResourceGroup;
-                _gameInfoView.SetResourceGroup(_resourceGroup);
-                CreateJoystick();
-                callBack?.Invoke();
-            };
-            
-            _resourceViewMap ??= new Dictionary<PlantType, ResourceView>();
-            
-            foreach (var data in levelQuestData.QuestPlantsData)
-            {
-                var resourceView = Instantiate(_settings.ResourceViewPrefab, _questInfoView.ResourceGroup.RectTransform);
-                resourceView.Init(data.Count.ToString(), _settings.GetSpriteByPlantType(data.PlantType));
-                _questInfoView.ResourceGroup.AddResourceView(resourceView);
-                _resourceViewMap.Add(data.PlantType, resourceView);
+                    _endLevelView?.ButtonShowAdd.onClick.AddListener(isWin ? MultiplyMoneyClick : AddTimeButtonClick);
+                
+                if (isWin)
+                {
+                    _gameInfoView.SetMoneyTextParent(_endLevelView?.transform);
+                    
+                    _endLevelView?.SetResourcesViewParent(
+                        _gameInfoView.ResourcesView,
+                        true,
+                        _settings.FadeDurationView,
+                        onEndLevelAnimation);
+                }
+                else
+                {
+                    onEndLevelAnimation?.Invoke();
+                }
             }
         }
 
@@ -156,6 +171,7 @@ namespace Scripts.UI
         private void Start()
         {
             _displayEndLevelDelay = new WaitForSeconds(_settings.DisplayWinLoseTime);
+            _moneyCounterDelay = new WaitForSeconds(_settings.MoneyCounterTimeDelay);
             _gameInfoView.FadeDuration = _settings.FadeDurationView;
             _currentGameUIs.Add(_gameInfoView);
         }
@@ -172,34 +188,35 @@ namespace Scripts.UI
             
             if (_buyResourceData != null)
             {
-                _gameInfoView.ScaleMoneyView(2f, _settings.FadeDurationView);
-
                 StartCoroutine(WaitForMoneyCounter());
 
                 foreach (var buyResource in _buyResourceData.BuyResources)
                 {
                     var view = _resourceViewMap[buyResource.PlantType];
-                    view.StartCoroutine(TextCounterCoroutine(view, buyResource.Count, 0, _settings.FadeDurationView));
+                    view.StartCoroutine(ResourceCounterAsync(view, buyResource.Count, 0, _settings.FadeDurationView));
                 }
             }
             else
             {
-                _endLevelView.ButtonActionSetVisible(OnShowAd != null);
+                _endLevelView.ButtonShowAddSetVisible(OnShowAd != null);
             }
 
             IEnumerator WaitForMoneyCounter()
             {
-               moneyCounterRoutine = StartCoroutine(TextCounterCoroutineMoney(
-                    _gameInfoView.TextMoney,
-                    _buyResourceData.oldMoneyValue, 
-                    _buyResourceData.newMoneyValue,
-                    _settings.FadeDurationView));
+                moneyCounterRoutine = StartCoroutine(MoneyCounterAsync(
+                    _endLevelView.GetTextMoneyCounter(),
+                    0, 
+                    _buyResourceData.addMoneyValue,
+                    _settings.FadeDurationView,
+                    "+",
+                    "$"));
                
                yield return moneyCounterRoutine;
+               
                if (_resourceGroup)
                    Destroy(_resourceGroup.gameObject);
             
-               _endLevelView.ButtonActionSetVisible(OnShowAd != null);
+               _endLevelView.ButtonShowAddSetVisible(OnShowAd != null);
                moneyCounterRoutine = null;
             }
         }
@@ -207,13 +224,65 @@ namespace Scripts.UI
         private void MultiplyMoneyClick()
         {
             Debug.Log("Start Show Ad");
+            _endLevelView?.ButtonShowAdd.gameObject.SetActive(false);
+            _moneyMultiplyValue = 2;
             GameController.Instance.AdController.ShowRewardedVideo();
+            GameController.Instance.AdController.OnRewardedShow += DisplayMultiPlayMoney;
+        }
+
+        private void DisplayMultiPlayMoney()
+        {
+            GameController.Instance.AdController.OnRewardedShow -= DisplayMultiPlayMoney;
             
-            GameController.Instance.AdController.OnRewardedShow += () =>
+            Coroutine moneyCounterRoutine = null;
+
+            StartCoroutine(WaitForMoneyCounter());
+
+            IEnumerator WaitForMoneyCounter()
             {
+                int multiplyMoneyCount = _buyResourceData.addMoneyValue * _moneyMultiplyValue;
+                TMP_Text textMultiplyMoney = _endLevelView.GetTextMoneyCounter();
+                moneyCounterRoutine = StartCoroutine(MoneyCounterAsync(
+                    textMultiplyMoney,
+                    _buyResourceData.addMoneyValue,
+                    multiplyMoneyCount,
+                    _settings.FadeDurationView,
+                    "+",
+                    "$"));
+
+                yield return moneyCounterRoutine;
+
                 OnShowAd?.Invoke();
                 OnShowAd = null;
-            };
+
+                yield return _moneyCounterDelay;
+
+                moneyCounterRoutine = null;
+                int money = GameController.Instance.GetMoney();
+                moneyCounterRoutine = StartCoroutine(MoneyCounterAsync(
+                    _gameInfoView.TextMoney,
+                    money - multiplyMoneyCount,
+                    money,
+                    _settings.FadeDurationView,
+                    null,
+                    "$"
+                ));
+                
+                moneyCounterRoutine = StartCoroutine(MoneyCounterAsync(
+                    textMultiplyMoney,
+                    multiplyMoneyCount,
+                    0,
+                    _settings.FadeDurationView,
+                    "+",
+                    "$"));
+                
+                yield return moneyCounterRoutine;
+                Destroy(textMultiplyMoney.gameObject);
+
+                yield return _moneyCounterDelay;
+                
+                NextActionClick(true);
+            }
         }
 
         private void AddTimeButtonClick()
@@ -222,13 +291,54 @@ namespace Scripts.UI
             Debug.Log("Start Show Ad");
             GameController.Instance.AdController.OnRewardedShow += () =>
             {
+                OnShowAd?.Invoke();
+                OnShowAd = null;
+                
                 NextActionClick(false);
             };
         }
 
         private void PlayLevelClick()
         {
-            NextActionClick(true);
+            if (_buyResourceData != null)
+            {
+                Coroutine moneyCounterRoutine = null;
+                StartCoroutine(WaitForMoneyCounter());
+                IEnumerator WaitForMoneyCounter()
+                {
+                    TMP_Text textMultiplyMoney = _endLevelView.GetTextMoneyCounter();
+                    moneyCounterRoutine = null;
+                    int money = GameController.Instance.GetMoney();
+                    moneyCounterRoutine = StartCoroutine(MoneyCounterAsync(
+                        _gameInfoView.TextMoney,
+                        money - _buyResourceData.addMoneyValue,
+                        money,
+                        _settings.FadeDurationView,
+                        null,
+                        "$"
+                    ));
+                
+                    moneyCounterRoutine = StartCoroutine(MoneyCounterAsync(
+                        textMultiplyMoney,
+                        _buyResourceData.addMoneyValue,
+                        0,
+                        _settings.FadeDurationView,
+                        "+",
+                        "$"));
+                
+                    yield return moneyCounterRoutine;
+                    Destroy(textMultiplyMoney.gameObject);
+
+                    yield return _moneyCounterDelay;
+                
+                    NextActionClick(true);
+                }
+            }
+            else
+            {
+                NextActionClick(true);
+            }
+
         }
 
         private void NextActionClick(bool isLevelNext)
@@ -238,20 +348,18 @@ namespace Scripts.UI
                 if (_resourceGroup)
                     Destroy(_resourceGroup.gameObject);
                 
+                _gameInfoView.SetMoneyTextParent(null);
                 _gameInfoView.ReturnResourcesView(true);
                 _resourceViewMap.Clear();
-                _gameInfoView.ScaleMoneyView(1, 0);
                 OnLevelPlay?.Invoke();
             }
             else
             {
-                _gameInfoView.ReturnResourcesView();
+                //_gameInfoView.ReturnResourcesView();
                 _gameInfoView.SetVisible(true);
-                OnShowAd?.Invoke();
-                OnShowAd = null;
                 CreateJoystick();
             }
-
+            
             _currentGameUIs.Remove(_endLevelView);
             Destroy(_endLevelView.gameObject);
         }
@@ -275,30 +383,28 @@ namespace Scripts.UI
             OnJoystickCreate?.Invoke(null);
         }
 
-        private IEnumerator TextCounterCoroutine(ResourceView view, int from, int to , float time = 1f, string additionalText = null)
+        private IEnumerator ResourceCounterAsync(ResourceView view, int from, int to , float time = 1f, string additionalText = null)
         {
             float t = 0f;
             while (t < 1)
             {
                 t += Time.unscaledDeltaTime / time;
-                view.UpdateProgressCount(Mathf.Lerp(from, to, t).ToString("0"));
+                view.UpdateProgressCount((int)Mathf.Lerp(from, to, t));
                 yield return null;
             }
         }
         
-        private IEnumerator TextCounterCoroutineMoney(TMP_Text text, int from, int to , float time = 1f, string additionalText = null)
+        private IEnumerator MoneyCounterAsync(TMP_Text text, int from, int to , float time = 1f, string beginText = null, string finalText = null)
         {
             float t = 0f;
             while (t < 1)
             {
                 t += Time.unscaledDeltaTime / time;
-                text.SetText(Mathf.Lerp(from, to, t).ToString("0"));
+                text.SetText($"{beginText}{Mathf.Lerp(from, to, t):0}{finalText}");
                 yield return null;
             }
 
             yield return null;
         }
-
-
     }
 }

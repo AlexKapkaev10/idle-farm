@@ -48,7 +48,8 @@ namespace Scripts.UI
             
             foreach (var view in _resourceViews)
             {
-                view.UpdateProgressCount("0");
+                view.UpdateProgressCount(0);
+                view.SetSliderProgress(0);
             }
         }
     }

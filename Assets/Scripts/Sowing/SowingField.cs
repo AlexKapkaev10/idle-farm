@@ -255,7 +255,7 @@ namespace Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.TryGetComponent<ICharacterController>(out _iCharacterController))
+            if (other.gameObject.TryGetComponent(out _iCharacterController))
             {
                 _characterTransform = _iCharacterController.GetBodyTransform();
                 _iCharacterController.SetAnimationForField(FieldStateType.Mow);

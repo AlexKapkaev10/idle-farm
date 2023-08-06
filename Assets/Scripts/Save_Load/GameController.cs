@@ -29,8 +29,6 @@ namespace Scripts.Game
         [DllImport("__Internal")]
         private static extern void LoadExtern();
 
-        public int Level => _progressData.Level;
-        public int Money => _progressData.Money;
         public int CurrentTool => _progressData.CurrentToolId;
         public int[] AvailableToolsID => _progressData.AvailableToolsID;
 
@@ -41,6 +39,8 @@ namespace Scripts.Game
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
                 _adController = GetComponent<AdController>();
+                LoadProgress();
+                
             }
             else
             {
@@ -51,25 +51,45 @@ namespace Scripts.Game
         private void LoadProgress()
         {
 #if !UNITY_WEBGL
-            _progressData.Money = PlayerPrefs.GetInt(_saveLoadSettings.SaveMoneyKey);
+            _progressData.Money = PlayerPrefs.GetInt(_saveLoadSettings.SaveMoneyKey, 0);
+            _progressData.Level = PlayerPrefs.GetInt(_saveLoadSettings.SaveLevelKey, 0);
 #endif
         }
         
-        public void SaveLevelProgress(int moneyCount, int levelCount)
+        public void SaveLevelProgress(int levelCount)
         {
-            _progressData.Money = moneyCount;
             _progressData.Level = levelCount;
             
 #if !UNITY_WEBGL
-            PlayerPrefs.SetInt(_saveLoadSettings.SaveMoneyKey, Money);
-            PlayerPrefs.SetInt(_saveLoadSettings.SaveLevelKey, Level);
+            PlayerPrefs.SetInt(_saveLoadSettings.SaveLevelKey, _progressData.Level);
 #endif
+        }
+
+        public void SaveMoney(int moneyCount)
+        {
+            _progressData.Money += moneyCount;
+            
+#if !UNITY_WEBGL
+            PlayerPrefs.SetInt(_saveLoadSettings.SaveMoneyKey, _progressData.Money);
+#endif
+        }
+
+        public int GetMoney()
+        {
+            return _progressData.Money;
+        }
+
+        public int GetLevel()
+        {
+            return _progressData.Level;
         }
 
         public void Save()
         {
+#if !UNITY_WEBGL
             string jsonData = JsonUtility.ToJson(_progressData);
             SaveExtern(jsonData);
+#endif
         }
 
         public void SetProgress(string value)

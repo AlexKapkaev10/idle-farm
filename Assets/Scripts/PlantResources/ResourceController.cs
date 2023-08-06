@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Scripts.Plants;
 using Scripts.Resources;
-using UnityEngine;
 using VContainer;
 
 namespace Scripts.Game
@@ -35,12 +34,19 @@ namespace Scripts.Game
             _buyResourceData = new BuyResourceData();
         }
 
+        public int GetSaveMoney()
+        {
+            var money = GameController.Instance.GetMoney();
+            _bank.Init(money);
+            return money;
+        }
+
         public void SetQuestMap(in Dictionary<PlantType, int> questMap)
         {
             _plants.Clear();
             _buyResourceData.BuyResources = null;
-            _buyResourceData.oldMoneyValue = 0;
-            _buyResourceData.newMoneyValue = 0;
+            _buyResourceData.moneyValue = 0;
+            _buyResourceData.addMoneyValue = 0;
             
             isQuestComplete = false;
 
@@ -112,13 +118,17 @@ namespace Scripts.Game
             }
             
             _bank.MoneyValueChange(totalMoney);
-            var oldMoney = Money - totalMoney;
 
             _buyResourceData.BuyResources = buyResources;
-            _buyResourceData.oldMoneyValue = oldMoney;
-            _buyResourceData.newMoneyValue = Money;
+            _buyResourceData.moneyValue = Money;
+            _buyResourceData.addMoneyValue = totalMoney;
             
             OnBuyPlants?.Invoke(_buyResourceData);
+        }
+
+        public void SetMoneyForReward(int value)
+        {
+            _bank.MoneyValueChange(value);
         }
 
         private int GetPlantsCountByType(PlantType type)
@@ -137,8 +147,8 @@ namespace Scripts.Game
     public class BuyResourceData
     {
         public BuyResource[] BuyResources;
-        public int oldMoneyValue;
-        public int newMoneyValue;
+        public int moneyValue;
+        public int addMoneyValue;
     }
 
     public struct BuyResource
