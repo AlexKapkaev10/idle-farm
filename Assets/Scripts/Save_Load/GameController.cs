@@ -40,6 +40,7 @@ namespace Scripts.Game
                 DontDestroyOnLoad(gameObject);
                 _adController = GetComponent<AdController>();
                 LoadProgress();
+                Application.targetFrameRate = 100;
                 
             }
             else
@@ -60,6 +61,7 @@ namespace Scripts.Game
         {
             _progressData.Level = levelCount;
             
+            Debug.Log($"Save Level: {_progressData.Level}");
 #if !UNITY_WEBGL
             PlayerPrefs.SetInt(_saveLoadSettings.SaveLevelKey, _progressData.Level);
 #endif

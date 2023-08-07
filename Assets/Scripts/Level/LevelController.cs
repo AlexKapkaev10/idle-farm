@@ -31,9 +31,9 @@ namespace Scripts.Level
         private Dictionary<PlantType, int> _questMap;
         private Coroutine _updateTimerRoutine = default;
 
-        private int _currentBuyMoneyValue;
         private bool _isHurry = default;
-        private int _completeLevels = 0;
+        private int _currentBuyMoneyValue;
+        private int _completeLevelsCount = 0;
         private float _questTime = 0.0f;
 
 
@@ -48,14 +48,13 @@ namespace Scripts.Level
             _bobController = bobController;
             _gameUIController = gameUIController;
             _resourceController = resourceController;
-            
-            _completeLevels = GameController.Instance.GetLevel();
         }
         
         private void Start()
         {
-            Application.targetFrameRate = 100;
-            _levelPrefabs = _controllerSettings.LevelPrefabs;
+            SetLevelPrefabs();
+            _completeLevelsCount = GameController.Instance.GetLevel();
+            
             _gameUIController.DisplayMoneyCount(_resourceController.GetSaveMoney());
             
             _gameUIController.OnLevelPlay += InitializeLevel;
@@ -76,16 +75,20 @@ namespace Scripts.Level
             onStartPlay = null;
         }
 
+        private void SetLevelPrefabs()
+        {
+            _levelPrefabs = _controllerSettings.LevelPrefabs;
+        }
+
         private void InitializeLevel()
         {
             if (_currentLevel)
                 ClearLevel();
             
-            var index = _completeLevels > (_levelPrefabs.Count - 1)
-                ? Random.Range(0, _levelPrefabs.Count)
-                : _completeLevels;
-
-            _currentLevel = Instantiate(_levelPrefabs[index]);
+            _currentLevel = Instantiate(_levelPrefabs[_completeLevelsCount < _levelPrefabs.Count
+                ? _completeLevelsCount
+                : Random.Range(0, _levelPrefabs.Count)]);
+            
             _currentLevel.OnQuestReady += InitializeQuest;
             _currentLevel.OnFieldClear += FieldClear;
             _resourceController.QuestComplete += CheckQuestComplete;
@@ -160,7 +163,14 @@ namespace Scripts.Level
 
             var isWin = data != null;
 
-            _completeLevels = isWin ? _completeLevels +1 : _completeLevels;
+            if (isWin)
+            {
+                var hasNextLevel = GetHasNextLevel();
+                _completeLevelsCount = hasNextLevel ? _completeLevelsCount +1 : _completeLevelsCount;
+                
+                if (hasNextLevel)
+                    GameController.Instance.SaveLevelProgress(_completeLevelsCount);
+            }
             
             _bobController.SwitchAnimation(isWin ? BobAnimationType.Win : BobAnimationType.Lose);
             _characterController.EndLevel(isWin);
@@ -176,6 +186,11 @@ namespace Scripts.Level
 
             _gameUIController.CreateEndLevelView(data, onGetReward);
             OnLevelComplete?.Invoke(isWin);
+        }
+
+        private bool GetHasNextLevel()
+        {
+            return _completeLevelsCount < _levelPrefabs.Count;
         }
 
         private void AddQuestTimeForReward()

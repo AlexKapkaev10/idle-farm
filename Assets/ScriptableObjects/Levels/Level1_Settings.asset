@@ -28,4 +28,4 @@ MonoBehaviour:
   _characterSpawnRotation: {x: 0, y: 60, z: 0}
   _bobSpawnPosition: {x: 10, y: 0.5, z: 5}
   _bobSpawnRotation: {x: 0, y: 215, z: 0}
-  _questTime: 10
+  _questTime: 30
