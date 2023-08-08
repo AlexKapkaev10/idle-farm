@@ -12,14 +12,12 @@ namespace Scripts.StateMachine
         
         private Joystick _joystick = default;
         
-        private readonly float _runSpeed = default;
         private readonly float _rotateSpeed = default;
         
         public CharacterBehaviorRun(ICharacterController characterController, IGameUIController gameUIController, CharacterSettings characterSettings)
         {
             _character = characterController;
             _gameUIController = gameUIController;
-            _runSpeed = characterSettings.RunSpeed;
             _rotateSpeed = characterSettings.RotateSpeed;
             
             _gameUIController.OnJoystickCreate += SetJoystick;
@@ -50,7 +48,7 @@ namespace Scripts.StateMachine
                 _character.Rotate(slerpRotate);
             }
             
-            _character.Move(direction * (_runSpeed * Time.deltaTime), direction.magnitude);
+            _character.Move(direction * (_character.RunSpeed * Time.deltaTime), direction.magnitude);
         }
 
         private void SetJoystick(Joystick joystick)

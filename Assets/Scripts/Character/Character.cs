@@ -2,6 +2,7 @@ using Scripts.Enums;
 using Scripts.Interfaces;
 using System;
 using System.Collections.Generic;
+using Scripts.Inventory;
 using Scripts.Plants;
 using Scripts.ScriptableObjects;
 using Scripts.StateMachine;
@@ -22,28 +23,33 @@ namespace Scripts.Game
         [SerializeField] private Transform _transformCollectPoint;
 
         private ICharacterStateMachine _characterStateMachine;
-
         private IResourceController _resourceController;
+        private IInventoryController _inventoryController;
         private ITool _currentTool;
 
+        private CharacterController _characterController;
         private CharacterAnimationEvents _eventFromAnimation;
         private ToolsSettings _toolsSettings;
 
-        private CharacterController _characterController;
+        private float _runSpeed;
+        private float _mowSpeed;
 
         public Animator Animator => _playerAnimator;
+        public float RunSpeed => _runSpeed;
 
         public ITool CurrentTool => _currentTool;
 
         [Inject]
         public void Init(
-            IResourceController resourceController, 
-            ToolsSettings toolsSettings, 
-            ICharacterStateMachine characterStateMachine)
+            IResourceController resourceController,
+            IInventoryController inventoryController,
+            ICharacterStateMachine characterStateMachine, 
+            ToolsSettings toolsSettings)
         {
             _resourceController = resourceController;
-            _toolsSettings = toolsSettings;
+            _inventoryController = inventoryController;
             _characterStateMachine = characterStateMachine;
+            _toolsSettings = toolsSettings;
         }
 
         public void StartLevel()
@@ -101,7 +107,6 @@ namespace Scripts.Game
             _characterStateMachine.SetBehaviorByType(isRun ? CharacterStateType.Run : CharacterStateType.Idle);
         }
 
-
         public Transform GetBodyTransform()
         {
             return _bodyTransform;
@@ -114,15 +119,18 @@ namespace Scripts.Game
 
         private void Awake()
         {
-            CreateTool();
+            _inventoryController.OnRunSpeedChange += RunSpeedChange;
+            _inventoryController.OnMowSpeedChange += MowSpeedChange;
+            _inventoryController.OnCurrentToolChange += CreateTool;
+            
             _characterController = GetComponent<CharacterController>();
             _eventFromAnimation = GetComponentInChildren<CharacterAnimationEvents>();
-            
             _eventFromAnimation.OnMow += InvokeMowEventFromAnimation;
         }
 
         private void Start()
         {
+            _inventoryController.Initialize();
             _characterStateMachine.InitBehaviors(this);
             ChangeMoveState(false);
         }
@@ -137,18 +145,29 @@ namespace Scripts.Game
             _eventFromAnimation.OnMow -= InvokeMowEventFromAnimation;
         }
 
-        private void CreateTool()
+        private void RunSpeedChange(float value)
         {
-            _currentTool?.Clear();
+            _runSpeed = value;
+        }
+        
+        private void MowSpeedChange(float value)
+        {
+            _runSpeed = value;
+            _playerAnimator.SetFloat(AnimatorParameters.MowSpeed, value);
+        }
 
-            var tool = Instantiate(_toolsSettings.GetTool(_toolType), _toolPoint);
+        private void CreateTool(int toolID)
+        {
+            if (_currentTool != null)
+            {
+                _currentTool.Clear();
+                _currentTool = null;
+            }
+
+            var tool = Instantiate(_toolsSettings.GetTool((ToolType)toolID), _toolPoint);
             _currentTool = tool;
-            _currentTool.SetMaxSharpCount();
-
-            if (_currentTool == null) 
-                return;
             
-            _playerAnimator.SetFloat(AnimatorParameters.MowSpeed, _currentTool.MowSpeed);
+            _currentTool?.SetMaxSharpCount();
             _currentTool?.SetActive(false);
         }
 
@@ -157,7 +176,7 @@ namespace Scripts.Game
             OnMow?.Invoke(_currentTool.CurrentSharpCount);
         }
     }
-    
+
     public static partial class AnimatorParameters
     {
         public static readonly int Base = Animator.StringToHash("Base");

@@ -4,6 +4,7 @@ using VContainer;
 using VContainer.Unity;
 using Scripts.Game;
 using Scripts.Interfaces;
+using Scripts.Inventory;
 using Scripts.Level;
 using Scripts.Resources;
 using Scripts.ScriptableObjects;
@@ -27,6 +28,7 @@ namespace Scripts.Architecture
                 .WithParameter(_bankSettings);
             builder.RegisterComponentInHierarchy<GameUIController>().As<IGameUIController>();
             RegisterCharacterStateMachine(builder);
+            builder.Register<InventoryController>(Lifetime.Singleton).As<IInventoryController>();
             builder.RegisterComponentInNewPrefab<Character>(_character, Lifetime.Scoped)
                 .As<ICharacterController>()
                 .WithParameter(_toolsSettings);

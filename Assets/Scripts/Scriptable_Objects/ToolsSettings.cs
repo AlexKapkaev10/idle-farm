@@ -8,19 +8,18 @@ namespace Scripts.ScriptableObjects
     [CreateAssetMenu(fileName = "ToolsSettings", menuName = "SO/Tools Settings", order = 51)]
     public sealed class ToolsSettings : ScriptableObject
     {
-        [SerializeField] private List<CharacterTool> _characterTools = new List<CharacterTool>();
+        [SerializeField] private List<CharacterTool> _characterTools;
 
         public CharacterTool GetTool(ToolType toolType)
         {
-            for (int i = 0; i < _characterTools.Count; i++)
+            foreach (var tool in _characterTools)
             {
-                var tool = _characterTools[i];
-
                 if (tool.ToolType == toolType)
                 {
                     return tool;
                 }
             }
+
             return null;
         }
     }

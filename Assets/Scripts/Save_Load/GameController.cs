@@ -9,7 +9,10 @@ namespace Scripts.Game
     {
         public int Level = default;
         public int Money = default;
+        public float RunSpeed = default;
+        public float MowSpeed = default;
         public int CurrentToolId = default;
+        public int CurrentToolSharp = default;
         public int[] AvailableToolsID = default;
     }
     
@@ -19,6 +22,8 @@ namespace Scripts.Game
         [SerializeField] private SaveLoadSettings _saveLoadSettings;
         [SerializeField] private AdController _adController;
         [SerializeField] private ProgressData _progressData;
+        [SerializeField] private float _runSpeedDefault;
+        [SerializeField] private float _mowSpeedDefault;
         
         public static GameController Instance;
         public AdController AdController => _adController;
@@ -28,8 +33,6 @@ namespace Scripts.Game
         
         [DllImport("__Internal")]
         private static extern void LoadExtern();
-
-        public int CurrentTool => _progressData.CurrentToolId;
         public int[] AvailableToolsID => _progressData.AvailableToolsID;
 
         private void Awake()
@@ -54,6 +57,9 @@ namespace Scripts.Game
 #if !UNITY_WEBGL
             _progressData.Money = PlayerPrefs.GetInt(_saveLoadSettings.SaveMoneyKey, 0);
             _progressData.Level = PlayerPrefs.GetInt(_saveLoadSettings.SaveLevelKey, 0);
+            _progressData.RunSpeed = PlayerPrefs.GetFloat(_saveLoadSettings.SaveRunSpeed, _runSpeedDefault);
+            _progressData.MowSpeed = PlayerPrefs.GetFloat(_saveLoadSettings.SaveMowSpeed, _mowSpeedDefault);
+            _progressData.CurrentToolId = PlayerPrefs.GetInt(_saveLoadSettings.SaveCurrentToolID, 0);
 #endif
         }
         
@@ -84,6 +90,21 @@ namespace Scripts.Game
         public int GetLevel()
         {
             return _progressData.Level;
+        }
+
+        public float GetRunSpeed()
+        {
+            return _progressData.RunSpeed;
+        }
+
+        public float GetMowSpeed()
+        {
+            return _progressData.MowSpeed;
+        }
+
+        public int GetCurrentToolID()
+        {
+            return _progressData.CurrentToolId;
         }
 
         public void Save()

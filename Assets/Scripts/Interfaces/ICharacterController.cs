@@ -10,6 +10,7 @@ namespace Scripts.Interfaces
     {
         public event Action<int> OnMow;
         public Animator Animator { get; }
+        public float RunSpeed { get; }
         public ITool CurrentTool { get; }
         public void StartLevel();
         public void EndLevel(bool isWin);

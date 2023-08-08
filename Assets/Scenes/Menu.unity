@@ -500,8 +500,13 @@ MonoBehaviour:
   _progressData:
     Level: 0
     Money: 0
+    RunSpeed: 0
+    MowSpeed: 0
     CurrentToolId: 0
+    CurrentToolSharp: 0
     AvailableToolsID: 
+  _runSpeedDefault: 2
+  _mowSpeedDefault: 2
 --- !u!114 &1076131710
 MonoBehaviour:
   m_ObjectHideFlags: 0
