@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a299ce90139448aa442303121a8c5dd, type: 3}
   m_Name: CharacterSettings
   m_EditorClassIdentifier: 
-  _runSpeed: 3
+  _runSpeed: 10
   _rotateSpeed: 5

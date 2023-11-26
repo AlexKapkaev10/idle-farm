@@ -30,7 +30,6 @@ namespace Scripts.StateMachine
 
         public void Exit()
         {
-            
             _character.Animator.SetBool(AnimatorParameters.RunBool, false);
         }
 

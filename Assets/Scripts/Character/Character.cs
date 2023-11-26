@@ -148,6 +148,7 @@ namespace Scripts.Game
         private void RunSpeedChange(float value)
         {
             _runSpeed = value;
+            Debug.Log(_runSpeed);
         }
         
         private void MowSpeedChange(float value)

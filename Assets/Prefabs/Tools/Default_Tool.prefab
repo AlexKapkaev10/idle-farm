@@ -129,8 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d63d4f8e484ed7b64ba538bb767f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mowSpeed: 2
+  _mowSpeed: 6
   _toolType: 0
+  _maxSharpCount: 10
 --- !u!1 &8866029338525979135
 GameObject:
   m_ObjectHideFlags: 0

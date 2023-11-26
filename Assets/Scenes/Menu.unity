@@ -505,8 +505,8 @@ MonoBehaviour:
     CurrentToolId: 0
     CurrentToolSharp: 0
     AvailableToolsID: 
-  _runSpeedDefault: 2
-  _mowSpeedDefault: 2
+  _runSpeedDefault: 3
+  _mowSpeedDefault: 3
 --- !u!114 &1076131710
 MonoBehaviour:
   m_ObjectHideFlags: 0
